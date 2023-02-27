@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 //importing components
-import Login from '../components/Login.vue';
-import Dashboard from '../components/Dashboard.vue';
+// import Login from '../components/Login.vue';
+// import Dashboard from '../components/Dashboard.vue';
 // import NotFound from '@/components/NotFound.vue';
 
 
@@ -19,6 +19,7 @@ const routes = [
     path: '/dashboard',
     component:  () => import('../components/Dashboard.vue')
   },
+  
   // {
   //   path: '/:pathMatch(.*)*',
   //   component: NotFound

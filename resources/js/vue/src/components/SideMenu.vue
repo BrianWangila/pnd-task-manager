@@ -21,9 +21,9 @@
       </li> <!-- End projects Nav -->
 
       <li class="nav-item">
-        <router-link class="nav-link " to="/tasks">
+        <router-link class="nav-link " to="/calendar">
           <i class="bi bi-calendar-check"></i>
-          <span>Projects</span>
+          <span>Calendar</span>
         </router-link>
       </li> <!-- End calendar Nav -->
 
@@ -53,47 +53,39 @@
       <div class="h-line"></div>
       Reporting
       <li class="nav-item">
-        <router-link class="nav-link " href="/reports">
+        <router-link class="nav-link " to="/reports">
           <i class="bi bi-file-text"></i>
           <span>Reports</span>
         </router-link>
       </li><!-- End reports Nav -->
 
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <router-link class="nav-link" to="/stats">
           <i class="bi bi-bar-chart"></i>
           <span>Statistics</span>
-        </a>
+        </router-link>
       </li><!-- End stats Nav -->
 
       <div class="h-line"></div>
       System
       <li class="nav-item">
-        <a class="nav-link " href="#">
+        <router-link class="nav-link " to="/settings">
           <i class="bi bi-sliders"></i>
           <span>Settings</span>
-        </a>
+        </router-link>
       </li><!-- End settings Nav -->
 
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <router-link class="nav-link" to="/">
           <i class="bi bi-escape"></i>
           <span>Logout</span>
-        </a>
+        </router-link>
       </li><!-- End logout Nav -->
 
       </ul>
     </aside>
   </main>
 </template>
-
-
-git init
-git add .
-git commit -m "first commit"
-git branch -M main
-git remote add origin git@github.com:BrianWangila/pnd-task-manager.git
-git push -u origin main
 
 <style scoped>
   .h-line {
