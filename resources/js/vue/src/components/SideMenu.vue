@@ -2,7 +2,7 @@
   <main class="side-menu"> 
     <aside id="sidebar" class="sidebar">
       <ul class="sidebar-nav" id="sidebar-nav">
-        <img src="../assets/pnd-logo.png" alt="logo" />
+        <img src="../assets/images/pnd-logo.png" alt="logo" />
 
         <div class="h-line"></div>
         General

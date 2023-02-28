@@ -1,7 +1,7 @@
 <template>
   <main>
     <div class="logo-v">
-      <img src="../assets/pnd-logo.png" alt="logo" />
+      <img src="../assets/images/pnd-logo.png" alt="logo" />
     </div>
     <div class="login-page">
       <div class="login">
@@ -47,7 +47,7 @@
         </div>
       </div>
       <div class="image">
-        <img src="../assets/login-illu.png" alt="login-illustration" />
+        <img src="../assets/images/login-illu.png" alt="login-illustration" />
       </div>
     </div>
     <div class="copy">
@@ -67,7 +67,6 @@
       }
     },
     created(){
-      console.log("first")
       this.router = this.$router;
     },
 

@@ -1,19 +1,42 @@
 <template>
   <main class="side-calendar">
     <div class="cal-image">
-      <img src="../assets/calendar.png" alt="side-calendar" />
+      <img src="../assets/images/calendar.png" alt="side-calendar" />
     </div>
     <div>
-      <h4 style="font-weight: 600;">Calendar</h4>
+      <h4 style="font-weight: 600; color: #2F5508;">Calendar</h4>
       <p>Upcoming projects and tasks</p>
-
+      
       <div>
+        <!-- <Calendar /> -->
+        <DatePicker v-model="date" />
 
       </div>
     </div>
+    <footer>
+      <p>&copy; Peak and Dale</p>
+    </footer>
   </main>
 </template>
 
+
+<script>
+  import { Calendar, DatePicker } from 'v-calendar';
+
+  export default {
+    components: {
+      Calendar,
+      DatePicker,
+    },
+    data() {
+      return {
+        date: new Date(),
+      };
+    },
+    
+
+  }
+</script>
 
 
 
@@ -28,6 +51,18 @@
     height: 92vh;
     text-align: center;
     
+  }
+
+  footer {
+    display: flex;
+    justify-content: center;
+
+  }
+
+  footer p {
+    position: absolute;
+    bottom: 0;
+    color: #81BE41;
   }
 
   .side-calendar .cal-image {
