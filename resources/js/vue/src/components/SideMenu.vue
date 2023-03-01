@@ -69,7 +69,7 @@
       <div class="h-line"></div>
       System
       <li class="nav-item">
-        <router-link class="nav-link " to="/settings">
+        <router-link class="nav-link " to="/profile">
           <i class="bi bi-sliders"></i>
           <span>Settings</span>
         </router-link>
@@ -86,6 +86,10 @@
     </aside>
   </main>
 </template>
+
+<script>
+  
+</script>
 
 <style scoped>
   .h-line {

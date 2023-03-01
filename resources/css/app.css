@@ -418,6 +418,8 @@ h6 {
 }
 
 .header .search-bar {
+  position: relative;
+  left: 49vw;
   min-width: 360px;
   padding: 0 20px;
 }
@@ -451,13 +453,18 @@ h6 {
 .header .search-form input {
   border: 0;
   font-size: 14px;
-  color: #012970;
+  color: #2F5508;
   border: 1px solid rgba(1, 41, 112, 0.2);
   padding: 7px 38px 7px 8px;
-  border-radius: 3px;
+  border-radius: 10px;
   transition: 0.3s;
   width: 100%;
+  background-color: rgb(255, 255, 255, 0.7);
+  position: relative;
+
+  
 }
+
 
 .header .search-form input:focus,
 .header .search-form input:hover {
@@ -466,12 +473,14 @@ h6 {
   border: 1px solid rgba(1, 41, 112, 0.3);
 }
 
+
 .header .search-form button {
   border: 0;
   padding: 0;
   margin-left: -30px;
   background: none;
 }
+
 
 .header .search-form button i {
   color: #012970;
@@ -480,14 +489,17 @@ h6 {
 /*--------------------------------------------------------------
 # Header Nav
 --------------------------------------------------------------*/
+
 .header-nav ul {
   list-style: none;
 }
+
 
 .header-nav>ul {
   margin: 0;
   padding: 0;
 }
+
 
 .header-nav .nav-icon {
   font-size: 22px;
@@ -694,6 +706,10 @@ h6 {
   margin-bottom: 10px;
 }
 
+.notification {
+  margin-right: 20px;
+}
+
 .sidebar-nav .nav-heading {
   font-size: 11px;
   text-transform: uppercase;
@@ -720,10 +736,10 @@ h6 {
   color: #000;
 }
 
-.sidebar-nav .nav-link.collapsed {
+/* .sidebar-nav .nav-link.collapsed {
   color: #012970;
   background: #fff;
-}
+} */
 
 .sidebar-nav .nav-link.collapsed i {
   color: #899bbd;
@@ -738,6 +754,11 @@ h6 {
   color: #81BE41;
   background-color: #81BE41;
 }
+
+/* .sidebar-nav .nav-link::after {
+  color: #81BE41;
+  background-color: #81BE41;
+} */
 
 
 .sidebar-nav .nav-link:hover i {
@@ -1024,7 +1045,7 @@ h6 {
   font-size: 12px;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: #666;
+  color: #2f5508;
 }
 
 /*--------------------------------------------------------------
@@ -1055,7 +1076,7 @@ h6 {
 }
 
 .profile .profile-card .social-links a:hover {
-  color: #012970;
+  color: #2f5508;
 }
 
 .profile .profile-overview .row {
@@ -1064,17 +1085,17 @@ h6 {
 }
 
 .profile .profile-overview .card-title {
-  color: #012970;
+  color: #2f5508;
 }
 
 .profile .profile-overview .label {
   font-weight: 600;
-  color: rgba(1, 41, 112, 0.6);
+  color: #2f5508;
 }
 
 .profile .profile-edit label {
   font-weight: 600;
-  color: rgba(1, 41, 112, 0.6);
+  color: #2f550899;
 }
 
 .profile .profile-edit img {

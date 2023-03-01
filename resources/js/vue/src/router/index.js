@@ -1,12 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-//importing components
-// import Login from '../components/Login.vue';
-// import Dashboard from '../components/Dashboard.vue';
-// import NotFound from '@/components/NotFound.vue';
-
-
-// routes
+// path and routes
 const routes = [
   {
     name: 'Login',
@@ -19,6 +13,13 @@ const routes = [
     path: '/dashboard',
     component:  () => import('../components/Dashboard.vue')
   },
+  {
+    name: 'Profile',
+    path: '/profile',
+    component:  () => import('../components/pages/Profile.vue')
+  },
+
+
   
   // {
   //   path: '/:pathMatch(.*)*',

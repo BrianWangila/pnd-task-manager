@@ -31,8 +31,10 @@
     data() {
       return {
         date: new Date(),
+        
       };
     },
+
     
 
   }
@@ -45,7 +47,7 @@
     position: relative;
     left: 82vw;
     top: 8vh;
-    border-left: 1px solid rgba(128, 128, 128, 0.189);
+    border-left: 1px solid rgba(217, 217, 217, 0.4);
     padding: 50px;
     width: 18vw;
     height: 92vh;

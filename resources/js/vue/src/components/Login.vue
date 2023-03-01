@@ -122,10 +122,14 @@
   background-color: #000;
   margin-top: 50px;
   height: 45px;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
  }
 
  .image img {
-  height: 40rem;
+  width: 50rem;
   margin-right: -7vw;
  }
 
