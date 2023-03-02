@@ -1,5 +1,5 @@
 <template>
-  <LineWithLineChart :data="data" :options="options" />
+  <LineWithLineChart :data="data" :options="options"/>
 </template>
 
 <script lang="ts">
@@ -11,7 +11,8 @@ import {
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+Colors
 } from 'chart.js'
 import LineWithLineChart from './LineWithLineChart.js'
 import * as chartConfig from './areaConfig.js'
@@ -33,6 +34,7 @@ export default {
   },
   data() {
     return chartConfig
-  }
+  },
+ 
 }
 </script>

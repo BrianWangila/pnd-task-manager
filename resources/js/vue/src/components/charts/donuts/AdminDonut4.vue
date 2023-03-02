@@ -1,11 +1,11 @@
 <template>
-  <Doughnut :data="data" :options="options" />
+  <Doughnut :data="data" :options="options"/>
 </template>
 
 <script>
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import { Doughnut } from 'vue-chartjs'
-import * as chartConfig from './chartConfig.js'
+import * as chartConfig from './chartConfig4.js'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
@@ -16,6 +16,7 @@ export default {
   },
   data() {
     return chartConfig
-  }
+  },
+  
 }
 </script>

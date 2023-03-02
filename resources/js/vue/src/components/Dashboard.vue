@@ -39,13 +39,28 @@
             <div class="inprogress"></div>
           </div>
           <div class="donut">
-            <!-- <p>Software</p> -->
-            <AdminDonut class="d-1"/>
-            <!-- <div class="v-line"></div>  -->
-            <AdminDonut class="d-1"/> 
-            <AdminDonut class="d-1"/> 
-            <AdminDonut class="d-1"/> 
-            <AdminDonut class="d-1"/> 
+            <div class="donut-n">
+              <p>Soft Dev</p>
+              <AdminDonut class="d-1"/>
+            </div>
+            <div class="donut-n">
+              <p>Web Design</p>
+              <AdminDonut4 class="d-1" />
+            </div>
+            <div class="donut-n">
+              <p>Creatives</p>
+              <AdminDonut2 class="d-1"/>
+            </div>
+            <div class="donut-n">
+              <p>Digital</p>
+              <AdminDonut3 class="d-1"/>
+            </div>
+            <div class="donut-n">
+              <p>BD & Strategy</p>
+              <AdminDonut1 class="d-1"/>
+            </div>
+            
+            
           </div>
         </div>
         <div class="head">
@@ -174,7 +189,11 @@
 
 <script>
   import { Calendar, DatePicker } from 'v-calendar';
-  import AdminDonut from './charts/AdminDonut.vue';
+  import AdminDonut from './charts/donuts/AdminDonut.vue';
+  import AdminDonut1 from './charts/donuts/AdminDonut1.vue';
+  import AdminDonut2 from './charts/donuts/AdminDonut2.vue';
+  import AdminDonut3 from './charts/donuts/AdminDonut3.vue';
+  import AdminDonut4 from './charts/donuts/AdminDonut4.vue';
   import Ongoing from './charts/Ongoing.vue';
   import WorkLoad from './charts/WorkLoad.vue';
 
@@ -183,10 +202,11 @@
     components: {
       Calendar,
       DatePicker,
-      AdminDonut,
+      AdminDonut, AdminDonut1, AdminDonut2, AdminDonut3, AdminDonut4,
       Ongoing,
       WorkLoad,
     },
+    
     data() {
       return {
         date: new Date(),
@@ -242,6 +262,7 @@
     color: #2F5508;
   }
 
+
   .load {
     width: 40px;
     height: 8px;
@@ -284,8 +305,15 @@
 
   .donut .d-1 {
     position: inherit;
-    margin-right: 5vw;
-    height: 25vh;
+    margin-right: 6vw;
+    height: 11vh;
+  }
+
+  .donut-n p {
+    margin-bottom: -5px;
+    margin-top: -10px;
+    margin-left: 20px;
+    font-size: 15px;
   }
 
   .projects {
