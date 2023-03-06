@@ -1,31 +1,3 @@
-<!-- <template>
-<main>
-  <div>
-   {{ project.description }}
-  </div>
-</main>
-</template>
-
-
-<script>
-  import { useProjectStore } from '../../stores/projectStore';
-
-  export default {
-    components: {
-
-    },
-    props: [
-      "project"
-    ],
-    data(){
-      return {
-        projectStore: useProjectStore(),
-      }
-    },
-  }
-</script> -->
-
-
 <template>
   <main>
     <div class="heading">
@@ -96,8 +68,8 @@
       </div>
       </div> -->
 
-      <div v-for="project in projectStore.singleProject" :key="project.id">
-        {{ project.description }}
+      <div>
+        <!-- {{ projectItem.description }} -->
       </div>
 
       <div class="divider">
@@ -129,12 +101,14 @@ export default {
     return {
       date: new Date(),
       projectStore: useProjectStore(),
+      projectItem: null
 
     };
   },
-  props: [
-    "project"
-  ],
+  async mounted(){
+    this.projectItem = await this.projectStore.singleProject()
+    console.log(this.projectItem)
+  }
 }
 </script>
 

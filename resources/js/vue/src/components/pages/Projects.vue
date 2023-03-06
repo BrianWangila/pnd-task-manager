@@ -70,11 +70,10 @@
 
       <div class="row">
       <div class="projects row" v-for="project in projectStore.projects" :key="project.id">
-        <ProjectDetails :project="project"/>
-        <div class="card" style="width: 25rem;" type="button" @click="projectStore.singleProject(project.id)">
+        <div class="card" style="width: 25rem;">
           <div class="card-body">
             <div class="title">
-              <h5 class="card-title">Front-end Development</h5>
+              <h5 class="card-title"  type="button" @click="projectStore.singleProject(project.id)">Front-end Development</h5>
               <i type="button" @click="toggle" class="bi bi-three-dots" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" ></i>
             </div>
 
