@@ -10,6 +10,9 @@ import router from './vue/src/router'
 import VueTailwindDatepicker from 'vue-tailwind-datepicker'
 import 'v-calendar/dist/style.css';
 import VCalendar, { SetupCalendar } from 'v-calendar';
+// import lv-progressbar from 'lightvue/progressbar';
+
+
 
 
 
@@ -19,6 +22,9 @@ const pinia = createPinia();
 pinia.use(({ store }) => {
    store.router = markRaw(router)
 });
+
+// spa.component('lv-progressbar', lv-progressbar);
+
 
 spa.use(router)
    .use(VCalendar, {})

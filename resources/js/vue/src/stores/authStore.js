@@ -51,7 +51,6 @@ export const useAuthStore = defineStore("auth", {
             },
           };
       try {
-        console.log(this.token)
          await axiosClient.post("/logout", {}, config)
          .then((res) => {
             // if(res.data.status == 200){
