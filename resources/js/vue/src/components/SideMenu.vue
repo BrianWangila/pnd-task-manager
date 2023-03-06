@@ -76,7 +76,7 @@
       </li><!-- End settings Nav -->
 
       <li class="nav-item">
-        <router-link class="nav-link" to="/">
+        <router-link to="#" v-slot="{navigate}" @click="user_store.signOut" class="nav-link" >
           <i class="bi bi-escape"></i>
           <span>Logout</span>
         </router-link>
@@ -88,7 +88,18 @@
 </template>
 
 <script>
-  
+  import { useAuthStore } from '../stores/authStore';
+
+  export default {
+    components: {
+
+    },
+    data(){
+      return{
+        user_store: useAuthStore()
+      }
+    },
+  }
 </script>
 
 <style scoped>

@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $faker = \Faker\Factory::create();
-        $password = Hash::make('answer');
+        $password = Hash::make('password');
 
         User::create([
             "name" => "admin",

@@ -210,10 +210,10 @@
             </li>
 
             <li>
-              <router-link class="dropdown-item d-flex align-items-center" to="/">
+              <button @click="user_store.signOut" class="dropdown-item d-flex align-items-center" >
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
-              </router-link>
+              </button>
             </li>
 
           </ul><!-- End Profile Dropdown Items -->
@@ -224,3 +224,25 @@
 
   </header><!-- End Header -->
 </template>
+
+
+<script>
+  import { useAuthStore } from '../stores/authStore';
+
+  export default {
+    components: {
+
+    },
+
+    data() {
+      return {
+        user_store: useAuthStore(),
+      }
+    },
+
+    methods: {
+      
+    }
+  }
+
+</script>

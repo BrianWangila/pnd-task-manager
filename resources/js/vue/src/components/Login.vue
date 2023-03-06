@@ -11,37 +11,39 @@
             <h4>Login to your account</h4>
             <p>Manage your tasks and stay ahead of time</p>
           </div>
-          <form @submit.prevent="onLogin">
+          <form @submit.prevent="user_store.signIn(user_input)">
             <!-- Email input -->
+            
             <div class="form-outline mb-4 ">
-              <input type="email" id="form2Example1" class="form-control " />
+              <input type="email" id="form2Example1" class="form-control" v-model="user_input.email" />
               <label class="form-label" for="form2Example1">Email address</label>
             </div>
 
             <!-- Password input -->
             <div class="form-outline mb-4 ">
-              <input type="password" id="form2Example2" class="form-control" />
+              <input type="password" id="form2Example2" class="form-control" v-model="user_input.password"/>
               <label class="form-label" for="form2Example2">Password</label>
             </div>
 
             <!-- 2 column grid layout for inline styling -->
             <div class="row mb-4">
               <div class="col d-flex justify-content-center">
-                <!-- Checkbox -->
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="form2Example31" checked />
+                  <input class="form-check-input" type="checkbox" value="" id="form2Example31" v-model="user_input.remember" />
                   <label class="form-check-label" for="form2Example31"> Remember me </label>
                 </div>
               </div>
 
               <div class="col">
-                <!-- Simple link -->
                 <router-link style="color: grey; font-size: 15px;" to="/dashboard">Forgot password?</router-link>
               </div>
             </div>
 
-            <!-- Submit button -->
-            <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
+            <div v-if="user_store.error" style="color: red; font-size: 15px;">
+              {{ user_store.error }}
+            </div>
+
+            <button type="submit" name="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
 
           </form>
         </div>
@@ -58,23 +60,34 @@
 
 
 <script>
+  import { useAuthStore } from '../stores/authStore.js';
+  import { useRouter } from "vue-router";
+
+  const router = useRouter();
 
   export default {
     name: "Login",
     data() {
       return {
-
+        user_store: useAuthStore(),
+        user_input: {
+          email: "",
+          password: "",
+          remember: false
+        }
       }
     },
     created(){
+
       this.router = this.$router;
     },
 
     methods: {
-      onLogin(){
-        this.router.push('/dashboard')
-      }
+      
     },
+    mounted(){
+
+    }
   }
 
 </script>

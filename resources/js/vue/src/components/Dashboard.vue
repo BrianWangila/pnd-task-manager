@@ -2,9 +2,9 @@
   <main>
     <div class="heading">
       <div>
-        <h2 v-if="time > 1 && time < 12" style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">Good morning,</span> ADMIN</h2>
-        <h2 v-else-if="time > 12 && time < 16" style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">Good afternoon,</span> ADMIN</h2>
-        <h2 v-else style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">Good Evening,</span> ADMIN</h2>
+        <h2 v-if="time > 1 && time < 12" style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">Good morning,</span>  {{ user_store.user.name }}</h2>
+        <h2 v-else-if="time > 12 && time < 16" style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">Good afternoon,</span>   {{ user_store.user.name }}</h2>
+        <h2 v-else style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">Good Evening,</span>  {{ user_store.user.name }}</h2>
 
 
         <P style="font-weight: 500;">Home / <span style="font-weight: 400;">Dashboard</span></P>
@@ -196,6 +196,7 @@
   import AdminDonut4 from './charts/donuts/AdminDonut4.vue';
   import Ongoing from './charts/Ongoing.vue';
   import WorkLoad from './charts/WorkLoad.vue';
+  import { useAuthStore } from '../stores/authStore';
 
   
   export default {
@@ -210,7 +211,8 @@
     data() {
       return {
         date: new Date(),
-        time: null
+        time: null,
+        user_store: useAuthStore(),
       };
     },
 

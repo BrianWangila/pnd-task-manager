@@ -18,13 +18,11 @@ const routes = [
     path: '/profile',
     component:  () => import('../components/pages/Profile.vue')
   },
-
-
-  
-  // {
-  //   path: '/:pathMatch(.*)*',
-  //   component: NotFound
-  // }
+  {
+    name: 'Projects',
+    path: '/projects',
+    component:  () => import('../components/pages/Projects.vue')
+  },
 ]
 
 const router = createRouter({
