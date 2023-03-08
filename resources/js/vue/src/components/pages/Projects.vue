@@ -8,7 +8,7 @@
       </div>
       <div>
         <div className="btn-group">
-          <button type="button" className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          <button style="border: 1px solid lightgray;" type="button" className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-calendar"></i> Today
           </button>
           <ul className="dropdown-menu" >
@@ -17,7 +17,7 @@
         </div>
 
         <div className="btn-group" style="margin-left: 20px;">
-          <button type="button" className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          <button style="border: 1px solid lightgray;" type="button" className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-funnel"></i> Filter
           </button>
           <ul className="dropdown-menu" >
@@ -30,7 +30,7 @@
     </div>
 
     <div class="content">
-      <div class="add-project  ml-8 mt-3 mb-2">
+      <div class="add-project  ml-8 mt-3 mb-2 mr-8">
         <h4 class=" fw-bolder">New Projects</h4>
         <button><span class="mr-1" data-bs-toggle="modal" data-bs-target="#addProjectForm">New Project</span>  <i class="bi bi-folder-plus"></i></button>
       </div>
@@ -68,18 +68,18 @@
       </div>
       </div>
 
-      <div class="row">
-      <div class="projects row" v-for="project in projectStore.projects" :key="project.id">
-        <div class="card" style="width: 25rem;">
+      <div class="">
+      <div class="projects row">
+        <div class="card"  style="width: 25rem;" v-for="project in projectStore.projects" :key="project.id">
           <div class="card-body">
             <div class="title">
-              <h5 class="card-title"  type="button" @click="projectStore.singleProject(project.id)">Front-end Development</h5>
-              <i type="button" @click="toggle" class="bi bi-three-dots" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" ></i>
+              <router-link class="card-title" :to="`/projects/${project.id}`">Front-end Development</router-link>
+              <i type="button" @click="toggle" class="bi bi-three-dots"></i>
             </div>
 
-            <div class="delete-edit">
-              <i v-show="isOpen" class="fas fa-edit mb-2" style="color: skyblue;" type="button"></i>
-              <i @click="projectStore.deleteProject(project.id)" v-show="isOpen"  class="fas fa-trash" style="color: darkorange;" type="button"></i>
+            <div class="delete-edit" v-show="isOpen">
+              <i class="fas fa-edit mb-2" style="color: skyblue;" type="button"></i>
+              <i @click="projectStore.deleteProject(project.id)" class="fas fa-trash" style="color: darkorange;" type="button"></i>
             </div>
 
             <!-- <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6> --> 

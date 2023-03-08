@@ -10,9 +10,10 @@ import router from './vue/src/router'
 import VueTailwindDatepicker from 'vue-tailwind-datepicker'
 import 'v-calendar/dist/style.css';
 import VCalendar, { SetupCalendar } from 'v-calendar';
-// import lv-progressbar from 'lightvue/progressbar';
+// import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
-
+// import 'bootstrap/dist/css/bootstrap.css'
+// import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 
 
@@ -27,6 +28,8 @@ pinia.use(({ store }) => {
 spa.use(router)
    .use(VCalendar, {})
    .use(SetupCalendar, {})
+   // .use(IconsPlugin)
+   // .use(BootstrapVue)
    .use(VueTailwindDatepicker)
    .use(pinia)
    .mount('#app');

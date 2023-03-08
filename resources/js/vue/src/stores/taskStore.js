@@ -3,12 +3,12 @@ import axiosClient from "../axios";
 
 
 
-export const useProjectStore = defineStore("projectStore", {
+export const useTaskStore = defineStore("taskStore", {
 
   state: () => {
     return {
-      projects: [],
-      projectItem: ""
+      tasks: [],
+      taskItem: ""
     }
   },
 
@@ -19,13 +19,13 @@ export const useProjectStore = defineStore("projectStore", {
   actions: {
 
     // Read all projects
-    async getProjects(){
+    async getTasks(){
 
       try {
 
-        await axiosClient.get("/projects")
+        await axiosClient.get("/tasks")
         .then((res) => {
-          this.projects = res.data
+          this.tasks = res.data
         })
 
       } catch (error) {
@@ -34,10 +34,10 @@ export const useProjectStore = defineStore("projectStore", {
     },
 
     // add new project
-    async addProject(data){
+    async addTask(data){
 
       try {
-        await axiosClient.post("/projects", data, {headers: {"Content-Type": "application/json"}})
+        await axiosClient.post("/task", data, {headers: {"Content-Type": "application/json"}})
         .then((res) => {
           console.log(res)
         })
@@ -47,11 +47,11 @@ export const useProjectStore = defineStore("projectStore", {
     },
 
     // get one project
-    async singleProject(id){
+    async singleTask(id){
       try {
-        await axiosClient.get("/projects/"+id)
+        await axiosClient.get("/tasks/"+id)
         .then((res) => {
-          this.projectItem = res.data
+          this.taskItem = res.data
 
         })
       } catch (error) {
@@ -60,15 +60,13 @@ export const useProjectStore = defineStore("projectStore", {
     },
 
     // Delete A project
-    async deleteProject(id){
-      
+    async deleteTask(id){
       try {
-        await axiosClient.delete("/projects/"+id)
+        await axiosClient.delete("/tasks/"+id)
         
-        this.projects = this.projects.filter((item) => {
+        this.tasks = this.tasks.filter((item) => {
           return item.id !== id
         })
-        console.log(this.projects)
 
       } catch (error) {
         console.log(error)

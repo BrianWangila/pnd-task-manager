@@ -279,7 +279,10 @@
   export default {
     components: {
       Footer,
-    }
+    },
+    data(){
+      
+    },
   }
 
 </script>

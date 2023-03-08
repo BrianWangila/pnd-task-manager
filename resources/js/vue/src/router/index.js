@@ -25,8 +25,18 @@ const routes = [
   },
   {
     name: 'ProjectDetails',
-    path: '/projects/project',
+    path: '/projects/:id',
     component:  () => import('../components/pages/ProjectDetails.vue')
+  },
+  {
+    name: 'Tasks',
+    path: '/tasks',
+    component:  () => import('../components/pages/Tasks.vue')
+  },
+  {
+    name: 'TaskDetails',
+    path: '/tasks/:id',
+    component:  () => import('../components/pages/TaskDetails.vue')
   },
 ]
 
