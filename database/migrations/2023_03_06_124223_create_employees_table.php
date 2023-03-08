@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer("department_id");
             $table->integer("user_id");
             $table->string("job_title");
-            $table->integer("role");
+            $table->string("role");
             $table->string("organization")->default("Peak and Dale");
             $table->string("address");
             $table->string("phone");

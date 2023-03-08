@@ -2,21 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Department;
-use App\Models\Employee;
+use App\Models\Task;
 use Illuminate\Http\Request;
 
-
-class EmployeeController extends Controller
+class TaskController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        // Employee::all();
-        $employees = Employee::with("department", "user", "tasks")->get();
-        return $employees;
+        return Task::with("project", "employee")->get();
     }
 
     /**
@@ -32,8 +28,8 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        $project = Employee::create($request->all());
-        return $project;
+        $task = Task::create($request->all());
+        return $task;
     }
 
     /**
@@ -41,7 +37,7 @@ class EmployeeController extends Controller
      */
     public function show(string $id)
     {
-        return Employee::with("department", "user", "tasks")->find($id);
+        return Task::with("project", "employee")->find($id);
     }
 
     /**

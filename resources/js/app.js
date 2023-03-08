@@ -23,8 +23,6 @@ pinia.use(({ store }) => {
    store.router = markRaw(router)
 });
 
-// spa.component('lv-progressbar', lv-progressbar);
-
 
 spa.use(router)
    .use(VCalendar, {})

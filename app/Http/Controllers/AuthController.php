@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
     public function register(Request $request){
-        $fields = $request->validate([
+        $credentials = $request->validate([
             "name" => "required|string",
             "email" => "required|string|unique:users, email",
             "password" => "required|string|confirmed",
@@ -23,12 +23,10 @@ class AuthController extends Controller
 
         // create a user
         $user = User::create([
-        "name" => $fields["name"],
-        "email" => $fields["email"],
-        "password" => bcrypt($fields["password"])
+        "name" => $credentials["name"],
+        "email" => $credentials["email"],
+        "password" => bcrypt($credentials["password"])
         ]);
-
-        echo $user;
 
         // create token
         $token = $user->createToken("myapptoken")->plainTextToken;
@@ -46,17 +44,17 @@ class AuthController extends Controller
     public function login(Request $request){
         
         try {
-            $fields = $request->validate([
+            $credentials = $request->validate([
                 "email" => "required|string|email|exists:users,email",
                 "password" => "required|string",
                  "remember" => "boolean"
             ]);
     
             // After validating, check if they match
-            $remember = $fields['remember'] ?? false;
-            unset($fields['remember']);
+            $remember = $credentials['remember'] ?? false;
+            unset($credentials['remember']);
     
-            if(!Auth::attempt($fields, $remember)){
+            if(!Auth::attempt($credentials, $remember)){
                 return response([
                     "error" => "Password is incorrect"
                 ], status: 401);
@@ -64,10 +62,10 @@ class AuthController extends Controller
 
     
             // // check email
-            // $user = User::where("email", $fields["email"]) -> first();
+            // $user = User::where("email", $credentials["email"]) -> first();
     
             // // check password
-            // if(!$user || !Hash::check($fields["password"], $user->password)){
+            // if(!$user || !Hash::check($credentials["password"], $user->password)){
             //     return response([
             //         "message" => "invalid credentials"
             //     ], 401);
