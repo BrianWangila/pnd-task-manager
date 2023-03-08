@@ -28,6 +28,8 @@ class AuthController extends Controller
         "password" => bcrypt($fields["password"])
         ]);
 
+        echo $user;
+
         // create token
         $token = $user->createToken("myapptoken")->plainTextToken;
 
@@ -59,6 +61,7 @@ class AuthController extends Controller
                     "error" => "Password is incorrect"
                 ], status: 401);
             }
+
     
             // // check email
             // $user = User::where("email", $fields["email"]) -> first();
@@ -69,6 +72,7 @@ class AuthController extends Controller
             //         "message" => "invalid credentials"
             //     ], 401);
             // }
+
 
             // get user
             $user = Auth::user();

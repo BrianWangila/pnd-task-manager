@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Project;
+use PhpParser\Node\Stmt\TryCatch;
 
 class ProjectController extends Controller
 {
@@ -16,8 +17,21 @@ class ProjectController extends Controller
     }
 
     public function store(Request $request){
-        $project = Project::create($request->all());
-        return $project;
+        
+        try {
+            
+            $project = Project::create($request->all());
+            return $project;
+
+        } catch (\Throwable $e) {
+            $response = [
+                "status" => 500,
+                "message" => "Something went wrong",
+                "error" => $e->getMessage()
+            ];
+
+            return response()->json($response, 500);
+        }
     }
 
     public function delete($id){
