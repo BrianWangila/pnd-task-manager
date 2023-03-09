@@ -86,7 +86,7 @@
       
     },
     mounted(){
-
+      // console.log(first)
     }
   }
 

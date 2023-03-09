@@ -81,8 +81,6 @@
               <i class="fas fa-edit mb-2" style="color: skyblue;" type="button"></i>
               <i @click="projectStore.deleteProject(project.id)" class="fas fa-trash" style="color: darkorange;" type="button"></i>
             </div>
-
-            <!-- <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6> --> 
             <p class="card-text mt-3 fw-bold">{{ project.project_title }}</p>
             <div>
               <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ project.deadline }}</span>

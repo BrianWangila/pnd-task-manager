@@ -31,7 +31,7 @@
 
     <div class="content">
       <div class="add-project  ml-8 mt-3 mb-2 mr-8">
-        <h4 class=" fw-bolder">Frontend Web Development</h4>
+        <h4 class=" fw-bolder">{{ projectItem.project_title }}</h4>
         <div>
             <button class="mr-3"><router-link to="/projects"  style="color: black; font-weight: 500;"><i class="bi bi-arrow-left-short"></i> Back to Projects</router-link></button>
             <button><span class="mr-1" data-bs-toggle="modal" data-bs-target="#addProjectForm">Update Project</span>  <i class="bi bi-pencil-square"></i></button>
@@ -72,7 +72,7 @@
       </div> -->
 
       <div class="main-content">
-        <div>
+        <div class="ml-5">
             <div class="priority">
                 <p class="mr-20" style="font-weight: 600;">Priority:</p> <p class="priority-flag"><i class="bi bi-flag"></i> Normal</p>
             </div>
@@ -97,100 +97,74 @@
             </div>
         </div>
 
-        <div class="project-description">
-            <div class="row">
-                <div class="col-lg-12 d-flex justify-content-left">
-                <ul id="portfolio-filters">
-                    <li data-filter="*" class="filter-active">All</li>
-                    <li data-filter=".filter-app">App</li>
-                    <li data-filter=".filter-card">Card</li>
-                    <li data-filter=".filter-web">Web</li>
-                </ul>
-                </div>
-            </div>
-
-            <div class="row portfolio-container">
-                <div class="col-lg-4 col-md-6 portfolio-item filter-app">
-                    <div class="portfolio-wrap">
-                        <div class="portfolio-info">
-                            <h4>App 1</h4>
-                            <p>App</p>
-                        </div>
+        <div class="project-description mt-5">
+            <nav class="row mb-5">
+                <div class="nav nav-tabs nav-color" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-details-tab" data-bs-toggle="tab" data-bs-target="#nav-details" type="button" role="tab" aria-controls="nav-details" aria-selected="true">Project Details</button>
+                    <button class="nav-link" id="nav-tasks-tab" data-bs-toggle="tab" data-bs-target="#nav-tasks" type="button" role="tab" aria-controls="nav-tasks" aria-selected="false">Project Tasks</button>
+                    <button class="nav-link" id="nav-files-tab" data-bs-toggle="tab" data-bs-target="#nav-files" type="button" role="tab" aria-controls="nav-files" aria-selected="false">Project Files</button>
+                </div>                    
+                <hr/>
+            </nav>
+            <div class="tab-content ml-5 project-details" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-details" role="tabpanel" aria-labelledby="nav-details-tab" tabindex="0">
+                    <div>
+                        <h4>Project Description</h4>
+                        <p>{{ projectItem.description }}</p>
                     </div>
                 </div>
-
-                <div class="col-lg-4 col-md-6 portfolio-item filter-web">
-                    <div class="portfolio-wrap">
-                        <div class="portfolio-info">
-                            <h4>Web 3</h4>
-                            <p>Web</p>
-                        </div>
+                <div class="tab-pane fade" id="nav-tasks" role="tabpanel" aria-labelledby="nav-tasks-tab" tabindex="0">
+                    <div class="project-tasks">
+                        <h4>Tasks Related to this Project</h4>
+                        <MDBTable class="align-middle bg-white task-table">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Project Title</th>
+                                    <th>Description</th>
+                                    <th>Status</th>
+                                    <th>Date Assigned</th>
+                                    <th>Assignee</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="t-body">
+                                <tr  v-for="task in projectTasks" :key="task.id">
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="ms-3" >
+                                                <span class="fw-bold mb-1">{{ task.task_title }}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="fw-normal">{{ task.description }}</span>
+                                    </td>
+                                    <td>
+                                        <MDBBadge badge="success" pill class="d-inline">Active</MDBBadge>
+                                    </td>
+                                    <td>{{ task.deadline }}</td>
+                                    <td class="d-flex align-items-center">
+                                        <img class="rounded-circle" src="https://mdbootstrap.com/img/new/avatars/8.jpg" alt="" style="width: 45px; height: 45px" >
+                                        <div class="ms-3" style="display: flex; flex-direction: column;">
+                                            <span class="fw-bold mb-1">John Doe</span>
+                                            <span class="text-muted mb-0">john.doe@gmail.com</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <MDBBtn color="link" size="sm" rounded>
+                                            Edit
+                                        </MDBBtn>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </MDBTable>
                     </div>
                 </div>
-
-                <div class="col-lg-4 col-md-6 portfolio-item filter-app">
-                    <div class="portfolio-wrap">
-                        <div class="portfolio-info">
-                            <h4>App 2</h4>
-                            <p>App</p>
-                        </div>
+                <div class="tab-pane fade" id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab" tabindex="0">
+                    <div>
+                        <h4>Project Files</h4>
                     </div>
                 </div>
-
-                <div class="col-lg-4 col-md-6 portfolio-item filter-card">
-                <div class="portfolio-wrap">
-                    <div class="portfolio-info">
-                    <h4>Card 2</h4>
-                    <p>Card</p>
-                    </div>
-                </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 portfolio-item filter-web">
-                    <div class="portfolio-wrap">
-                        <div class="portfolio-info">
-                            <h4>Web 2</h4>
-                            <p>Web</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 portfolio-item filter-app">
-                    <div class="portfolio-wrap">
-                        <div class="portfolio-info">
-                        <h4>App 3</h4>
-                        <p>App</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 portfolio-item filter-card">
-                    <div class="portfolio-wrap">
-                        <div class="portfolio-info">
-                            <h4>Card 1</h4>
-                            <p>Card</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 portfolio-item filter-card">
-                    <div class="portfolio-wrap">
-                        <div class="portfolio-info">
-                            <h4>Card 3</h4>
-                            <p>Card</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 portfolio-item filter-web">
-                    <div class="portfolio-wrap">
-                        <div class="portfolio-info">
-                            <h4>Web 3</h4>
-                            <p>Web</p>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
       </div>
@@ -211,12 +185,17 @@
 <script>
   import { Calendar, DatePicker } from 'v-calendar';
   import { useProjectStore } from '../../stores/projectStore';
+  import axiosClient from '../../axios';
+  import { MDBTable, MDBBtn, MDBBadge } from 'mdb-vue-ui-kit';
 
 
 export default {
   components: {
     Calendar,
     DatePicker,
+    MDBTable,
+    MDBBtn,
+    MDBBadge
 
   },
   
@@ -225,6 +204,7 @@ export default {
       date: new Date(),
       projectStore: useProjectStore(),
       projectItem: "",
+      projectTasks: ""
 
     };
   },
@@ -232,15 +212,27 @@ export default {
 
     var id = this.$route.params.id;
 
-    this.projectStore.singleProject(id)
-    this.projectItem = this.projectStore.projectItem
+    // this.projectStore.singleProject(id)
+    // this.projectItem = this.projectStore.projectItem
 
-    console.log(this.projectItem)
+    this.singleProject(id)
 
   },
 
   methods: {
-  
+    async singleProject(id){
+      try {
+        await axiosClient.get("/projects/"+id)
+        .then((res) => {
+          this.projectItem = res.data
+          this.projectTasks = this.projectItem.tasks
+          console.log(this.projectItem.tasks)
+
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    },
   }
 }
 </script>
@@ -303,12 +295,6 @@ export default {
     }
 
 
-    .projects {
-        flex:1; 
-        margin-left: 25px;
-        /* display: flex;
-        flex-direction: row; */
-    }
 
     .footer-divider {
         position: inherit;
@@ -320,23 +306,6 @@ export default {
         color: #2F5508;
     }
 
-    .card-body .title {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .text-dark {
-        text-align: center;
-        color: red;
-    }
-    .card-title {
-        background-color: rgba(255, 165, 0, 0.12);
-        color: #FFA500;
-        padding: 10px;
-        border-radius: 15px;
-        font-weight: 600;
-    }
 
     .add-project {
         display: flex;
@@ -352,166 +321,52 @@ export default {
         font-weight: 600;
     }
 
-    .btn2 {
-        border: 1px solid #81BE41;
-    }
 
     .main-content {
         margin: 2rem;
     }
 
-
-
-    /* Project details styling */
-    #portfolio-filters {
-        padding: 0;
-        margin: 5vh 0 20px 0;
-        list-style: none;
-        border-radius: 50px;
-        padding: 2px 15px;
-    }
-
-    #portfolio-filters li {
-        cursor: pointer;
-        display: inline-block;
-        padding: 8px 16px 10px 16px;
-        font-size: 14px;
+    .nav-color button {
+        color: #2F5508;
         font-weight: 600;
-        line-height: 1;
-        text-transform: uppercase;
-        color: #000;
-        background: rgba(255, 255, 255, 0.1);
-        margin: 0 3px 10px 3px;
-        transition: all 0.3s ease-in-out;
-        border-radius: 4px;
+        font-size: 15px;
     }
 
-    #portfolio-filters li:hover,
-    #portfolio-filters li.filter-active {
-        background: #82be4156;
+    .nav-color button.active {
+        color: whitesmoke;
+        background-color: #82be4191;
+        border-bottom: 3px solid #7dc530;
+
     }
 
-    #portfolio-filters li:last-child {
-        margin-right: 0;
+    .nav-color button:hover {
+        color: whitesmoke;
+        background-color: #82be411c;
+
     }
 
-    .portfolio-wrap {
-        transition: 0.3s;
-        position: relative;
-        overflow: hidden;
-        z-index: 1;
-        background: rgba(0, 0, 0, 0.6);
-    }
-
-    .portfolio-wrap::before {
-        content: "";
-        background: rgba(0, 0, 0, 0.6);
-        position: absolute;
-        left: 30px;
-        right: 30px;
-        top: 30px;
-        bottom: 30px;
-        transition: all ease-in-out 0.3s;
-        z-index: 2;
-        opacity: 0;
-    }
-
-    .portfolio-wrap .portfolio-info {
-        opacity: 60;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        text-align: center;
-        z-index: 3;
-        transition: all ease-in-out 0.3s;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .portfolio-wrap .portfolio-info::before {
+    .project-description hr {
         display: block;
-        content: "";
-        width: 48px;
-        height: 48px;
-        position: absolute;
-        top: 35px;
-        left: 35px;
-        border-top: 3px solid #fff;
-        border-left: 3px solid #fff;
-        transition: all 0.5s ease 0s;
-        z-index: 9994;
+        height: 1px;
+        border: 0;
+        border-top: 1px solid #939191;
+        margin: 0 0;
+        padding: 0;
     }
 
-    .portfolio-wrap .portfolio-info::after {
-        display: block;
-        content: "";
-        width: 48px;
-        height: 48px;
-        position: absolute;
-        bottom: 35px;
-        right: 35px;
-        border-bottom: 3px solid #fff;
-        border-right: 3px solid #fff;
-        transition: all 0.5s ease 0s;
-        z-index: 9994;
-    }
-
-    .portfolio-wrap .portfolio-info h4 {
+    .project-details h4 {
+        font-weight: 600;
         font-size: 20px;
-        color: #fff;
-        font-weight: 600;
     }
 
-    .portfolio-wrap .portfolio-info p {
-        color: #ffffff;
-        font-size: 14px;
-        text-transform: uppercase;
-        padding: 0;
-        margin: 0;
+    .project-details p {
+        width: 50vw;
     }
 
-    .portfolio-wrap .portfolio-links {
-        text-align: center;
-        z-index: 4;
-    }
+    
 
-    .portfolio-wrap .portfolio-links a {
-        color: #fff;
-        margin: 0 2px;
-        font-size: 28px;
-        display: inline-block;
-        transition: 0.3s;
-    }
+    
 
-    .portfolio-wrap .portfolio-links a:hover {
-        color: #63eda3;
-    }
-
-    .portfolio-wrap:hover::before {
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        opacity: 1;
-    }
-
-    .portfolio-wrap:hover .portfolio-info {
-        opacity: 1;
-    }
-
-    .portfolio-wrap:hover .portfolio-info::before {
-        top: 15px;
-        left: 15px;
-    }
-
-    .portfolio-wrap:hover .portfolio-info::after {
-        bottom: 15px;
-        right: 15px;
-    }
 
 
 </style>
