@@ -61,15 +61,15 @@ class AuthController extends Controller
             }
 
     
-            // // check email
-            // $user = User::where("email", $credentials["email"]) -> first();
+            // check email
+            $user = User::where("email", $credentials["email"]) -> first();
     
-            // // check password
-            // if(!$user || !Hash::check($credentials["password"], $user->password)){
-            //     return response([
-            //         "message" => "invalid credentials"
-            //     ], 401);
-            // }
+            // check password
+            if(!$user || !Hash::check($credentials["password"], $user->password)){
+                return response([
+                    "message" => "invalid credentials"
+                ], 401);
+            }
 
 
             // get user

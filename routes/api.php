@@ -27,14 +27,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // public Routes
 Route::post("login", [AuthController::class, "login"]);
-Route::get("projects", [ProjectController::class, 'index']);
-Route::get('projects/{project}', [ProjectController::class, 'show']);
 
 
 
 // protected Routes
 Route::group(["middleware" => ["auth:sanctum"]], function(){
     Route::post("logout", [AuthController::class, 'logout']);
+    Route::get("projects", [ProjectController::class, 'index']);
+    Route::get('projects/{project}', [ProjectController::class, 'show']);
     Route::post('projects', [ProjectController::class, 'store']);
     Route::delete('projects/{project}', [ProjectController::class, 'delete']);
     Route::patch('projects/{project}', [ProjectController::class, 'update']);

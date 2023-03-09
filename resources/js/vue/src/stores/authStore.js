@@ -30,7 +30,8 @@ export const useAuthStore = defineStore("auth", {
              this.authUser = res.data.user
              localStorage.setItem("TOKEN", JSON.stringify(res.data.token))
              localStorage.setItem("user", JSON.stringify(res.data.user))
-
+            
+             console.log(this.authUser)
              this.router.push({name: "Dashboard"})
                     
            } 
@@ -56,7 +57,6 @@ export const useAuthStore = defineStore("auth", {
             // if(res.data.status == 200){
               localStorage.removeItem("TOKEN")
               localStorage.removeItem("user")
-              console.log("success")
               this.authUser = null
   
               this.router.push({name: "Login"})

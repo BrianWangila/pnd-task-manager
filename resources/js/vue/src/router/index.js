@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 // path and routes
 const routes = [
+
   {
     name: 'Login',
     path: '/',

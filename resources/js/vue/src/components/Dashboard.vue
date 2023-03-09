@@ -2,13 +2,14 @@
   <main>
     <div class="heading">
       <div>
-        <h2 v-if="time > 1 && time < 12" style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">Good morning,</span>  {{ user_store.user.name }}</h2>
-        <h2 v-else-if="time > 12 && time < 16" style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">Good afternoon,</span>   {{ user_store.user.name }}</h2>
-        <h2 v-else style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">Good Evening,</span>  {{ user_store.user.name }}</h2>
+        <h2 v-if="time > 1 && time < 12" style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">Good morning,</span>  {{ user.name }}</h2>
+        <!-- <h2 v-else-if="time > 12 && time < 16" style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">Good afternoon,</span>   {{ user_store.user.name }}</h2> --> 
+        <!-- <h2 v-else style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">Good Evening,</span>  {{ user_store.user.name }}</h2> -->
 
 
         <P style="font-weight: 500;">Home / <span style="font-weight: 400;">Dashboard</span></P>
       </div>
+
       <div>
         <div className="btn-group">
           <button type="button" className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -213,12 +214,16 @@
         date: new Date(),
         time: null,
         user_store: useAuthStore(),
+        user: null
       };
     },
 
     mounted(){
       const today = new Date()
       this.time = today.getHours()
+      this.user = this.user_store.user
+      console.log(this.user)
+      
     }
   }
 </script>
