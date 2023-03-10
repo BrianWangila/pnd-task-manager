@@ -1,9 +1,9 @@
 <template>
   <main>
     <div class="heading">
-      <div>
-        <h2 v-if="time > 1 && time < 12" style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">Good morning,</span>  {{ user.name }}</h2>
-        <h2 v-else-if="time > 12 && time < 16" style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">Good afternoon,</span>   {{ user_store.user.name }}</h2> 
+      <div style="min-height: 8.5vh;">
+        <h2 v-if="time > 1 && time < 12" style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">Good morning, </span>{{ user.name }}</h2>
+        <h2 v-else-if="time > 12 && time < 16" style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">Good afternoon, </span>{{ user_store.user.name }}</h2> 
         <!-- <h2 v-else style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">Good Evening,</span>  {{ user_store.user.name }}</h2> -->
 
 

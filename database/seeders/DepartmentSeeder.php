@@ -15,6 +15,8 @@ class DepartmentSeeder extends Seeder
     {
         $faker = \Faker\Factory::create('en_US');
 
+        
+
         for ($i=0; $i < 5; $i++) { 
             Department::create([
                 "department_name" => $faker->word(),

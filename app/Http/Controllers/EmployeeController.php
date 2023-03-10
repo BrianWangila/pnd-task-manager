@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 
 class EmployeeController extends Controller
@@ -18,6 +19,14 @@ class EmployeeController extends Controller
         $employees = Employee::with("department", "user", "tasks")->get();
         return $employees;
     }
+
+    public function employeesByDepartment($departmentId) 
+    {
+        $employees = Employee::with('user')->where('department_id', $departmentId)->get();
+
+        return $employees;
+    }
+
 
     /**
      * Show the form for creating a new resource.

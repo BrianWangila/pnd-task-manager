@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
+use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DepartmentController extends Controller
 {
@@ -12,9 +14,10 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        $departments = Department::with("employees")->get();
+        $departments = Department::with("employees", "projects")->get();
         return $departments;
     }
+
 
     /**
      * Show the form for creating a new resource.

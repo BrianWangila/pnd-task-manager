@@ -40,11 +40,13 @@ Route::group(["middleware" => ["auth:sanctum"]], function(){
     Route::patch('projects/{project}', [ProjectController::class, 'update']);
     Route::get('employees', [EmployeeController::class, 'index']);
     Route::get('employees/{employee}', [EmployeeController::class, 'show']);
-    Route::post('employees', [EmployeeController::class, 'store']);
+    Route::get('employees/department/{deptID}', [EmployeeController::class, 'employeesByDepartment']);
     Route::get('departments', [DepartmentController::class, 'index']);
+    Route::post('employees', [EmployeeController::class, 'store']);
     Route::get('tasks', [TaskController::class, 'index']);
     Route::get('tasks/{task}', [TaskController::class, 'show']);
     Route::post('tasks', [TaskController::class, 'store']);
+    
 
     
 });

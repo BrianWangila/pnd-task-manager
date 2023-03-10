@@ -17,7 +17,7 @@ return new class extends Migration
             $table->dateTime("deadline")->nullable();
             $table->text("description");
             $table->integer("project_id");
-            $table->integer("employee_id");
+            $table->integer("employee_id")->nullable();
             $table->boolean("is_complete")->default(false);
             $table->boolean("reminder")->default(false);
             $table->timestamps();

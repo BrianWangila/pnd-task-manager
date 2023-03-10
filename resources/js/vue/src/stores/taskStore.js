@@ -37,7 +37,7 @@ export const useTaskStore = defineStore("taskStore", {
     async addTask(data){
 
       try {
-        await axiosClient.post("/task", data, {headers: {"Content-Type": "application/json"}})
+        await axiosClient.post("/tasks", data, {headers: {"Content-Type": "application/json"}})
         .then((res) => {
           console.log(res)
         })

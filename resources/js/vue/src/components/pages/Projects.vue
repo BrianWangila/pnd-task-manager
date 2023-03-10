@@ -1,15 +1,15 @@
 <template>
   <main>
     <div class="heading">
-      <div>
-        <h2 style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;"></span>All Briefs/Projects</h2>
+      <div style="min-height: 8.5vh;">
+        <h2 style="font-size:25px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;"></span>All Briefs / Projects</h2>
         
         <P style="font-weight: 500;">Home / <span style="font-weight: 400;">Projects</span></P>
       </div>
       <div>
         <div className="btn-group">
           <button style="border: 1px solid lightgray;" type="button" className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-calendar"></i> Today
+            <i class="bi bi-calendar mr-3"></i> Today
           </button>
           <ul className="dropdown-menu" >
             <li><DatePicker v-model="date" /></li>
@@ -18,7 +18,7 @@
 
         <div className="btn-group" style="margin-left: 20px;">
           <button style="border: 1px solid lightgray;" type="button" className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-funnel"></i> Filter
+            <i class="bi bi-funnel mr-3"></i> Filter
           </button>
           <ul className="dropdown-menu" >
             <li><a class="dropdown-item" href="#">Upcoming</a></li>
@@ -30,8 +30,8 @@
     </div>
 
     <div class="content">
-      <div class="add-project  ml-8 mt-3 mb-2 mr-8">
-        <h4 class=" fw-bolder">New Projects</h4>
+      <div class="card add-project ml-6 mt-3 mb-3">
+        <h4 class=" fw-bolder fs-5 mt-2">New Projects</h4>
         <button><span class="mr-1" data-bs-toggle="modal" data-bs-target="#addProjectForm">New Project</span>  <i class="bi bi-folder-plus"></i></button>
       </div>
 
@@ -46,13 +46,19 @@
             <div class="modal-body">
             <form @submit.prevent="addProject">
               <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Select Department</label>
+                    <select class="form-select" v-model="data_input.department_id">
+                        <option v-for="dpt in departmentStore.departments" :key="dpt.id" :value="dpt.id">{{ dpt.department_name }}</option>
+                    </select>
+                </div>
+              <div class="mb-3">
                   <label for="projectTitle" class="form-label">Project/Brief Title</label>
                   <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" v-model="data_input.project_title"/>
                   <div id="emailHelp" class="form-text">Write a short title of the project.</div>
               </div>
               <div class="mb-3">
                   <label for="exampleInputPassword1" class="form-label">Deadline</label>
-                  <input type="text" class="form-control" id="exampleInputPassword1" v-model="data_input.deadline"/>
+                  <input type="Date" class="form-control" id="exampleInputPassword1" v-model="data_input.deadline"/>
               </div>
               <div class="mb-3">
                   <label for="exampleInputPassword1" class="form-label">Description</label>
@@ -68,9 +74,8 @@
       </div>
       </div>
 
-      <div class="">
-      <div class="projects row">
-        <div class="card"  style="width: 25rem;" v-for="project in projectStore.projects" :key="project.id">
+      <div class="projects row" style="">
+        <div class="card mb-3"  style="width: 25rem;" v-for="project in projectStore.projects" :key="project.id">
           <div class="card-body">
             <div class="title">
               <router-link class="card-title" :to="`/projects/${project.id}`">Front-end Development</router-link>
@@ -83,7 +88,7 @@
             </div>
             <p class="card-text mt-3 fw-bold">{{ project.project_title }}</p>
             <div>
-              <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ project.deadline }}</span>
+              <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(project.deadline).toDateString() }}</span>
             </div>
               <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
                 <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
@@ -91,7 +96,6 @@
           </div>
         </div>
       </div>
-    </div>
 
       <div class="divider">
         <hr class="footer-divider">
@@ -109,6 +113,7 @@
 <script>
   import { Calendar, DatePicker } from 'v-calendar';
   import { useProjectStore } from '../../stores/projectStore';
+  import { useDepartmentStore } from '../../stores/departmentStore';
 
 
 export default {
@@ -123,12 +128,15 @@ export default {
       date: new Date(),
       time: null,
       projectStore: useProjectStore(),
+      departmentStore: useDepartmentStore(),
       data_input: {
         project_title: "",
+        department_id: "",
         deadline: "",
         description: ""
       },
-      isOpen: false
+      isOpen: false,
+
     };
   },
 
@@ -136,6 +144,7 @@ export default {
     const today = new Date()
     this.time = today.getHours()
     this.projectStore.getProjects()
+    this.departmentStore.getDepartments()
 
   },
 
@@ -149,9 +158,9 @@ export default {
           deadline: "",
           description: ""
         }
-
-        // this.$router.go()
       }
+
+    this.projectStore.getProjects()
       
     },
     toggle() {
@@ -218,6 +227,10 @@ main {
     justify-content: space-between;
   }
 
+  .bi-calendar-event {
+    color:#2F5508;
+  }
+
   .text-dark {
     text-align: center;
     color: red;
@@ -226,14 +239,18 @@ main {
     background-color: rgba(255, 165, 0, 0.12);
     color: #FFA500;
     padding: 10px;
-    border-radius: 15px;
+    border-radius: 25px;
     font-weight: 600;
   }
 
   .add-project {
     display: flex;
+    flex-direction: row;
     justify-content:space-between ;
     align-items: center;
+    padding: 10px 20px;
+    border-radius: 5px;
+    width: 64.5vw;
   }
 
   .add-project button {

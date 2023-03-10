@@ -28,6 +28,10 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
+        // $validatedData = $request->validate([
+        //     'employee_id' => 'nullable|integer',
+        // ]);
+
         $task = Task::create($request->all());
         return $task;
     }

@@ -18,6 +18,7 @@ class ProjectSeeder extends Seeder
         for ($i=0; $i < 10; $i++) { 
             Project::create([
                 "project_title" => $faker->catchphrase(),
+                "department_id" => random_int(1, 5),
                 "description"=> $faker->realText(),
                 "deadline"=> $faker->dateTimeThisYear('+4 months'),
                 "is_complete" => false
