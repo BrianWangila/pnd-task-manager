@@ -79,13 +79,13 @@
   
               <div class="delete-edit" v-show="isOpen">
                 <i class="fas fa-edit mb-2" style="color: skyblue;" type="button"></i>
-                <i @click="taskStore.deleteProject(task.id)" class="fas fa-trash" style="color: darkorange;" type="button"></i>
+                <i @click="taskStore.deleteTask(task.id)" class="fas fa-trash" style="color: darkorange;" type="button"></i>
               </div>
   
               <!-- <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6> --> 
               <p class="card-text mt-3 fw-bold">{{ task.task_title }}</p>
               <div>
-                <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ task.deadline }}</span>
+                <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(task.deadline ).toDateString() }}</span>
               </div>
                 <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
                   <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>

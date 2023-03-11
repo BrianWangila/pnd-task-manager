@@ -64,7 +64,7 @@
             </div>
         </div>
       </div>
-      <ProjectTasks :projectItem="projectItem" style="position: inherit"/>
+      <ProjectTasks style="position: inherit"/>
 
       <div class="divider">
         <hr class="footer-divider">
@@ -83,6 +83,7 @@
   import { Calendar, DatePicker } from 'v-calendar';
   import { useProjectStore } from '../../stores/projectStore';
   import { useTaskStore } from '../../stores/taskStore';
+  import { useEmployeeStore } from '../../stores/employeeStore';
   import axiosClient from '../../axios';
   import { MDBTable, MDBBtn, MDBBadge } from 'mdb-vue-ui-kit';
   import ProjectTasks from './ProjectTasks.vue';
@@ -104,6 +105,8 @@ export default {
       date: new Date(),
       projectStore: useProjectStore(),
       taskStore: useTaskStore(),
+      employeeStore: useEmployeeStore(),
+      dptEmployee: "",
       projectItem: "",
       projectTasks: "",
       input_data: {
@@ -118,10 +121,13 @@ export default {
 
     var id = this.$route.params.id;
 
-    // this.projectStore.singleProject(id)
-    // this.projectItem = this.projectStore.projectItem
-
     this.singleProject(id)
+    .then(() => {
+      this.employeeStore.getEmployeesByDpt(this.projectItem.department_id)
+    })
+
+    const dptEmployee = this.employeeStore.getDptEmployees
+    console.log(dptEmployee)
 
   },
 
@@ -133,15 +139,12 @@ export default {
           this.projectItem = res.data
           this.projectTasks = this.projectItem.tasks
 
-          console.log(this.projectItem)
-
-
         })
       } catch (error) {
         console.log(error)
       }
     },
-  }
+  },
 }
 </script>
 

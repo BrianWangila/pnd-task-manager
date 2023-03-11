@@ -13,7 +13,9 @@ export const useEmployeeStore = defineStore("employeeStore", {
   },
 
   getters: {
-
+    getDptEmployees: (state) => {
+      return state.dptEmployees
+    }
   },
 
   actions: {
@@ -35,11 +37,9 @@ export const useEmployeeStore = defineStore("employeeStore", {
     async getEmployeesByDpt(id){
 
       try {
-
         await axiosClient.get("/employees/department/"+id)
         .then((res) => {
           this.dptEmployees = res.data
-
           console.log(this.dptEmployees)
         })
 

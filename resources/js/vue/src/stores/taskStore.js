@@ -1,5 +1,9 @@
 import { defineStore } from "pinia";
 import axiosClient from "../axios";
+import { useToast } from 'vue-toastification'
+
+
+const toast = useToast()
 
 
 
@@ -41,6 +45,9 @@ export const useTaskStore = defineStore("taskStore", {
         .then((res) => {
           console.log(res)
         })
+
+        toast.success("New Task Added the Project", {timeout: 2000})
+
       } catch (error) {
         console.log(error)
       }
@@ -59,7 +66,7 @@ export const useTaskStore = defineStore("taskStore", {
       }
     },
 
-    // Delete A project
+    // Delete A task
     async deleteTask(id){
       try {
         await axiosClient.delete("/tasks/"+id)

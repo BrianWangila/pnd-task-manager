@@ -39,6 +39,31 @@ const routes = [
     path: '/tasks/:id',
     component:  () => import('../components/pages/TaskDetails.vue')
   },
+  {
+    name: 'Files',
+    path: '/files',
+    component:  () => import('../components/pages/Files.vue')
+  },
+  {
+    name: 'Reports',
+    path: '/reports',
+    component:  () => import('../components/pages/Reports.vue')
+  },
+  {
+    name: 'Teams',
+    path: '/teams',
+    component:  () => import('../components/pages/Teams.vue')
+  },
+  {
+    name: 'Calendar',
+    path: '/calendar',
+    component:  () => import('../components/pages/Calendar.vue')
+  },
+  {
+    name: 'Statistics',
+    path: '/stats',
+    component:  () => import('../components/pages/Statistics.vue')
+  },
 ]
 
 const router = createRouter({

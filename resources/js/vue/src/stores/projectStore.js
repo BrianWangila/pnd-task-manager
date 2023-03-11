@@ -1,5 +1,9 @@
 import { defineStore } from "pinia";
 import axiosClient from "../axios";
+import { useToast } from 'vue-toastification'
+
+
+const toast = useToast()
 
 
 
@@ -41,6 +45,8 @@ export const useProjectStore = defineStore("projectStore", {
         .then((res) => {
           console.log(res)
         })
+
+      toast.success("New Project Added", {timeout: 2000})
       } catch (error) {
         console.log(error)
       }

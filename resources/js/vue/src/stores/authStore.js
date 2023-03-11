@@ -1,7 +1,9 @@
 import { defineStore } from "pinia";
 import axiosClient from "../axios";
+import { useToast } from 'vue-toastification'
 
 
+const toast = useToast()
 
 export const useAuthStore = defineStore("auth", {
   state: () => {
@@ -32,27 +34,21 @@ export const useAuthStore = defineStore("auth", {
              localStorage.setItem("user", JSON.stringify(res.data.user))
             
              console.log(this.authUser)
-             this.router.push({name: "Dashboard"})
-                    
-           } 
-            
+             this.router.push({name: "Dashboard"})  
+           }   
         })
+
+        toast.success("Successfully logged in", {timeout: 2000})
+
       } catch (error) {
         this.errorMsg = error.response.data.error
-        console.log(error.response)
+        toast.error(this.errorMsg, {timeout: 3000})
       }
     },
 
     async signOut(){
-      const config = {
-            headers: {
-              Authorization: `Bearer ${this.token}`,
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-          };
       try {
-         await axiosClient.post("/logout", {}, config)
+         await axiosClient.post("/logout")
          .then((res) => {
             // if(res.data.status == 200){
               localStorage.removeItem("TOKEN")
@@ -62,6 +58,9 @@ export const useAuthStore = defineStore("auth", {
               this.router.push({name: "Login"})
             // }
          })
+
+         toast.success("You're logged out", {timeout: 2000})
+
       } catch (error) {
         console.log(error)
       }
