@@ -10,7 +10,7 @@ PND Task Manager is a web-based application designed to help individuals and tea
 
 Live Link (https:)
 
-<h1>This project was created and contributed by me 🍰 ([Brian Wangila](https://github.com/BrianWangila)) : </h1>
+<h1>This project was created and contributed by 🍰 : </h1>
 
 * [Brian Wangila](https://github.com/BrianWangila)
 
@@ -21,11 +21,11 @@ Live Link (https:)
 <h1>🛠️ Installation Steps:</h1>
 
 ### Website Live Link
-- Click [Here]( ) to access Murife webpage
+- Click [Here]( ) to access pnd Task Manager webpage
 
 
 ### API Live Link
-- Click [Here](http://127.0.0.1:8000/api/) to access the live API. (add the required endpoint at the end)
+- Click [Here](http://127.0.0.1:8000/api/) to access the live API (add the required endpoint at the end).
 
 
 ## Getting Started
@@ -115,7 +115,8 @@ Please leave a star if you like the project
 
 
 
-# AOB - ABOUT LARAVEL
+# AOB
+## ABOUT LARAVEL
 
 
 ## About Laravel
