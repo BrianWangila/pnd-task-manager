@@ -4,6 +4,9 @@
       <img src="../assets/images/pnd-logo.png" alt="logo" />
     </div>
     <div class="login-page">
+      <!-- {{toast.success("My toast content", {
+        timeout: 3000
+      })}} -->
       <div class="login">
         <h4>TASK MANAGER</h4>
         <div>
@@ -13,7 +16,6 @@
           </div>
           <form @submit.prevent="user_store.signIn(user_input)">
             <!-- Email input -->
-            
             <div class="form-outline mb-4 ">
               <input type="email" id="form2Example1" class="form-control" v-model="user_input.email" />
               <label class="form-label" for="form2Example1">Email address</label>
@@ -61,33 +63,27 @@
 
 <script>
   import { useAuthStore } from '../stores/authStore.js';
-  import { useRouter } from "vue-router";
+  import { useToast } from "vue-toastification";
 
-  const router = useRouter();
+
 
   export default {
     name: "Login",
     data() {
       return {
         user_store: useAuthStore(),
+        toast: useToast(),
         user_input: {
           email: "",
           password: "",
           remember: false
-        }
+        },
+        
       }
     },
-    created(){
 
-      this.router = this.$router;
-    },
-
-    methods: {
-      
-    },
-    mounted(){
-      // console.log(first)
-    }
+    // mounted: {},
+    // methods: {},
   }
 
 </script>

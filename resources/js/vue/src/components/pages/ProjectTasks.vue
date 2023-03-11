@@ -22,7 +22,7 @@
                     </div>
                     <div class="tab-pane fade" id="nav-tasks" role="tabpanel" aria-labelledby="nav-tasks-tab" tabindex="0">
                         <div class="project-tasks">
-                            <h4 class="mb-3">Tasks Related to this Project</h4>
+                            <h4 class="mb-1">Tasks Related to this Project</h4>
                             <MDBTable hover class="align-middle bg-white task-table">
                                 <thead class="bg-light bg-red">
                                     <tr>
@@ -50,12 +50,15 @@
                                             <MDBBadge badge="success" pill class="d-inline">Completed</MDBBadge>
                                         </td>
                                         <td>{{ new Date(task.deadline).toDateString() }}</td>
-                                        <td class="d-flex align-items-center">
-                                            <img class="rounded-circle" src="https://mdbootstrap.com/img/new/avatars/8.jpg" alt="" style="width: 45px; height: 45px" >
-                                            <div class="ms-3" style="display: flex; flex-direction: column;">
-                                                <span class="fw-bold mb-1">John Doe</span>
-                                                <span class="text-muted mb-0">john.doe@gmail.com</span>
+                                        <td>
+                                            <div class="assignee">
+                                                <img class="rounded-circle" src="https://mdbootstrap.com/img/new/avatars/8.jpg" alt="" style="width: 45px; height: 45px" >
+                                                <div class="ms-3" style="display: flex; flex-direction: column;">
+                                                    <span class="fw-bold mb-1">John Doe</span>
+                                                    <span class="text-muted mb-0">john.doe@gmail.com</span>
+                                                </div>
                                             </div>
+                                            
                                         </td>
                                         <td>
                                             <MDBBtn color="link" size="sm" rounded>
@@ -90,9 +93,8 @@
               <div class="modal-body">
               <form @submit.prevent="addTask">
                 <div class="mb-3">
-                    <label for="projectId" class="form-label">Task</label>
-                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" v-model="data_input.project_id"/>
-                    <div id="emailHelp" class="form-text">Write a short title of the task.</div>
+                    <label for="projectId" class="form-label">Project</label>
+                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" v-model="data_input.project_id" disabled/>
                 </div>
                 <div class="mb-3">
                     <label for="taskTitle" class="form-label">Task Title</label>
@@ -156,7 +158,6 @@ export default {
             employeeStore: useEmployeeStore(),
             departmentStore: useDepartmentStore(),
             projectItem: "",
-            pid: "",
             projectTasks: "",
             data_input: {
                 project_id: "",
@@ -173,7 +174,9 @@ export default {
 
         this.employeeStore.getEmployees()
 
-        this.employeeStore.getEmployeesByDpt(this.projectItem.department_id)
+        this.dptEmployees()
+
+        console.log(this.employeeStore.dptEmployees)
     },
 
     methods: {
@@ -182,25 +185,39 @@ export default {
                 axiosClient.get("/projects/"+id)
                 .then((res) => {
                     this.projectItem = res.data
-                    this.pid = this.projectItem.id
+                    this.data_input.project_id = this.projectItem.id
                     this.projectTasks = this.projectItem.tasks
+
+                    console.log(this.projectItem.department_id)
                 })
             } catch (error) {
                 console.log(error)
             }
         },
-
         addTask(){
             this.taskStore.addTask(this.data_input)
 
+            this.data_input = {
+                task_title: "",
+                deadline: "",
+                description: "",
+            }
+
+            window.location.reload()
+
+        },
+        dptEmployees(){
+            this.employeeStore.getEmployeesByDpt(this.projectItem.department_id)
         }
     },
-
-    dptEmployees(){
-        console.log(this.employeeStore.dptEmployees)
+    computed: {
+        // selectedTitle(){
+        //     const p_title = this.projectItem.find((project) => {
+        //         project.project_id === this.data_input.project_id
+        //     })
+        //     return p_title ? p_title.project_title : "";
+        // }
     }
-    
-
 }
 </script>
 
@@ -286,5 +303,11 @@ export default {
         padding: 0.5rem;
         border-radius: 5px;
         font-weight: 600;
+    }
+
+    .assignee {
+        display: flex;
+        align-items: center;
+
     }
 </style>
