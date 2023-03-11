@@ -10,7 +10,7 @@ PND Task Manager is a web-based application designed to help individuals and tea
 <img src="https://img.shields.io/github/stars/BrianWangila/pnd-task-manager" alt="shields">
 <img src="https://img.shields.io/github/license/BrianWangila/pnd-task-manager" alt="shields"></p>
 
-<h1>Demo 🚀</h1>
+<h1>Demo 🚀 :</h1>
 
 [Live Link](https:)
 
@@ -18,11 +18,11 @@ PND Task Manager is a web-based application designed to help individuals and tea
 
 * [Brian Wangila](https://github.com/BrianWangila)
 
-<h1> Features 🧐</h1>
+<h1> Features 🧐 :</h1>
 
 - 
 
-<h1>🛠️ Installation Steps:</h1>
+<h1>Installation Steps 🛠️ :</h1>
 
 ### Website Live Link
 - Click [Here]( ) to access pnd Task Manager webpage
@@ -102,7 +102,7 @@ Running the application is very straight forward. You can use the following step
 Please contribute using GitHub Flow or any other of your choosing. 
 Create a branch add commits and open a pull request.
 
-<h1>Built with 💻 </h1>
+<h1>Built with 💻 :</h1>
 Technologies used in the project:
 
 * 
@@ -113,7 +113,7 @@ The project is licensed under Apache 2.0.
 
 The Apache 2.0 [2022] Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-<h1>Like my work? 💖</h1>
+<h1>Like my work? 💖 :</h1>
 
 Please leave a star if you like the project
 
