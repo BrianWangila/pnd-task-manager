@@ -45,6 +45,7 @@ Route::group(["middleware" => ["auth:sanctum"]], function(){
     Route::post('employees', [EmployeeController::class, 'store']);
     Route::get('tasks', [TaskController::class, 'index']);
     Route::get('tasks/{task}', [TaskController::class, 'show']);
+    Route::delete('tasks/{task}', [TaskController::class, 'destroy']);
     Route::post('tasks', [TaskController::class, 'store']);
     
 
