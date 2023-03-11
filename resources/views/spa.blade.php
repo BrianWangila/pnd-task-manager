@@ -40,6 +40,9 @@
       {{-- icons --}}
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 
+      {{-- Toggle --}}
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap5-toggle@5.0.4/css/bootstrap5-toggle.min.css" rel="stylesheet">
+
         <!-- Tailwind Css -->
         <script src="https://cdn.tailwindcss.com"></script>
         <script>
@@ -54,7 +57,6 @@
           }
         </script>
 
-      
         <title>Task Manager</title>
 
         @vite('resources/js/app.js')
@@ -84,5 +86,10 @@
         <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
         <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
         <script src="assets/vendor/php-email-form/validate.js"></script>
+
+        {{-- Toggle --}}
+        {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap5-toggle@5.0.4/js/bootstrap5-toggle.ecmas.min.js"></script> --}}
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap5-toggle@5.0.4/js/bootstrap5-toggle.jquery.min.js"></script>
+
     </body>
 </html>
