@@ -4,11 +4,15 @@
 PND Task Manager is a web-based application designed to help individuals and teams keep track of their tasks and projects. With Task Manager, you can create, assign, and prioritize tasks, set due dates and reminders, and track progress in real-time.
 
 
-<p align="center"><img src="https://img.shields.io/github/issues/BrianWangila/pnd-task-manager" alt="shields"><img src="https://img.shields.io/github/forks/BrianWangila/pnd-task-manager" alt="shields"><img src="https://img.shields.io/github/stars/BrianWangila/pnd-task-manager" alt="shields"><img src="https://img.shields.io/github/license/BrianWangila/pnd-task-manager" alt="shields"></p>
+<p align="center">
+<img src="https://img.shields.io/github/issues/BrianWangila/pnd-task-manager" alt="shields">
+<img src="https://img.shields.io/github/forks/BrianWangila/pnd-task-manager" alt="shields">
+<img src="https://img.shields.io/github/stars/BrianWangila/pnd-task-manager" alt="shields">
+<img src="https://img.shields.io/github/license/BrianWangila/pnd-task-manager" alt="shields"></p>
 
 <h1>Demo 🚀</h1>
 
-Live Link (https:)
+[Live Link](https:)
 
 <h1>This project was created and contributed by 🍰 : </h1>
 
