@@ -13,17 +13,18 @@
   import SideMenu from './src/components/SideMenu.vue';
   import Header from './src/components/Header.vue';
   import SideCalendar from './src/components/SideCalendar.vue';
+import SideMenuSmall from './src/components/SideMenuSmall.vue';
   // import Footer from './src/components/Footer.vue';
 
 
   export default {
     name: "app",
     components: {
-      SideMenu,
-      Header,
-      SideCalendar,
-      // Footer
-    }
+    SideMenu,
+    Header,
+    SideCalendar,
+    SideMenuSmall
+}
    
   }
 </script>

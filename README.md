@@ -5,10 +5,11 @@ PND Task Manager is a web-based application designed to help individuals and tea
 
 
 <p align="center">
-<img src="https://img.shields.io/github/issues/BrianWangila/pnd-task-manager" alt="shields">
-<img src="https://img.shields.io/github/forks/BrianWangila/pnd-task-manager" alt="shields">
-<img src="https://img.shields.io/github/stars/BrianWangila/pnd-task-manager" alt="shields">
-<img src="https://img.shields.io/github/license/BrianWangila/pnd-task-manager" alt="shields"></p>
+    <img src="https://img.shields.io/github/issues/BrianWangila/pnd-task-manager" alt="shields">
+    <img src="https://img.shields.io/github/forks/BrianWangila/pnd-task-manager" alt="shields">
+    <img src="https://img.shields.io/github/stars/BrianWangila/pnd-task-manager" alt="shields">
+    <img src="https://img.shields.io/github/license/BrianWangila/pnd-task-manager" alt="shields">
+</p>
 
 <h1>Demo 🚀 :</h1>
 
