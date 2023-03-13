@@ -21,7 +21,6 @@ class TaskSeeder extends Seeder
                 "deadline" => $faker->dateTimeThisYear('+3 months'),
                 "project_id" => random_int(1, 6),
                 "employee_id" => random_int(1, 5),
-                "is_complete" => false
             ]);
         }
     }

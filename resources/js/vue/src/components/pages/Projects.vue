@@ -31,10 +31,19 @@
 
     <div class="content">
         <div class="main-content">
-            <div class="">
+            <div>
                 <div class="card add-project ml-6 mt-3 mb-3">
-                    <h4 class=" fw-bolder fs-5 mt-2">New Projects</h4>
-                    <button><span class="mr-1" data-bs-toggle="modal" data-bs-target="#addProjectForm">New Project</span>  <i class="bi bi-folder-plus"></i></button>
+                  <nav class="row ">
+                      <div class="nav-header">
+                          <div class="nav nav-tabs nav-color" id="nav-tab" role="tablist">
+                              <button class="nav-link active" id="projects" data-bs-toggle="tab" data-bs-target="#all-projects" type="button" role="tab" aria-controls="nav-all" aria-selected="true">All Projects</button>
+                              <button class="nav-link " id="progress" data-bs-toggle="tab" data-bs-target="#in-progress" type="button" role="tab" aria-controls="nav-progress" aria-selected="false">In Progress</button>
+                              <button class="nav-link" style="color: orange;" id="overdue" data-bs-toggle="tab" data-bs-target="#overdue" type="button" role="tab" aria-controls="nav-overdue" aria-selected="false">Overdue</button>
+                              <button class="nav-link" id="complete" data-bs-toggle="tab" data-bs-target="#finished" type="button" role="tab" aria-controls="nav-finished" aria-selected="false">Finished</button>
+                          </div>
+                      </div>
+                  </nav>
+                  <button class="card-btn"><span class="mr-1" data-bs-toggle="modal" data-bs-target="#addProjectForm">New Project</span>  <i class="bi bi-folder-plus"></i></button>
                 </div>
 
                 <!-- pop-up form -->
@@ -71,7 +80,8 @@
                                 <input type="file" rows="5" class="form-control" id="file" />
                             </div>
                             <div  class="mb-3">
-                                <input type="checkbox" checked data-toggle="toggle" data-onlabel="Ready" data-offlabel="Not Ready" data-onstyle="success" data-offstyle="danger">
+                                <input type="checkbox" data-toggle="toggle" data-onlabel="Ready" data-offlabel="Not Ready" data-onstyle="success" data-offstyle="danger">
+                                <label class="form-label ml-2 fw-bold">Urgent</label>
                             </div>
                             <button type="submit" class="btn btn2">Submit</button>
                             </form>
@@ -82,36 +92,47 @@
                     </div>
                     </div>
                 </div>
+                <div class=" tab-content">
+                  <div class="projects ">
+                      <div class="tab-pane fade show row active" aria-labelledby="nav-all" tabindex="0" id="all-projects">
+                        <div class="card mb-3" style="width: 25rem;" v-for="(project, index) in projectStore.projects" :key="index">
+                            <div class="card-body">
+                                <div class="title">
+                                <router-link class="card-title" :to="`/projects/${project.id}`">Front-end Development</router-link>
+                                  <div
+                                      @mouseover="toggle('display-action'+project.id)" 
+                                      @mouseleave="toggleOff('display-action'+project.id)" >
 
-                <div class="projects row">
-                    <div class="card mb-3"  style="width: 25rem;" v-for="(project, index) in projectStore.projects" :key="index">
-                        <div class="card-body">
-                            <div class="title">
-                            <router-link class="card-title" :to="`/projects/${project.id}`">Front-end Development</router-link>
-                            <i type="button" @click="toggle(index)" class="bi bi-three-dots"></i>
-                            </div>
+                                    <i type="button"  
+                                      class="bi bi-three-dots"></i>
 
-                            <div class="delete-edit" v-show="isOpen">
-                            <i class="fas fa-edit mb-2" style="color: skyblue;" type="button"></i>
-                            <i @click="projectStore.deleteProject(project.id)" class="fas fa-trash" style="color: darkorange;" type="button"></i>
+                                
+                                    <div class="delete-edit" :id="'display-action'+project.id" style="display:none">
+                                      <i class="fas fa-edit mb-2" style="color: skyblue;" type="button"></i>
+                                      <i @click="projectStore.deleteProject(project.id)" class="fas fa-trash" style="color: darkorange;" type="button"></i>
+                                    </div>
+
+                                  </div>
+                                </div>
+                                <p class="card-text mt-3 fw-bold">{{ project.project_title }}</p>
+                                <div>
+                                <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(project.deadline).toDateString() }}</span>
+                                </div>
+                                <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                    <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
+                                </div>
                             </div>
-                            <p class="card-text mt-3 fw-bold">{{ project.project_title }}</p>
-                            <div>
-                            <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(project.deadline).toDateString() }}</span>
-                            </div>
-                            <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                                <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
-                            </div>
-                        </div>
+                        </div>  
                     </div>
+                  </div>
                 </div>
             </div>
-            
+<!--             
             <div class="lower-main mt-3 pt-4 pb-4 ml-6 mr-5 bg-light">
                 <nav class="row mb-4">
                     <div class="nav-header">
                         <div class="nav nav-tabs nav-color" id="nav-tab" role="tablist">
-                            <button class="nav-link active" id="nav-details-tab" data-bs-toggle="tab" data-bs-target="#assigned-projects" type="button" role="tab" aria-controls="nav-details" aria-selected="true">Assigned</button>
+                            <button class="nav-link active" id="nav-details-tab" data-bs-toggle="tab" data-bs-target="#assigned-projects" type="button" role="tab" aria-controls="nav-details" aria-selected="true">Overdue</button>
                             <button class="nav-link" id="nav-tasks-tab" data-bs-toggle="tab" data-bs-target="#in-progress" type="button" role="tab" aria-controls="nav-tasks" aria-selected="false">In Progress</button>
                             <button class="nav-link" id="nav-files-tab" data-bs-toggle="tab" data-bs-target="#finished" type="button" role="tab" aria-controls="nav-files" aria-selected="false">Finished</button>
                         </div>
@@ -128,8 +149,7 @@
                                     <th class="fw-bold">Project Title</th>
                                     <th class="fw-bold">Description</th>
                                     <th class="fw-bold">Status</th>
-                                    <th class="fw-bold">Date Assigned</th>
-                                    <th class="fw-bold">Assignee</th>
+                                    <th class="fw-bold">Deadline</th>
                                     <th class="fw-bold">Actions</th>
                                 </tr>
                             </thead>
@@ -149,16 +169,6 @@
                                         <MDBBadge badge="success" pill class="d-inline">Completed</MDBBadge>
                                     </td>
                                     <td>Deadline</td>
-                                    <td>
-                                        <div class="assignee">
-                                            <img class="rounded-circle" src="https://mdbootstrap.com/img/new/avatars/8.jpg" alt="" style="width: 45px; height: 45px" >
-                                            <div class="ms-3" style="display: flex; flex-direction: column;">
-                                                <span class="fw-bold mb-1">John Doe</span>
-                                                <span class="text-muted mb-0">john.doe@gmail.com</span>
-                                            </div>
-                                        </div>
-                                        
-                                    </td>
                                     <td>
                                         <MDBBtn color="link" size="sm" rounded>
                                             Edit
@@ -176,8 +186,7 @@
                                     <th class="fw-bold">Project Title</th>
                                     <th class="fw-bold">Description</th>
                                     <th class="fw-bold">Status</th>
-                                    <th class="fw-bold">Date Assigned</th>
-                                    <th class="fw-bold">Assignee</th>
+                                    <th class="fw-bold">Deadline</th>
                                     <th class="fw-bold">Actions</th>
                                 </tr>
                             </thead>
@@ -197,16 +206,6 @@
                                         <MDBBadge badge="success" pill class="d-inline">Completed</MDBBadge>
                                     </td>
                                     <td>Deadline</td>
-                                    <td>
-                                        <div class="assignee">
-                                            <img class="rounded-circle" src="https://mdbootstrap.com/img/new/avatars/8.jpg" alt="" style="width: 45px; height: 45px" >
-                                            <div class="ms-3" style="display: flex; flex-direction: column;">
-                                                <span class="fw-bold mb-1">John Doe</span>
-                                                <span class="text-muted mb-0">john.doe@gmail.com</span>
-                                            </div>
-                                        </div>
-                                        
-                                    </td>
                                     <td>
                                         <MDBBtn color="link" size="sm" rounded>
                                             Edit
@@ -224,8 +223,7 @@
                                     <th class="fw-bold">Project Title</th>
                                     <th class="fw-bold">Description</th>
                                     <th class="fw-bold">Status</th>
-                                    <th class="fw-bold">Date Assigned</th>
-                                    <th class="fw-bold">Assignee</th>
+                                    <th class="fw-bold">Deadline</th>
                                     <th class="fw-bold">Actions</th>
                                 </tr>
                             </thead>
@@ -245,16 +243,7 @@
                                         <MDBBadge badge="success" pill class="d-inline">Completed</MDBBadge>
                                     </td>
                                     <td>Deadline</td>
-                                    <td>
-                                        <div class="assignee">
-                                            <img class="rounded-circle" src="https://mdbootstrap.com/img/new/avatars/8.jpg" alt="" style="width: 45px; height: 45px" >
-                                            <div class="ms-3" style="display: flex; flex-direction: column;">
-                                                <span class="fw-bold mb-1">John Doe</span>
-                                                <span class="text-muted mb-0">john.doe@gmail.com</span>
-                                            </div>
-                                        </div>
-                                        
-                                    </td>
+                                    
                                     <td>
                                         <MDBBtn color="link" size="sm" rounded>
                                             Edit
@@ -265,7 +254,7 @@
                         </MDBTable>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
         
 
@@ -340,9 +329,50 @@ export default {
     this.projectStore.getProjects()
       
     },
-    toggle(index) {
-      this.isOpen = !this.isOpen
-    },
+
+      toggle(id) {
+        var id = id;
+
+        console.log(id);
+
+        var id_name  = $('#'+id).attr('id');
+
+        console.log(id_name)
+
+        if(id == id_name){
+          
+          $('#'+id).css('display', 'block') 
+          
+
+
+        } 
+
+        // $('#'+id).click(function(){
+        //   console.log("I was clicked");
+        // });
+      },
+      toggleOff(id) {
+        var id = id;
+
+        console.log(id);
+
+        var id_name  = $('#'+id).attr('id');
+
+        console.log(id_name)
+
+        if(id == id_name){
+          
+          $('#'+id).css('display', 'none') 
+          
+
+
+        } 
+
+        // $('#'+id).click(function(){
+        //   console.log("I was clicked");
+        // });
+      },
+
   }
 }
 </script>
@@ -383,10 +413,11 @@ main {
 
   .projects {
     flex:1; 
+    position: inherit;
+    margin: auto;
     margin-left: 25px;
-    max-height: 55vh;
-    overflow-y: auto;
-  }
+    width: 65.5vw;
+  } 
 
   .footer-divider {
     position: inherit;
@@ -430,7 +461,7 @@ main {
     width: 64.5vw;
   }
 
-  .add-project button {
+  .add-project .card-btn {
     color: #2F5508;
     border: 1px solid lightgrey;
     padding: 0.5rem;
@@ -438,23 +469,14 @@ main {
     font-weight: 600;
   }
 
+  .add-project .card-btn:hover {
+    background-color: #82be411c;
+  }
+
   .btn2 {
     border: 1px solid #81BE41;
   }
 
-  .lower-main {
-        position: inherit;
-
-    }
-    .lower-main hr {
-        width: 64vw;
-        display: block;
-        height: 1px;
-        border: 0;
-        border-top: 1px solid #939191;
-        margin: 0 auto;
-        padding: 0;
-    }
 
     .nav-color button {
         color: #2F5508;
@@ -470,6 +492,7 @@ main {
         border-bottom: 3px solid #7dc530;
         padding: 15px;
         margin: 0 15px;
+        border: none;
 
     }
 

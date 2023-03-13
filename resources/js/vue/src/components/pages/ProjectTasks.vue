@@ -47,7 +47,7 @@
                                             <span class="fw-normal">{{ task.description }}</span>
                                         </td>
                                         <td>
-                                            <MDBBadge badge="success" pill class="d-inline">Completed</MDBBadge>
+                                            <MDBBadge badge="success" pill class="d-inline">In Progress</MDBBadge>
                                         </td>
                                         <td>{{ new Date(task.deadline).toDateString() }}</td>
                                         <td>
@@ -78,9 +78,6 @@
                 </div>
             </div>
         </div>
-        
-
-
 
       <!-- pop-up form -->
       <div class="modal fade" id="addTaskForm" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
@@ -111,8 +108,8 @@
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Assign To</label>
-                    <select class="form-select" >
-                        <option value="1">Mike</option>
+                    <select class="form-select" v-model="data_input.employee_id">
+                        <option v-for="name in employee" :key="name.id" :value="name.id"> {{ name.user.name }}</option>
                     </select>
                 </div>
                 <button type="submit" class="btn btn2" v-if="data_input.task_title">Submit</button>
@@ -148,7 +145,7 @@ export default {
 
     },
 
-    // props: ["projectItem"],
+    props: ["employee"],
 
     data() {
         return {
@@ -161,6 +158,7 @@ export default {
             projectTasks: "",
             data_input: {
                 project_id: "",
+                employee_id: "",
                 task_title: "",
                 deadline: "",
                 description: "",
@@ -176,7 +174,9 @@ export default {
 
         this.dptEmployees()
 
-        console.log(this.employeeStore.dptEmployees)
+        // console.log(this.employeeStore.dptEmployees)
+
+        console.log(this.employee)
     },
 
     methods: {

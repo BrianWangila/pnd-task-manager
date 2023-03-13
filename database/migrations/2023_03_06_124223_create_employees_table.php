@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->integer("department_id");
-            $table->integer("user_id");
+            $table->foreignId("department_id");
+            $table->foreignId("user_id");
             $table->string("job_title");
-            $table->string("role");
+            $table->enum("role", ["admin", "hod", "employee"])->default("employee");
             $table->string("organization")->default("Peak and Dale");
             $table->string("address");
             $table->string("phone");

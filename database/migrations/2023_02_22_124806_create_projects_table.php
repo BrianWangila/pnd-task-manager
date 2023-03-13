@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->integer("department_id")->nullable();
+            $table->foreignId("department_id")->nullable();
             $table->string("project_title");
             $table->dateTime("deadline")->nullable();
             $table->text("description");
-            $table->boolean("is_complete")->default(false);
+            $table->string("file")->nullable();
+            $table->enum("status", ['In progress', 'Completed', 'Overdue'])->default('In progress');
+            $table->boolean("priority")->default(false);
             $table->timestamps();
         });
     }

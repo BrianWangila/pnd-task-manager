@@ -15,14 +15,11 @@ class EmployeeSeeder extends Seeder
     {
         $faker = \Faker\Factory::create('en_US');
 
-        $roles = $faker->randomElement(["HOD", "admin", "employee"]);
-
         for ($i=0; $i < 5; $i++) { 
             Employee::create([
                 "department_id" => random_int(1, 5), 
                 "user_id" =>random_int(1, 5),
-                "job_title" =>$faker -> jobTitle(), 
-                "role"=>$roles, 
+                "job_title" =>$faker -> jobTitle(),
                 "address" =>$faker->address(),
                 "phone"=>$faker->phoneNumber()
 

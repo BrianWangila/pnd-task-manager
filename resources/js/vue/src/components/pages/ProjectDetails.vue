@@ -45,11 +45,14 @@
             </div>
             <div class="assigned mb-2">
                 <p style="margin-right: 5px; font-weight: 600;">Assigned To:</p>
-                <ul>
-                    <li>Brian Wangila</li>
-                    <li>Laura Cherop</li>
-                    <li>Kevin Maingi</li>
+                <ul v-if="dptEmployee.length > 0" v-for="employee in dptEmployee" :key="employee.id">
+                    <li>{{ employee.user.name }}</li>
+                    
                 </ul>
+                <ul v-else >
+                    <li class="fw-bold">No one is working on this project</li>
+                </ul>
+
             </div>
             <div class="deadline mb-2">
                 <p style="margin-right: 4rem; font-weight: 600;">Deadline:</p> <p>{{ new Date(projectItem.deadline).toDateString() }}</p>
@@ -64,7 +67,8 @@
             </div>
         </div>
       </div>
-      <ProjectTasks style="position: inherit"/>
+      <ProjectTasks v-if="dptEmployee.length > 0" :employee="dptEmployee" style="position: inherit"/>
+      <ProjectTasks v-else style="position: inherit"/>
 
       <div class="divider">
         <hr class="footer-divider">
@@ -106,9 +110,8 @@ export default {
       projectStore: useProjectStore(),
       taskStore: useTaskStore(),
       employeeStore: useEmployeeStore(),
-      dptEmployee: "",
+      dptEmployee: [],
       projectItem: "",
-      projectTasks: "",
       input_data: {
         task_title: "",
         deadline: "",
@@ -122,29 +125,32 @@ export default {
     var id = this.$route.params.id;
 
     this.singleProject(id)
-    .then(() => {
-      this.employeeStore.getEmployeesByDpt(this.projectItem.department_id)
-    })
-
-    const dptEmployee = this.employeeStore.getDptEmployees
-    console.log(dptEmployee)
+    
 
   },
 
   methods: {
+
     async singleProject(id){
       try {
         await axiosClient.get("/projects/"+id)
         .then((res) => {
           this.projectItem = res.data
-          this.projectTasks = this.projectItem.tasks
+          
+          axiosClient.get("/employees/department/"+this.projectItem.department_id)
+          .then((res) => {
+            this.dptEmployee = res.data
+            console.log(this.dptEmployee)
+          })
 
         })
       } catch (error) {
         console.log(error)
       }
     },
+
   },
+
 }
 </script>
 

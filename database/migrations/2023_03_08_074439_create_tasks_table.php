@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string("task_title");
             $table->dateTime("deadline")->nullable();
             $table->text("description");
-            $table->integer("project_id");
-            $table->integer("employee_id")->nullable();
-            $table->boolean("is_complete")->default(false);
+            $table->foreignId('project_id')->constrained()->onDelete('cascade');
+            $table->foreignId("employee_id")->nullable();
+            $table->enum('status', ['In progress', 'Completed', 'Overdue'])->default('In progress');
             $table->boolean("reminder")->default(false);
             $table->timestamps();
         });

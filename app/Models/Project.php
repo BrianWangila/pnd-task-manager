@@ -6,10 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Task;
 use App\Models\Department;
+// use dyrynda\Database\Support\CascadeSoftDeletes;
+
 
 class Project extends Model
 {
+    // use CascadeSoftDeletes;
     use HasFactory;
+
+    // protected $cascadeDeletes = ['tasks'];
+
     protected $fillable = [
         "project_title",
         "department_id", 

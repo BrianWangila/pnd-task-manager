@@ -8,7 +8,7 @@ export const useEmployeeStore = defineStore("employeeStore", {
   state: () => {
     return {
       employees: [],
-      dptEmployees: [],
+      dptEmployees: "",
     }
   },
 

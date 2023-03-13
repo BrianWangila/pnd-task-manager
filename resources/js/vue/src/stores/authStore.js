@@ -42,7 +42,7 @@ export const useAuthStore = defineStore("auth", {
 
       } catch (error) {
         this.errorMsg = error.response.data.error
-        toast.error(this.errorMsg, {timeout: 3000})
+        toast.error(this.errorMsg, {timeout: 5000})
       }
     },
 

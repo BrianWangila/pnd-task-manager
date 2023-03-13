@@ -16,23 +16,23 @@
           </div>
           <form @submit.prevent="user_store.signIn(user_input)">
             <!-- Email input -->
-            <div class="form-outline mb-4 ">
-              <input type="email" id="form2Example1" class="form-control" v-model="user_input.email" />
-              <label class="form-label" for="form2Example1">Email address</label>
+            <div class="form-group mb-4 ">
+              <label class="form-label" for="loginEmail">Email address</label>
+              <input type="email" id="loginEmail" class="form-control" v-model="user_input.email" placeholder="Enter email address" autofocus/>
             </div>
 
             <!-- Password input -->
-            <div class="form-outline mb-4 ">
-              <input type="password" id="form2Example2" class="form-control" v-model="user_input.password"/>
-              <label class="form-label" for="form2Example2">Password</label>
+            <div class="form-group mb-4 ">
+              <label class="form-label" for="loginPassword">Password</label>
+              <input type="password" id="loginPassword" class="form-control" v-model="user_input.password" placeholder="Enter password"/>
             </div>
 
             <!-- 2 column grid layout for inline styling -->
             <div class="row mb-4">
               <div class="col d-flex justify-content-center">
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="form2Example31" v-model="user_input.remember" />
-                  <label class="form-check-label" for="form2Example31"> Remember me </label>
+                  <input class="form-check-input" type="checkbox" value="" id="formCheckbox" v-model="user_input.remember" />
+                  <label class="form-check-label" for="formCheckbox"> Remember me </label>
                 </div>
               </div>
 
@@ -40,13 +40,11 @@
                 <router-link style="color: grey; font-size: 15px;" to="/dashboard">Forgot password?</router-link>
               </div>
             </div>
-
+<!-- 
             <div v-if="user_store.error" style="color: red; font-size: 15px;">
               {{ user_store.error }}
-            </div>
-
+            </div> -->
             <button type="submit" name="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
-
           </form>
         </div>
       </div>
@@ -145,5 +143,7 @@
  .side {
     display: none;
   }
+
+  
 
 </style>

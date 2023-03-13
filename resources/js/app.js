@@ -6,12 +6,16 @@ import { createPinia } from "pinia";
 
 import App from './vue/App.vue'
 import 'mdb-vue-ui-kit/css/mdb.min.css';
+import 'mdb-ui-kit/css/mdb.min.css';
 import router from './vue/src/router'
 import VueTailwindDatepicker from 'vue-tailwind-datepicker'
 import 'v-calendar/dist/style.css';
 import VCalendar, { SetupCalendar } from 'v-calendar';
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
+import * as mdb from 'mdb-ui-kit'; // lib
+import { Input } from 'mdb-ui-kit'; // module
+
 
 
 
