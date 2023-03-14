@@ -2,11 +2,8 @@
   <main>
     <div class="heading">
       <div style="min-height: 8.5vh;">
-        <h2 v-if="time > 1 && time < 12" style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">Good morning, </span>{{ user.name }}</h2>
-        <h2 v-else-if="time > 12 && time < 16" style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">Good afternoon, </span>{{ user.name }}</h2> 
-        <!-- <h2 v-else style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">Good Evening, </span>  {{ user.name }}</h2> -->
-
-
+        <h2 style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">{{ dashboard_title }} </span> {{ user.user.name }}</h2>
+        
         <P style="font-weight: 500;">Home / <span style="font-weight: 400;">Dashboard</span></P>
       </div>
 
@@ -213,18 +210,40 @@
       return {
         date: new Date(),
         time: null,
-        user_store: useAuthStore(),
-        user: null
+        // userStore: useAuthStore(),
+        user: JSON.parse(localStorage.getItem('user')),
+        dashboard_title: ""
       };
     },
 
     mounted(){
-      const today = new Date()
-      this.time = today.getHours()
-      this.user = this.user_store.user
-      console.log(this.user)
+
+      this.greeting();
+
+      // this.user = this.userStore.authUser
+      // console.log(this.user.name)
       
-    }
+    }, 
+    methods: {
+      greeting(){
+
+        const today = new Date()
+        let time = today.getHours()
+
+        if(time > 1 && time < 12) {
+
+          this.dashboard_title = "Good morning,";       
+        }
+        else if (time >= 12 && time < 16) {
+          
+          this.dashboard_title = "Good afternoon,";
+        }
+        else {
+
+          this.dashboard_title = "Good evening,";
+        }
+      },
+    },
   }
 </script>
 
@@ -393,14 +412,6 @@
     margin-right: 20px;
   }
 
-  /* .v-line {
-    position: relative;
-    height: 13vh;
-    width: 3px;
-    background-color: red;
-    left: 8vw;
-  } */
-
   .head {
     position: relative;
     height: 17.5vh;
@@ -422,18 +433,9 @@
     justify-content: space-between;
   }
 
-  .btn-white {
-    border: 1px solid #b0adad9d;
+
+  .projects ul {
+    list-style: none;
   }
 
-  .btn-white:hover {
-    background-color: rgba(221, 240, 210, 0.875);
-    border: 1px solid rgb(183, 181, 181);
-  }
-
-  
-
-  .btn-white i {
-    margin-right: 10px;
-  }
 </style>

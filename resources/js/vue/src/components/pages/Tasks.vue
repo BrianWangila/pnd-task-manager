@@ -74,12 +74,17 @@
             <div class="card-body">
               <div class="title">
                 <router-link class="card-title" :to="`/projects/${task.id}`">Front-end Development</router-link>
-                <i type="button" @click="toggle" class="bi bi-three-dots"></i>
-              </div>
-  
-              <div class="delete-edit" v-show="isOpen">
-                <i class="fas fa-edit mb-2" style="color: skyblue;" type="button"></i>
-                <i @click="taskStore.deleteTask(task.id)" class="fas fa-trash" style="color: darkorange;" type="button"></i>
+                <div
+                    @mouseenter="toggle('display-action'+task.id)" 
+                    @mouseleave="toggleOff('display-action'+task.id)" >
+
+                  <i type="button" class="bi bi-three-dots"></i>
+                  <div class="delete-edit" :id="'display-action'+task.id" style="display:none">
+                    <i class="fas fa-edit mb-2" style="color: skyblue;" type="button"></i>
+                    <i @click="taskStore.deleteTask(task.id)" class="fas fa-trash" style="color: darkorange;" type="button"></i>
+                  </div>
+
+                </div>
               </div>
   
               <!-- <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6> --> 
@@ -156,9 +161,22 @@
     //     }
         
     //   },
-      toggle() {
-        this.isOpen = !this.isOpen;
-      },
+      
+    toggle(id) {
+      var id = id;
+      var id_name  = $('#'+id).attr('id');
+      if(id == id_name){
+        $('#'+id).css('display', 'block') 
+      } 
+    },
+    
+    toggleOff(id) {
+      var id = id;
+      var id_name  = $('#'+id).attr('id');
+      if(id == id_name){
+        $('#'+id).css('display', 'none') 
+      } 
+    },
     }
   }
   </script>
@@ -181,6 +199,16 @@
       display: flex;
       flex-direction: column;
     }
+
+    .delete-edit i {
+      margin: 1px 3px;
+      font-size: 17px;
+      padding: 2px 5px;
+    }
+
+    .delete-edit i:hover {
+      font-size: 25px;
+    }
     .heading {
       padding-left: 2vw;
       padding-right: 3vw;
@@ -195,7 +223,6 @@
       overflow-y: auto;
       height: 80.3vh;
     }
-  
   
     .projects {
       flex:1; 
@@ -220,10 +247,6 @@
       justify-content: space-between;
     }
   
-    .text-dark {
-      text-align: center;
-      color: red;
-    }
     .card-title {
       background-color: rgba(255, 165, 0, 0.12);
       color: #FFA500;

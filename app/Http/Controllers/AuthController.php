@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Models\User;   //user Model
 use Illuminate\Http\Response;  //response for custom responses
@@ -80,7 +81,8 @@ class AuthController extends Controller
     
             $response = [
                 "status" => 201,
-                "user" => $user,
+                "user" => Employee::with('user')->where('user_id', $user->id)->first(),
+                // "user" => $user,
                 "token" => $token
             ];
     
