@@ -25,10 +25,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-<<<<<<< HEAD
-=======
-Artisan::call('migrate');
->>>>>>> 261ce8c566ff461a5da531fc624056562898da70
 
 // public Routes
 Route::post("login", [AuthController::class, "login"]);
