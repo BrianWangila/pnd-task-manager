@@ -100,7 +100,7 @@
                                 <div class="title">
                                 <router-link class="card-title" :to="`/projects/${project.id}`">Front-end Development</router-link>
                                   <div
-                                      @mouseover="toggle('display-action'+project.id)" 
+                                      @mouseenter="toggle('display-action'+project.id)" 
                                       @mouseleave="toggleOff('display-action'+project.id)" >
 
                                     <i type="button"  
@@ -332,45 +332,17 @@ export default {
 
       toggle(id) {
         var id = id;
-
-        console.log(id);
-
         var id_name  = $('#'+id).attr('id');
-
-        console.log(id_name)
-
         if(id == id_name){
-          
           $('#'+id).css('display', 'block') 
-          
-
-
         } 
-
-        // $('#'+id).click(function(){
-        //   console.log("I was clicked");
-        // });
       },
       toggleOff(id) {
         var id = id;
-
-        console.log(id);
-
         var id_name  = $('#'+id).attr('id');
-
-        console.log(id_name)
-
         if(id == id_name){
-          
           $('#'+id).css('display', 'none') 
-          
-
-
         } 
-
-        // $('#'+id).click(function(){
-        //   console.log("I was clicked");
-        // });
       },
 
   }
@@ -381,34 +353,35 @@ export default {
 
 <style scoped>
 
-main {
-    position: absolute;
-    top: 10.5vh;
-    left: 13.6vw;
-    width: 68.4vw;
+    main {
+        position: absolute;
+        top: 10.5vh;
+        left: 13.6vw;
+        width: 68.4vw;
 
-  }
+      }
 
-  .delete-edit {
-    position: absolute;
-    left: 18vw;
-    display: flex;
-    flex-direction: column;
-  }
-  .heading {
-    padding-left: 2vw;
-    padding-right: 3vw;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+    .delete-edit {
+      position: absolute;
+      left: 18vw;
+      display: flex;
+      flex-direction: column;
+    }
 
-  .content {
-    background-color: #d9d9d966;
-    margin-top: 0.5vh;
-    height: 80.3vh;
-    overflow-y: auto;
-  }
+    .heading {
+      padding-left: 2vw;
+      padding-right: 3vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .content {
+      background-color: #d9d9d966;
+      margin-top: 0.5vh;
+      height: 80.3vh;
+      overflow-y: auto;
+    }
 
 
   .projects {
@@ -503,22 +476,6 @@ main {
         margin: 0 15px;
     }
 
-    .assignee {
-        display: flex;
-        align-items: center;
-
-    }
-
-    .task-table {
-      margin: auto;
-      width: 64vw;
-    }
-
-    .lower-main h4 {
-        font-weight: 600;
-        font-size: 20px;
-        margin: 10px 20px 20px;
-    }
 
 
 
