@@ -98,15 +98,12 @@
                         <div class="card mb-3" style="width: 25rem;" v-for="(project, index) in projectStore.projects" :key="index">
                             <div class="card-body">
                                 <div class="title">
-                                <router-link class="card-title" :to="`/projects/${project.id}`">Front-end Development</router-link>
+                                  <router-link class="card-title" :to="`/projects/${project.id}`">Front-end Development</router-link>
                                   <div
                                       @mouseenter="toggle('display-action'+project.id)" 
                                       @mouseleave="toggleOff('display-action'+project.id)" >
 
-                                    <i type="button"  
-                                      class="bi bi-three-dots"></i>
-
-                                
+                                    <i type="button" class="bi bi-three-dots"></i>
                                     <div class="delete-edit" :id="'display-action'+project.id" style="display:none">
                                       <i class="fas fa-edit mb-2" style="color: skyblue;" type="button"></i>
                                       <i @click="projectStore.deleteProject(project.id)" class="fas fa-trash" style="color: darkorange;" type="button"></i>
@@ -330,20 +327,21 @@ export default {
       
     },
 
-      toggle(id) {
-        var id = id;
-        var id_name  = $('#'+id).attr('id');
-        if(id == id_name){
-          $('#'+id).css('display', 'block') 
-        } 
-      },
-      toggleOff(id) {
-        var id = id;
-        var id_name  = $('#'+id).attr('id');
-        if(id == id_name){
-          $('#'+id).css('display', 'none') 
-        } 
-      },
+    toggle(id) {
+      var id = id;
+      var id_name  = $('#'+id).attr('id');
+      if(id == id_name){
+        $('#'+id).css('display', 'block') 
+      } 
+    },
+
+    toggleOff(id) {
+      var id = id;
+      var id_name  = $('#'+id).attr('id');
+      if(id == id_name){
+        $('#'+id).css('display', 'none') 
+      } 
+    },
 
   }
 }
@@ -366,6 +364,16 @@ export default {
       left: 18vw;
       display: flex;
       flex-direction: column;
+    }
+
+    .delete-edit i {
+      margin: 1px 3px;
+      font-size: 17px;
+      padding: 2px 5px;
+    }
+
+    .delete-edit i:hover {
+      font-size: 25px;
     }
 
     .heading {

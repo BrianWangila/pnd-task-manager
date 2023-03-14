@@ -8,7 +8,7 @@ const toast = useToast()
 export const useAuthStore = defineStore("auth", {
   state: () => {
     return {
-      authUser: null,
+      authUser: JSON.parse(localStorage.getItem('user')),
       message: null,
       errorMsg: null,
       userToken: JSON.parse(localStorage.getItem('TOKEN'))
@@ -29,6 +29,8 @@ export const useAuthStore = defineStore("auth", {
         await axiosClient.post("/login", data,  {headers: {"Content-Type": "application/json"}})
         .then((res) => {
            if(res.data.status == 201){
+
+            console.log(res.data)
              this.authUser = res.data.user
              localStorage.setItem("TOKEN", JSON.stringify(res.data.token))
              localStorage.setItem("user", JSON.stringify(res.data.user))
