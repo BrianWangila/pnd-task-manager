@@ -2,7 +2,9 @@
   <main>
     <div class="heading">
       <div style="min-height: 8.5vh;">
-        <h2 style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">{{ dashboard_title }} </span> {{ user.user.name }}</h2>
+        
+        <h2 style="font-size: 30px; font-weight: 600;" v-if="user.role == 'admin'"><span style="font-size: 25px; font-weight: 500;">{{ dashboard_title }} </span> {{ user.role }}</h2>
+        <h2 style="font-size: 30px; font-weight: 600;" v-else><span style="font-size: 25px; font-weight: 500;">{{ dashboard_title }} </span> {{ firstName[0] }}</h2>
         
         <P style="font-weight: 500;">Home / <span style="font-weight: 400;">Dashboard</span></P>
       </div>
@@ -194,7 +196,6 @@
   import AdminDonut4 from './charts/donuts/AdminDonut4.vue';
   import Ongoing from './charts/Ongoing.vue';
   import WorkLoad from './charts/WorkLoad.vue';
-  import { useAuthStore } from '../stores/authStore';
 
   
   export default {
@@ -210,18 +211,16 @@
       return {
         date: new Date(),
         time: null,
-        // userStore: useAuthStore(),
         user: JSON.parse(localStorage.getItem('user')),
-        dashboard_title: ""
+        dashboard_title: "",
+        firstName: ""
       };
     },
 
     mounted(){
 
       this.greeting();
-
-      // this.user = this.userStore.authUser
-      // console.log(this.user.name)
+      this.splitName();
       
     }, 
     methods: {
@@ -243,6 +242,13 @@
           this.dashboard_title = "Good evening,";
         }
       },
+
+      splitName(){
+        const name = this.user.user.name;
+        this.firstName = name.split(" ");
+        console.log(this.firstName)
+      },
+
     },
   }
 </script>

@@ -73,7 +73,7 @@
           <div class="card"  style="width: 25rem;" v-for="task in taskStore.tasks" :key="task.id">
             <div class="card-body">
               <div class="title">
-                <router-link class="card-title" :to="`/projects/${task.id}`">Front-end Development</router-link>
+                <router-link class="card-title" :to="`/tasks/${task.id}`">Front-end Development</router-link>
                 <div
                     @mouseenter="toggle('display-action'+task.id)" 
                     @mouseleave="toggleOff('display-action'+task.id)" >

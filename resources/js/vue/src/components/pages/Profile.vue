@@ -2,34 +2,10 @@
   <section class="section profile">
     <div class="heading">
       <div>
-        <h2 v-if="time > 1 && time < 12" style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">Good morning,</span> ADMIN</h2>
-        <h2 v-else-if="time > 12 && time < 16" style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">Good afternoon,</span> ADMIN</h2>
-        <h2 v-else style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">Good Evening,</span> ADMIN</h2>
-
+        <h2 style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">{{ time_title }} </span> {{ firstName[0] }}</h2>
 
         <P style="font-weight: 500;">Home / <span style="font-weight: 400;">Profile</span></P>
       </div>
-      <!-- <div>
-        <div className="btn-group">
-          <button type="button" className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-calendar"></i> Today
-          </button>
-          <ul className="dropdown-menu" >
-            <li><DatePicker v-model="date" /></li>
-          </ul>
-        </div>
-
-        <div className="btn-group" style="margin-left: 20px;">
-          <button type="button" className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-funnel"></i> Filter
-          </button>
-          <ul className="dropdown-menu" >
-            <li><a class="dropdown-item" href="#">Upcoming</a></li>
-            <li><a class="dropdown-item" href="#">Overdue</a></li>
-            <li><a class="dropdown-item" href="#">Ongoing</a></li>
-          </ul>
-        </div>
-      </div> -->
     </div>
 
     <div class="row content">
@@ -39,8 +15,11 @@
           <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
             <img src="./images/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <h2>Brian Wangila</h2>
-            <h3>Software Dev</h3>
+            
+            <h2 style="font-weight: 400;">{{ title }}</h2>
+            
+            <h2>{{ user.user.name }}</h2>
+            <h3 class="mt-2">{{ user.job_title }}</h3>
             <div class="social-links mt-2">
               <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
               <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
@@ -82,37 +61,37 @@
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label ">Full Name</div>
-                  <div class="col-lg-9 col-md-8">Brian Wangila</div>
+                  <div class="col-lg-9 col-md-8"> {{ user.user.name }}</div>
                 </div>
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Company</div>
-                  <div class="col-lg-9 col-md-8">Peak and Dale Solutions</div>
+                  <div class="col-lg-9 col-md-8">{{ user.organization }}</div>
                 </div>
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Job</div>
-                  <div class="col-lg-9 col-md-8">Fullstack Software Developer</div>
+                  <div class="col-lg-9 col-md-8">{{ user.job_title }}</div>
                 </div>
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Country</div>
-                  <div class="col-lg-9 col-md-8">Kenya</div>
+                  <div class="col-lg-9 col-md-8">{{ user.country }}</div>
                 </div>
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Address</div>
-                  <div class="col-lg-9 col-md-8">A108 Adam Street, New York, NY 535022</div>
+                  <div class="col-lg-9 col-md-8">{{ user.address }}</div>
                 </div>
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Phone</div>
-                  <div class="col-lg-9 col-md-8">(436) 486-3538 x29071</div>
+                  <div class="col-lg-9 col-md-8">{{ user.phone }}</div>
                 </div>
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Email</div>
-                  <div class="col-lg-9 col-md-8">admin@example.com</div>
+                  <div class="col-lg-9 col-md-8">{{ user.user.email }}</div>
                 </div>
 
               </div>
@@ -281,8 +260,58 @@
       Footer,
     },
     data(){
-      
+      return {
+        user: JSON.parse(localStorage.getItem('user')),
+        time_title: "",
+        title: "",
+        firstName: ""
+        
+      }
     },
+    mounted(){
+
+      this.greeting();
+      this.displayName();
+      this.splitName();
+
+    }, 
+    methods: {
+      greeting(){
+
+        const today = new Date()
+        let time = today.getHours()
+
+        if(time > 1 && time < 12) {
+
+          this.time_title = "Good morning,";  
+
+        } else if (time >= 12 && time < 16) {
+          
+          this.time_title = "Good afternoon,";
+
+        } else {
+
+          this.time_title = "Good evening,";
+        }
+      },
+      displayName(){
+
+        if(this.user.role == "admin"){
+
+          this.title = this.user.role;
+        }
+      },
+      splitName(){
+
+        const name = this.user.user.name;
+        this.firstName = name.split(" ");
+        
+      },
+    },
+
+    
+
+    
   }
 
 </script>

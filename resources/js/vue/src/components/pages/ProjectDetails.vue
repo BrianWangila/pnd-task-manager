@@ -174,6 +174,7 @@ export default {
     .tags ul {
         display: flex;
         align-items: center;
+        list-style: none;
     }
 
     .priority-flag {
