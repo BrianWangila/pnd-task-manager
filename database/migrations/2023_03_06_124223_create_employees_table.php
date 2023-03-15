@@ -15,12 +15,14 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->foreignId("department_id");
-            $table->foreignId("user_id");
+            $table->foreignId("user_id")->unique();
             $table->string("job_title");
             $table->enum("role", ["admin", "hod", "employee"])->default("employee");
-            $table->string("organization")->default("Peak and Dale");
+            $table->string("organization")->default("Peak and Dale Solutions");
             $table->string("address");
             $table->string("phone");
+            $table->text("about");
+            $table->string("image_url")->nullable();
             $table->string("country")->default("Kenya");
 
         });

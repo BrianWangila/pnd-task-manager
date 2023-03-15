@@ -15,9 +15,20 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        // Employee::all();
-        $employees = Employee::with("department", "user", "tasks")->get();
-        return $employees;
+        try {
+
+            $employees = Employee::with("department", "user", "tasks")->get();
+            return $employees;
+
+        } catch (\Throwable $th) {
+            $response = [
+
+                "error" => $th->getMessage(),
+                "message" => "Something went wrong",
+
+            ];
+            return response()->json($response, 500);
+        }
     }
 
     public function employeesByDepartment($departmentId) 
@@ -29,20 +40,50 @@ class EmployeeController extends Controller
 
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function update(Request $request, $id)
     {
-        $project = Employee::create($request->all());
-        return $project;
+
+        $image_file = $request->file('image_file');
+
+        // check if img is available;
+        if ($image_file) {
+
+            $imgFile    = $image_file;
+            $filename         = "profile-".time();
+            $fileExt          = $imgFile->getClientOriginalExtension();
+            $allowedExtensions = ['png', 'jpg', 'jpeg'];
+            $destinationPath  = public_path('/assets/img/profile/');
+
+            if (!in_array($fileExt, $allowedExtensions)) return response(['status' => 500, 'message' => 'Extension not allowed'], 500);
+            
+            $filename = $filename . '.' . $fileExt;
+            $imgFile->move($destinationPath, $filename);
+        }
+
+        $image_url = "/assets/img/profile/";
+
+        $employee = Employee::find($id);
+
+        $employee->update([
+            "address" => $request->address,
+            "phone" => $request->phone,
+            "about" => $request->about,
+            "image_url" =>  $image_file ? $image_url . $filename : null,
+        ]);
+
+        return response([
+            "data" => Employee::with('user')->find($id), 
+            "message" => "Employee has been updated",
+        ]);
+
+    //     $employees = new Employee ([
+    //         "name" => $request->input("name"),
+    //     ]);
+
+    //     $employees->save();
+    //     return response()->json("Employee has been created");
     }
 
     /**
@@ -53,20 +94,30 @@ class EmployeeController extends Controller
         return Employee::with("department", "user", "tasks")->find($id);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+  
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function store (Request $request)
     {
-        //
+        try {
+            $employee = Employee::create($request->all());
+            return response([
+                "data" => $employee,
+                "message" => "Employee profile created"
+            ]);
+        } catch (\exception $e) {
+            $response = [
+
+                "error" => $e->getMessage(),
+                "message" => "Check your input fields, something went wrong",
+
+            ];
+
+            return response()->json($response, 500);
+        }
+    
     }
 
     /**

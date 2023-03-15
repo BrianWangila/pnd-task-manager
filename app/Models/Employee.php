@@ -19,7 +19,9 @@ class Employee extends Model
         "organization",
         "address",
         "phone",
-        "country"
+        "country",
+        "about",
+        "image_url"
     ];
 
     public function department(){

@@ -8,7 +8,7 @@ const toast = useToast()
 export const useAuthStore = defineStore("auth", {
   state: () => {
     return {
-      authUser: JSON.parse(localStorage.getItem('user')),
+      authUser: null,
       message: null,
       errorMsg: null,
       userToken: JSON.parse(localStorage.getItem('TOKEN'))
@@ -17,7 +17,7 @@ export const useAuthStore = defineStore("auth", {
   },
 
   getters: {
-    user: (state) => state.authUser,
+    // user: (state) => state.authUser,
     error: (state) => state.errorMsg,
     token: (state) => state.userToken
   },
@@ -30,8 +30,6 @@ export const useAuthStore = defineStore("auth", {
         .then((res) => {
            if(res.data.status == 201){
 
-            console.log(res.data)
-             this.authUser = res.data.user
              localStorage.setItem("TOKEN", JSON.stringify(res.data.token))
              localStorage.setItem("user", JSON.stringify(res.data.user))
             

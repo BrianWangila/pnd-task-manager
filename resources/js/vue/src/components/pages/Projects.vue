@@ -105,8 +105,8 @@
 
                                     <i type="button" class="bi bi-three-dots"></i>
                                     <div class="delete-edit" :id="'display-action'+project.id" style="display:none">
-                                      <i class="fas fa-edit mb-2" style="color: skyblue;" type="button"></i>
-                                      <i @click="projectStore.deleteProject(project.id)" class="fas fa-trash" style="color: darkorange;" type="button"></i>
+                                      <i class="fas fa-edit mb-2" title="Update" style="color: skyblue;" type="button"></i>
+                                      <i @click="projectStore.deleteProject(project.id)" class="fas fa-trash" title="Delete" style="color: darkorange;" type="button"></i>
                                     </div>
 
                                   </div>
@@ -396,7 +396,7 @@ export default {
     flex:1; 
     position: inherit;
     margin: auto;
-    margin-left: 25px;
+    margin-left: 35px;
     width: 65.5vw;
   } 
 

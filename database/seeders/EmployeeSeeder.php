@@ -21,7 +21,8 @@ class EmployeeSeeder extends Seeder
                 "user_id" =>random_int(1, 5),
                 "job_title" =>$faker -> jobTitle(),
                 "address" =>$faker->address(),
-                "phone"=>$faker->phoneNumber()
+                "phone"=>$faker->phoneNumber(),
+                "about"=>$faker->sentence($nbWords = 20, $variableNbWords = true)
 
             ]);
         }

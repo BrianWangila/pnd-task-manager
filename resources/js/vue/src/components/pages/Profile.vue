@@ -9,12 +9,14 @@
     </div>
 
     <div class="row content">
+      
       <div class="col-xl-4">
 
         <div class="card">
           <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-            <img src="./images/profile-img.jpg" alt="Profile" class="rounded-circle">
+            <img v-if="user.image_url == null" src="./images/profile-img.jpg" alt="Profile" class="rounded-circle" >
+            <img v-else :src="user.image_url" alt="Profile" class="rounded-circle" >
             
             <h2 style="font-weight: 400;">{{ title }}</h2>
             
@@ -55,7 +57,9 @@
 
               <div class="tab-pane fade show active profile-overview" id="profile-overview">
                 <h5 class="card-title">About</h5>
-                <p class="small fst-italic">Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</p>
+                <div style="width: 30vw;">
+                  <p class="small ">{{ user.about }}</p>
+                </div>
 
                 <h5 class="card-title">Profile Details</h5>
 
@@ -93,77 +97,77 @@
                   <div class="col-lg-3 col-md-4 label">Email</div>
                   <div class="col-lg-9 col-md-8">{{ user.user.email }}</div>
                 </div>
-
               </div>
 
               <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                 <!-- Profile Edit Form -->
-                <form>
+                <form @submit.prevent="updateEmployee" enctype="multipart/form-data">
                   <div class="row mb-3">
                     <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                     <div class="col-md-8 col-lg-9">
-                      <img src="./images/profile-img.jpg" alt="Profile">
+                      <img ref="profileImg" :src="user.image_url" alt="Profile">
                       <div class="pt-2">
-                        <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
-                        <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
+                        <p @click="uploadImage" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></p>
+                        <p @click="removeImage" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></p>
                       </div>
+                      <input type="file" ref="imageInput" @change="onSelectFile" style="display: none">
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="fullName" type="text" class="form-control" id="fullName" value="Brian Wangila">
+                      <input name="fullName" type="text" class="form-control" id="fullName" :value="user.user.name" disabled>
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <label for="about" class="col-md-4 col-lg-3 col-form-label">About</label>
                     <div class="col-md-8 col-lg-9">
-                      <textarea name="about" class="form-control" id="about" rows="5" >Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</textarea>
+                      <textarea name="about" class="form-control" id="about" rows="5" v-model="input_data.about" >{{ user.about }}</textarea>
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <label for="company" class="col-md-4 col-lg-3 col-form-label">Company</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="company" type="text" class="form-control" id="company" value="Peak and Dale Solutions">
+                      <input name="company" type="text" class="form-control" id="company" :value="user.organization" disabled>
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <label for="Job" class="col-md-4 col-lg-3 col-form-label">Job</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="job" type="text" class="form-control" id="Job" value="Fullstack Software Developer">
+                      <input name="job" type="text" class="form-control" id="Job" :value="user.job_title" disabled>
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <label for="Country" class="col-md-4 col-lg-3 col-form-label">Country</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="country" type="text" class="form-control" id="Country" value="Kenya">
+                      <input name="country" type="text" class="form-control" id="Country" :value="user.country">
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <label for="Address" class="col-md-4 col-lg-3 col-form-label">Address</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="address" type="text" class="form-control" id="Address" value="A108 Adam Street, New York, NY 535022">
+                      <input name="address" type="text" class="form-control" id="Address" v-model="input_data.address">
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="phone" type="text" class="form-control" id="Phone" value="(436) 486-3538 x29071">
+                      <input name="phone" type="text" class="form-control" id="Phone"  v-model="input_data.phone" >
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="email" type="email" class="form-control" id="Email" value="admin@example.com">
+                      <input name="email" type="email" class="form-control" id="Email" :value="user.user.email" disabled>
                     </div>
                   </div>
 
@@ -253,18 +257,35 @@
 
 
 <script>
-  import Footer from '../Footer.vue'
+  import Footer from '../Footer.vue';
+  import axiosClient from '../../axios';
+  import { useAuthStore } from '../../stores/authStore';
+  import { useToast } from 'vue-toastification'
+
+
 
   export default {
     components: {
       Footer,
     },
     data(){
+      var userData = JSON.parse(localStorage.getItem('user'))
       return {
-        user: JSON.parse(localStorage.getItem('user')),
+        user: userData,
+        authStore: useAuthStore(),
+        toast: useToast(),
         time_title: "",
         title: "",
-        firstName: ""
+        firstName: "",
+        input_data: {
+          about: userData.about,
+          address: userData.address,
+          phone: userData.phone,
+          country: userData.country,
+          image_file: ""
+        },
+        
+
         
       }
     },
@@ -307,11 +328,56 @@
         this.firstName = name.split(" ");
         
       },
+      
+      async updateEmployee(){
+
+        console.log(this.input_data)
+
+        try {
+          await axiosClient.post("/employees/"+this.user.id, this.input_data, {headers: {"Content-Type": "multipart/form-data"}})
+          .then((res) => {
+            console.log(res)
+            var employee = res.data.data;
+
+            localStorage.removeItem("user")
+            localStorage.setItem("user", JSON.stringify(employee))
+
+            this.toast.success(res.data.message, {timeout: 2000})
+          })
+          location.reload()
+          
+        } catch (error) {
+            console.log(error)
+            this.toast.error(error.response.data.message, {timeout: 5000})
+          }
+      },
+
+      uploadImage() {
+        this.$refs.imageInput.click();
+      },
+
+      onSelectFile(event){
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = () => {
+          this.$refs.profileImg.src = reader.result;
+          this.imageUrl = reader.result;
+        };
+        reader.readAsDataURL(file);
+
+        // update image file
+        this.input_data.image_file = file;
+        
+      },
+      removeImage() {
+        this.$refs.profileImg.src = "./images/profile-img.jpg";
+        this.user.profileImage = null;
+        this.imageUrl = "./images/profile-img.jpg";
+      },
+
+
     },
-
-    
-
-    
   }
 
 </script>
