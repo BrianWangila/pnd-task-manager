@@ -9,6 +9,7 @@ export const useEmployeeStore = defineStore("employeeStore", {
     return {
       employees: [],
       dptEmployees: "",
+      loading: false
     }
   },
 
@@ -22,17 +23,20 @@ export const useEmployeeStore = defineStore("employeeStore", {
 
     // get all employees
     async getEmployees(){
-
+      // this.loading = true
       try {
 
         await axiosClient.get("/employees")
         .then((res) => {
           this.employees = res.data
+          console.log(this.employees)
         })
 
       } catch (error) {
         console.log(error)
       }
+
+      // this.loading = false
     },
     async getEmployeesByDpt(id){
 

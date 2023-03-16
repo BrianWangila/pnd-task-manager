@@ -39,7 +39,7 @@
       <li class="nav-item">
         <router-link class="nav-link " to="/teams">
           <i class="bi bi-microsoft-teams"></i>
-          <span>Teams</span>
+          <span>The Team</span>
         </router-link>
       </li> <!-- End teams Nav -->
 

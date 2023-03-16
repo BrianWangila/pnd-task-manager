@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -12,7 +14,17 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return Task::with("project", "employee")->get();
+        $tasks = Task::with("project", "employee")->get();
+        $user = Employee::with('user')->get();
+
+        foreach ($tasks as $task){
+
+            if(!is_null($task->employee)) {
+                $task['assignee'] = $user;
+            }
+        };
+
+        return $tasks;
     }
 
     /**

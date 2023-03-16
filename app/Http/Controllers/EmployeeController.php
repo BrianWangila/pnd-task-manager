@@ -18,6 +18,15 @@ class EmployeeController extends Controller
         try {
 
             $employees = Employee::with("department", "user", "tasks")->get();
+
+            foreach ($employees as $employee){
+
+                if(!is_null($employee->user)) {
+                    $employee['user_name'] = $employee->user->name;
+                    $employee['user_email'] = $employee->user->email;
+                }
+            };
+
             return $employees;
 
         } catch (\Throwable $th) {
@@ -39,6 +48,8 @@ class EmployeeController extends Controller
     }
 
 
+
+
     /**
      * Store a newly created resource in storage.
      */
@@ -56,7 +67,7 @@ class EmployeeController extends Controller
             $allowedExtensions = ['png', 'jpg', 'jpeg'];
             $destinationPath  = public_path('/assets/img/profile/');
 
-            if (!in_array($fileExt, $allowedExtensions)) return response(['status' => 500, 'message' => 'Extension not allowed'], 500);
+            if (!in_array($fileExt, $allowedExtensions)) return response(['status' => 500, 'message' => "Sorry, only 'png', 'jpg', 'jpeg' files are allowed "], 500);
             
             $filename = $filename . '.' . $fileExt;
             $imgFile->move($destinationPath, $filename);

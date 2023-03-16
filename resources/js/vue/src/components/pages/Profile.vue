@@ -9,7 +9,7 @@
     </div>
 
     <div class="row content">
-      
+
       <div class="col-xl-4">
 
         <div class="card">
