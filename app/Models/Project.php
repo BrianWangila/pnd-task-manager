@@ -21,7 +21,9 @@ class Project extends Model
         "department_id", 
         "description", 
         "deadline", 
-        "is_complete"
+        "is_complete",
+        "priority",
+        "file"
     ];
 
     public function tasks(){

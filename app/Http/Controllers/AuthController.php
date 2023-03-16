@@ -14,30 +14,42 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
     public function register(Request $request){
-        $credentials = $request->validate([
-            "name" => "required|string",
-            "email" => "required|string|unique:users, email",
-            "password" => "required|string|confirmed",
-            "remember" => "boolean"
-        ]);
+        try {
+            $credentials = $request->validate([
+                "name" => "required|string",
+                "email" => "required|string|email",
+                "password" => "required|string|confirmed",
+                "remember" => "boolean"
+            ]);
+    
+            // create a user
+            $user = User::create([
+            "name" => $credentials["name"],
+            "email" => $credentials["email"],
+            "password" => bcrypt($credentials["password"]->default("password"))
+            ]);
+    
+            // create token
+            $token = $user->createToken("myapptoken")->plainTextToken;
+    
+            return $response = ([
+                "user" => $user,
+                "token" => $token,
+                "message" => "User created"
+            ]);
+    
+            return response($response, 201);
 
+            
+        } catch (\Throwable $th) {
+            return $response = ([
 
-        // create a user
-        $user = User::create([
-        "name" => $credentials["name"],
-        "email" => $credentials["email"],
-        "password" => bcrypt($credentials["password"])
-        ]);
-
-        // create token
-        $token = $user->createToken("myapptoken")->plainTextToken;
-
-        return $response = ([
-            "user" => $user,
-            "token" => $token
-        ]);
-
-        return response($response, 201);
+                "message" => "Something went wrong",
+                "error" => $th->getMessage(),
+            ]);
+    
+            return response($response, 500);
+        }
     }
 
 

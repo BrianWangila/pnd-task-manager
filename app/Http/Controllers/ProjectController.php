@@ -37,21 +37,18 @@ class ProjectController extends Controller
 
         try {
 
-            $user = $request->user();
-
-            if(!$user){
-                $response = [
-                    "status" => 500,
-                    "message" => "Something went wrong"
-                ];
-
-                return response()->json($response, 500);
-            } else {
-                $project = Project::create($request->all());
-                return $project;
-            }
+            $project = Project::create([ 
+                "project_title" => $request->project_title,
+                "department_id" => $request->department_id, 
+                "description" => $request->description,
+                "deadline" => date('Y-m-d', strtotime($request->deadline)),
+            ]);
+            return response([
+               "data" => $project,
+               "message" => "Project created."
+            ]);
             
-        } catch (\Throwable $e) {
+        } catch (\Exception $e) {
             $response = [
                 "status" => 500,
                 "message" => "Something went wrong",
@@ -63,9 +60,24 @@ class ProjectController extends Controller
     }
 
     public function delete($id){
-        $project = Project::find($id);
-        $project->delete();
-        return response()->json(null, 204);
+        
+        try {
+            $project = Project::find($id);
+            $project->delete();
+
+            return response([
+                "message" => "Project Deleted"
+            ], 204);
+
+        } catch (\Throwable $th) {
+            $response = [
+                "status" => 500,
+                "message" => "Something went wrong",
+                "error" => $th->getMessage()
+            ];
+
+            return response()->json($response, 500);
+        }
     }
 
     public function update(Request $request, $id){

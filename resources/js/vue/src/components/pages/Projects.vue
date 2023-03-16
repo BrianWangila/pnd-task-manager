@@ -57,27 +57,29 @@
                         <div class="modal-body">
                             <form @submit.prevent="addProject">
                             <div class="mb-3">
-                                    <label for="department" class="form-label">Select Department</label>
-                                    <select class="form-select" v-model="data_input.department_id">
-                                        <option v-for="dpt in departmentStore.departments" :key="dpt.id" :value="dpt.id">{{ dpt.department_name }}</option>
-                                    </select>
+                                <label class="form-label">Select Department</label>
+                                <select class="form-select" v-model="data_input.department_id">
+                                    <option v-for="dpt in departmentStore.departments" :key="dpt.id" :value="dpt.id">{{ dpt.department_name }}</option>
+                                </select>
                             </div>
                             <div class="mb-3">
-                                <label for="projectTitle" class="form-label">Project/Brief Title</label>
-                                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" v-model="data_input.project_title"/>
-                                <div id="emailHelp" class="form-text">Write a short title of the project.</div>
+                                <label  class="form-label">Project/Brief Title</label>
+                                <input type="text" class="form-control" v-model="data_input.project_title"/>
+                                <div class="form-text">Write a short title of the project.</div>
                             </div>
                             <div class="mb-3">
-                                <label for="deadline" class="form-label">Deadline</label>
-                                <input type="Date" class="form-control" id="exampleInputPassword1" v-model="data_input.deadline"/>
+                                <label  class="form-label">Deadline</label>
+                                <!-- <input type="Date" class="form-control" v-model="data_input.deadline"/> -->
+                                <VueDatePicker v-model="data_input.deadline" :enable-time-picker="false" />
+                                
                             </div>
                             <div class="mb-3">
-                                <label for="description" class="form-label">Description</label>
+                                <label class="form-label">Description</label>
                                 <textarea type="text" rows="5" class="form-control" id="exampleInputPassword1" v-model="data_input.description"></textarea>
                             </div>
                             <div class="mb-3">
-                                <label for="files" class="form-label">Attach File</label>
-                                <input type="file" rows="5" class="form-control" id="file" />
+                                <label class="form-label">Attach File</label>
+                                <input type="file" rows="5" class="form-control"/>
                             </div>
                             <div  class="mb-3">
                                 <input type="checkbox" data-toggle="toggle" data-onlabel="Ready" data-offlabel="Not Ready" data-onstyle="success" data-offstyle="danger">
@@ -87,7 +89,7 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                        <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cancel</button>
                         </div>
                     </div>
                     </div>
@@ -284,6 +286,7 @@ export default {
     MDBBadge
 
   },
+
   
   data() {
     return {

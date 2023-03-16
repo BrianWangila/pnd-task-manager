@@ -64,7 +64,7 @@ class EmployeeController extends Controller
             $imgFile    = $image_file;
             $filename         = "profile-".time();
             $fileExt          = $imgFile->getClientOriginalExtension();
-            $allowedExtensions = ['png', 'jpg', 'jpeg'];
+            $allowedExtensions = ['png', 'jpg', 'jpeg', 'webp'];
             $destinationPath  = public_path('/assets/img/profile/');
 
             if (!in_array($fileExt, $allowedExtensions)) return response(['status' => 500, 'message' => "Sorry, only 'png', 'jpg', 'jpeg' files are allowed "], 500);

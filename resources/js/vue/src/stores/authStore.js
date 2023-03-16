@@ -37,7 +37,7 @@ export const useAuthStore = defineStore("auth", {
            }   
         })
 
-        toast.success("Successfully logged in", {timeout: 2000})
+        toast.success("You're logged in", {timeout: 2000})
 
       } catch (error) {
         this.errorMsg = error.response.data.error

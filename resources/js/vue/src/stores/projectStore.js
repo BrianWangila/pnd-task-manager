@@ -43,12 +43,13 @@ export const useProjectStore = defineStore("projectStore", {
       try {
         await axiosClient.post("/projects", data, {headers: {"Content-Type": "application/json"}})
         .then((res) => {
-          console.log(res)
+          
+          toast.success(res.data.message, {timeout: 2000})
         })
 
-      toast.success("New Project Added", {timeout: 2000})
       } catch (error) {
         console.log(error)
+        toast.error(error.response.data.error, {timeout: 5000})
       }
     },
 
@@ -70,14 +71,14 @@ export const useProjectStore = defineStore("projectStore", {
       
       try {
         await axiosClient.delete("/projects/"+id)
-        
         this.projects = this.projects.filter((item) => {
           return item.id !== id
         })
-        console.log(this.projects)
+
+        toast.success("Project deleted", 3000)
 
       } catch (error) {
-        console.log(error)
+        // toast.error(error.data.message, 3000)
       }
     },
   }

@@ -13,8 +13,8 @@ import 'v-calendar/dist/style.css';
 import VCalendar, { SetupCalendar } from 'v-calendar';
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
-import * as mdb from 'mdb-ui-kit'; // lib
-import { Input } from 'mdb-ui-kit'; // module
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css' // module
 
 
 
@@ -26,7 +26,7 @@ pinia.use(({ store }) => {
    store.router = markRaw(router)
 });
 
-
+spa.component('VueDatePicker', VueDatePicker);
 
 spa.use(router)
    .use(VCalendar, {})

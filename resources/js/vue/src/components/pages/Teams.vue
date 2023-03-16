@@ -33,8 +33,71 @@
         <div class="main-content">
             <div class="">
                 <div class="card add-project ml-6 mt-3 mb-3">
-                    <h4 class=" fw-bolder fs-5 mt-2">Project Team</h4>
+                    <h4 class="fw-bolder fs-5 mt-2"></h4>
+                    <h4 class="fw-bolder fs-5 mt-2 add-member-btn" data-bs-toggle="modal" data-bs-target="#addUserForm" type="button">Add Member <i class="bi bi-plus fs-4"></i></h4>
 
+                    <!-- pop-up modal to add user -->
+                <div class="modal fade" id="addUserForm" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                    <div class="modal-dialog  modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-dark" id="ModalLabel">Add a New Member</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form @submit.prevent="addMember">
+                            
+                              <div class="mb-3">
+                                  <label class="form-label">Full Names</label>
+                                  <input type="text" class="form-control" />
+                              </div>
+                              <div class="mb-3">
+                                  <label class="form-label">Email Address</label>
+                                  <input type="email" class="form-control"/>
+                              </div>
+                              <button type="submit" class="btn btn2">Save</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-warning"  data-bs-target="#addEmployeeInfo" data-bs-toggle="modal">Next</button> 
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- Modal to add employee details -->
+                <div class="modal fade" id="addEmployeeInfo" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                    <div class="modal-dialog  modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-dark" id="ModalLabel">Add Employee Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form @submit.prevent="addEmployeeDets">
+                            
+                              <div class="mb-3">
+                                  <label class="form-label">Employee ID</label>
+                                  <input type="text" class="form-control" />
+                              </div>
+                              <div class="mb-3">
+                                  <label class="form-label">Department</label>
+                                  <input type="text" class="form-control" />
+                              </div>
+                              <div class="mb-3">
+                                  <label class="form-label">Job Title</label>
+                                  <input type="text" class="form-control"/>
+                              </div>
+                              <div class="mb-3">
+                                  <label class="form-label">Role</label>
+                                  <input type="text" class="form-control"/>
+                              </div>
+                              <button type="submit" class="btn btn2">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                    </div>
+                </div>
 
                 </div>
 
@@ -71,7 +134,12 @@
                                   {{ employee.project.project_title }}
                               </td> -->
                               <td>
-                                  {{ employee.tasks.title_title }}
+                                  <div v-if="employee.tasks.length > 0" v-for="task in employee.tasks" :key="task.id">
+                                      <p v-if="task.task_title"><button type="button">{{ task.task_title }}</button></p>
+                                  </div>
+                                  <div v-else>
+                                      <p>No Tasks</p>
+                                  </div>
                               </td>
                               <td>
                                   <MDBBtn color="link" size="sm" rounded>
@@ -205,6 +273,10 @@ main {
     color: #2F5508;
   }
 
+  .add-member-btn{
+    padding: 5px;
+    color: #2F5508;
+  }
 
   .add-project {
     display: flex;
