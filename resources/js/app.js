@@ -14,7 +14,9 @@ import VCalendar, { SetupCalendar } from 'v-calendar';
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css' // module
+import '@vuepic/vue-datepicker/dist/main.css'
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css'; // module
 
 
 
@@ -26,12 +28,18 @@ pinia.use(({ store }) => {
    store.router = markRaw(router)
 });
 
+const options = {
+   confirmButtonColor: '#41b882',
+   cancelButtonColor: '#ff7674',
+ };
+
 spa.component('VueDatePicker', VueDatePicker);
 
 spa.use(router)
    .use(VCalendar, {})
    .use(SetupCalendar, {})
    .use(Toast)
+   .use(VueSweetalert2, options)
    .use(VueTailwindDatepicker)
    .use(pinia)
    .mount('#app');

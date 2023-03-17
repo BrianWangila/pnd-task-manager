@@ -35,11 +35,11 @@
                 <div class="card add-project ml-6 mt-3 mb-3">
                   <nav class="row ">
                       <div class="nav-header">
-                          <div class="nav nav-tabs nav-color" id="nav-tab" role="tablist">
-                              <button class="nav-link active" id="projects" data-bs-toggle="tab" data-bs-target="#all-projects" type="button" role="tab" aria-controls="nav-all" aria-selected="true">All Projects</button>
-                              <button class="nav-link " id="progress" data-bs-toggle="tab" data-bs-target="#in-progress" type="button" role="tab" aria-controls="nav-progress" aria-selected="false">In Progress</button>
-                              <button class="nav-link" style="color: orange;" id="overdue" data-bs-toggle="tab" data-bs-target="#overdue" type="button" role="tab" aria-controls="nav-overdue" aria-selected="false">Overdue</button>
-                              <button class="nav-link" id="complete" data-bs-toggle="tab" data-bs-target="#finished" type="button" role="tab" aria-controls="nav-finished" aria-selected="false">Finished</button>
+                          <div class=" nav-color" id="nav-tab" >
+                              <button @click="filter = 'all'" class="nav-link" >All</button>
+                              <button @click="filter = 'progress'" class="nav-link " style="color: orange;">In Progress</button>
+                              <button @click="filter = 'overdue'" class="nav-link" style="color: darkorange;" >Overdue</button>
+                              <button @click="filter = 'finished'" class="nav-link" style="color: #81BE41;">Finished</button>
                           </div>
                       </div>
                   </nav>
@@ -95,165 +95,130 @@
                     </div>
                 </div>
                 <div class=" tab-content">
-                  <div class="projects ">
-                      <div class="tab-pane fade show row active" aria-labelledby="nav-all" tabindex="0" id="all-projects">
-                        <div class="card mb-3" style="width: 25rem;" v-for="(project, index) in projectStore.projects" :key="index">
-                            <div class="card-body">
-                                <div class="title">
-                                  <router-link class="card-title" :to="`/projects/${project.id}`">Front-end Development</router-link>
-                                  <div
-                                      @mouseenter="toggle('display-action'+project.id)" 
-                                      @mouseleave="toggleOff('display-action'+project.id)" >
+                  <center class="loader" v-if="projectStore.loading"><img src="../../assets/loaders/159.svg" alt="loader" /> </center>
+                  <div class="projects" v-else>
 
-                                    <i type="button" class="bi bi-three-dots"></i>
-                                    <div class="delete-edit" :id="'display-action'+project.id" style="display:none">
-                                      <i class="fas fa-edit mb-2" title="Update" style="color: skyblue;" type="button"></i>
-                                      <i @click="projectStore.deleteProject(project.id)" class="fas fa-trash" title="Delete" style="color: darkorange;" type="button"></i>
+                    <!-- All projects -->
+                      <div v-if="filter === 'all'" class="row">
+                          <div class="card mb-3" style="width: 25rem;" v-for="(project, index) in projectStore.projects" :key="index">
+                              <div class="card-body">
+                                  <div class="title">
+                                    <router-link class="card-title" :to="`/projects/${project.id}`">Front-end Development</router-link>
+                                    <div
+                                        @mouseenter="toggle('display-action'+project.id)" 
+                                        @mouseleave="toggleOff('display-action'+project.id)" >
+
+                                      <i type="button" class="bi bi-three-dots"></i>
+                                      <div class="delete-edit" :id="'display-action'+project.id" style="display:none">
+                                        <i class="fas fa-edit mb-2" title="Update" style="color: skyblue;" type="button"></i>
+                                        <i @click="projectStore.deleteProject(project.id)" class="fas fa-trash" title="Delete" style="color: darkorange;" type="button"></i>
+                                      </div>
+
                                     </div>
-
                                   </div>
-                                </div>
-                                <p class="card-text mt-3 fw-bold">{{ project.project_title }}</p>
-                                <div>
-                                <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(project.deadline).toDateString() }}</span>
-                                </div>
-                                <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                                    <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
-                                </div>
-                            </div>
-                        </div>  
-                    </div>
+                                  <p class="card-text mt-3 fw-bold">{{ project.project_title }}</p>
+                                  <div>
+                                    <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(project.deadline).toDateString() }}</span>
+                                  </div>
+                                  <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                      <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
+                                  </div>
+                              </div>
+                          </div>  
+                      </div>
+                      
+                      <!-- Projects that are in progress -->
+                      <div v-if="filter === 'progress'" class="row">
+                          <div v-if="projectStore.inProgress.length == 0"><center class="mt-5"><h4>No Ongoing Project</h4></center></div>
+                          <div v-else class="card mb-3" style="width: 25rem;" v-for="(project, index) in projectStore.inProgress" :key="index">
+                              <div class="card-body">
+                                  <div class="title">
+                                    <router-link class="card-title" style="background-color: #ffa60078; color: white;" :to="`/projects/${project.id}`">Front-end Development</router-link>
+                                    <div
+                                        @mouseenter="toggle('display-action'+project.id)" 
+                                        @mouseleave="toggleOff('display-action'+project.id)" >
+
+                                      <i type="button" class="bi bi-three-dots"></i>
+                                      <div class="delete-edit" :id="'display-action'+project.id" style="display:none">
+                                        <i class="fas fa-edit mb-2" title="Update" style="color: skyblue;" type="button"></i>
+                                        <i @click="projectStore.deleteProject(project.id)" class="fas fa-trash" title="Delete" style="color: darkorange;" type="button"></i>
+                                      </div>
+
+                                    </div>
+                                  </div>
+                                  <p class="card-text mt-3 fw-bold">{{ project.project_title }}</p>
+                                  <div>
+                                    <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(project.deadline).toDateString() }}</span>
+                                  </div>
+                                  <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                      <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
+                                  </div>
+                              </div>
+                          </div>  
+                      </div>
+
+                      <!-- Projects that are overdue -->
+                      <div v-if="filter === 'overdue'" class="row">
+                          <div v-if="projectStore.overdue.length == 0"><center class="mt-5"><h4>No Overdue Project</h4></center></div>
+                          <div v-else class="card mb-3" style="width: 25rem;" v-for="(project, index) in projectStore.overdue" :key="index">
+                              <div class="card-body">
+                                  <div class="title">
+                                    <router-link class="card-title" style="background-color: darkorange; color: white;" :to="`/projects/${project.id}`">Front-end Development</router-link>
+                                    <div
+                                        @mouseenter="toggle('display-action'+project.id)" 
+                                        @mouseleave="toggleOff('display-action'+project.id)" >
+
+                                      <i type="button" class="bi bi-three-dots"></i>
+                                      <div class="delete-edit" :id="'display-action'+project.id" style="display:none">
+                                        <i class="fas fa-edit mb-2" title="Update" style="color: skyblue;" type="button"></i>
+                                        <i @click="projectStore.deleteProject(project.id)" class="fas fa-trash" title="Delete" style="color: darkorange;" type="button"></i>
+                                      </div>
+
+                                    </div>
+                                  </div>
+                                  <p class="card-text mt-3 fw-bold">{{ project.project_title }}</p>
+                                  <div>
+                                    <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(project.deadline).toDateString() }}</span>
+                                  </div>
+                                  <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                      <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
+                                  </div>
+                              </div>
+                          </div>  
+                      </div>
+
+                       <!-- Projects that are completed -->
+                       <div v-if="filter === 'finished'" class="row">
+                          <div v-if="projectStore.finished.length == 0"><center class="mt-5"><h4>No Finished Project</h4></center></div>
+                          <div v-else class="card mb-3" style="width: 25rem;" v-for="(project, index) in projectStore.finished" :key="index">
+                              <div class="card-body">
+                                  <div class="title">
+                                    <router-link class="card-title" style="background-color: #81BE41; color: white;"  :to="`/projects/${project.id}`">Front-end Development</router-link>
+                                    <div
+                                        @mouseenter="toggle('display-action'+project.id)" 
+                                        @mouseleave="toggleOff('display-action'+project.id)" >
+
+                                      <i type="button" class="bi bi-three-dots"></i>
+                                      <div class="delete-edit" :id="'display-action'+project.id" style="display:none">
+                                        <i class="fas fa-edit mb-2" title="Update" style="color: skyblue;" type="button"></i>
+                                        <i @click="projectStore.deleteProject(project.id)" class="fas fa-trash" title="Delete" style="color: darkorange;" type="button"></i>
+                                      </div>
+
+                                    </div>
+                                  </div>
+                                  <p class="card-text mt-3 fw-bold">{{ project.project_title }}</p>
+                                  <div>
+                                    <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(project.deadline).toDateString() }}</span>
+                                  </div>
+                                  <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                      <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
+                                  </div>
+                              </div>
+                          </div>  
+                      </div>
                   </div>
                 </div>
             </div>
-<!--             
-            <div class="lower-main mt-3 pt-4 pb-4 ml-6 mr-5 bg-light">
-                <nav class="row mb-4">
-                    <div class="nav-header">
-                        <div class="nav nav-tabs nav-color" id="nav-tab" role="tablist">
-                            <button class="nav-link active" id="nav-details-tab" data-bs-toggle="tab" data-bs-target="#assigned-projects" type="button" role="tab" aria-controls="nav-details" aria-selected="true">Overdue</button>
-                            <button class="nav-link" id="nav-tasks-tab" data-bs-toggle="tab" data-bs-target="#in-progress" type="button" role="tab" aria-controls="nav-tasks" aria-selected="false">In Progress</button>
-                            <button class="nav-link" id="nav-files-tab" data-bs-toggle="tab" data-bs-target="#finished" type="button" role="tab" aria-controls="nav-files" aria-selected="false">Finished</button>
-                        </div>
-                    </div>
-                    <hr/>
-                </nav>
-
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="nav-details-tab" tabindex="0" id="assigned-projects">
-                        <h4>Assigned Projects</h4>
-                        <MDBTable hover class="align-middle bg-white task-table">
-                            <thead class="bg-light bg-red">
-                                <tr>
-                                    <th class="fw-bold">Project Title</th>
-                                    <th class="fw-bold">Description</th>
-                                    <th class="fw-bold">Status</th>
-                                    <th class="fw-bold">Deadline</th>
-                                    <th class="fw-bold">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="t-body">
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <span class="mb-1" style="font-weight: 500;">Title</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="fw-normal">Description</span>
-                                    </td>
-                                    <td>
-                                        <MDBBadge badge="success" pill class="d-inline">Completed</MDBBadge>
-                                    </td>
-                                    <td>Deadline</td>
-                                    <td>
-                                        <MDBBtn color="link" size="sm" rounded>
-                                            Edit
-                                        </MDBBtn>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </MDBTable>
-                    </div>
-                    <div class="tab-pane fade" role="tabpanel" aria-labelledby="nav-tasks-tab" tabindex="0" id="in-progress">
-                        <h4>Projects that are in-Progress</h4>
-                        <MDBTable hover class="align-middle bg-white task-table">
-                            <thead class="bg-light bg-red">
-                                <tr>
-                                    <th class="fw-bold">Project Title</th>
-                                    <th class="fw-bold">Description</th>
-                                    <th class="fw-bold">Status</th>
-                                    <th class="fw-bold">Deadline</th>
-                                    <th class="fw-bold">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="t-body">
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <span class="mb-1" style="font-weight: 500;">Title</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="fw-normal">Description</span>
-                                    </td>
-                                    <td>
-                                        <MDBBadge badge="success" pill class="d-inline">Completed</MDBBadge>
-                                    </td>
-                                    <td>Deadline</td>
-                                    <td>
-                                        <MDBBtn color="link" size="sm" rounded>
-                                            Edit
-                                        </MDBBtn>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </MDBTable>
-                    </div>
-                    <div class="tab-pane fade" role="tabpanel" aria-labelledby="nav-files-tab" tabindex="0" id="finished">
-                        <h4>Past Due Projects</h4>
-                        <MDBTable hover class="align-middle bg-white task-table">
-                            <thead class="bg-light bg-red">
-                                <tr>
-                                    <th class="fw-bold">Project Title</th>
-                                    <th class="fw-bold">Description</th>
-                                    <th class="fw-bold">Status</th>
-                                    <th class="fw-bold">Deadline</th>
-                                    <th class="fw-bold">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="t-body">
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <span class="mb-1" style="font-weight: 500;">Title</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="fw-normal">Description</span>
-                                    </td>
-                                    <td>
-                                        <MDBBadge badge="success" pill class="d-inline">Completed</MDBBadge>
-                                    </td>
-                                    <td>Deadline</td>
-                                    
-                                    <td>
-                                        <MDBBtn color="link" size="sm" rounded>
-                                            Edit
-                                        </MDBBtn>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </MDBTable>
-                    </div>
-                </div>
-            </div> -->
         </div>
         
 
@@ -301,6 +266,7 @@ export default {
         description: ""
       },
       isOpen: false,
+      filter: "all"
 
     };
   },
@@ -311,6 +277,9 @@ export default {
     this.time = today.getHours()
     this.projectStore.getProjects()
     this.departmentStore.getDepartments()
+    this.projectStore.inProgress
+    console.log(this.projectStore.inProgress)
+    console.log(this.projectStore.projects)
 
   },
 
@@ -344,6 +313,22 @@ export default {
       if(id == id_name){
         $('#'+id).css('display', 'none') 
       } 
+    },
+    showAlert(id) {
+      // this.$swal('Hello Vue world!!!');
+      if(
+        this.$swal.fire({
+        title: 'Confirm Delete',
+        text: 'Are you sure you want to delete?',
+        icon: 'info',
+        confirmButtonText: 'Cool'
+      })
+      ){
+        // this.projectStore.deleteProject(id)
+      }
+      
+
+      
     },
 
   }
@@ -385,6 +370,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      /* color: #ffa60078; */
     }
 
     .content {
@@ -401,6 +387,7 @@ export default {
     margin: auto;
     margin-left: 35px;
     width: 65.5vw;
+    min-height: 50vh;
   } 
 
   .footer-divider {
@@ -461,31 +448,39 @@ export default {
     border: 1px solid #81BE41;
   }
 
+  .loader{
+    position: relative;
+    top: 20vh;
+  }
 
-    .nav-color button {
-        color: #2F5508;
-        font-weight: 600;
-        font-size: 15px;
-        padding: 15px;
-        margin: 0 15px;
-    }
+  .nav-color {
+    display: flex;
+    align-items: center;
+  }
+  .nav-color button {
+      color: #2F5508;
+      font-weight: 600;
+      font-size: 15px;
+      padding: 15px;
+      margin: 0 15px;
+  }
 
-    .nav-color button.active {
-        color: whitesmoke;
-        background-color: #82be4191;
-        border-bottom: 3px solid #7dc530;
-        padding: 15px;
-        margin: 0 15px;
-        border: none;
+  .nav-color button.active {
+      color: whitesmoke;
+      background-color: #82be4191;
+      border-bottom: 3px solid #7dc530;
+      padding: 15px;
+      margin: 0 15px;
+      border: none;
 
-    }
+  }
 
-    .nav-color button:hover {
-        color: #81BE41;
-        background-color: #82be411c;
-        padding: 15px;
-        margin: 0 15px;
-    }
+  .nav-color button:hover {
+      color: #81BE41;
+      background-color: #82be411c;
+      padding: 15px;
+      margin: 0 15px;
+  }
 
 
 

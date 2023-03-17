@@ -12,12 +12,30 @@ export const useProjectStore = defineStore("projectStore", {
   state: () => {
     return {
       projects: [],
-      projectItem: ""
+      projectItem: "",
+      loading: false,
     }
   },
 
   getters: {
+    inProgress: (state) => {
+      return state.projects.filter((project) => {
+        return project.status == "In progress";
+      });
 
+    },
+    overdue: (state) => {
+      return state.projects.filter((project) => {
+        return project.status == "Overdue";
+      });
+
+    },
+    finished: (state) => {
+      return state.projects.filter((project) => {
+        return project.status == "Completed";
+      });
+
+    },
   },
 
   actions: {
@@ -27,9 +45,17 @@ export const useProjectStore = defineStore("projectStore", {
 
       try {
 
+        this.loading = true;
+
         await axiosClient.get("/projects")
         .then((res) => {
           this.projects = res.data
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+        .finally(() => {
+          this.loading = false;
         })
 
       } catch (error) {
@@ -75,10 +101,10 @@ export const useProjectStore = defineStore("projectStore", {
           return item.id !== id
         })
 
-        toast.success("Project deleted", 3000)
+        toast.success("Project deleted", 2000)
 
       } catch (error) {
-        // toast.error(error.data.message, 3000)
+        toast.error(error.response.data.message, 3000)
       }
     },
   }

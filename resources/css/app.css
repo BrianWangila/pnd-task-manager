@@ -345,10 +345,10 @@ h6 {
   color: #899bbd;
 }
 
-.breadcrumb .active {
+/* .breadcrumb .active {
   color: #51678f;
   font-weight: 600;
-}
+} */
 
 /* Bordered Tabs */
 .nav-tabs-bordered {
@@ -751,10 +751,10 @@ h6 {
   background: #82be4117;
 }
 
-.sidebar-nav .nav-link:active {
+/* .sidebar-nav .nav-link:active {
   color: #81BE41;
   background-color: #81BE41;
-}
+} */
 
 /* .sidebar-nav .nav-link::after {
   color: #81BE41;
@@ -808,8 +808,14 @@ h6 {
   background-color: #4154f1;
 }
 
-.sidebar-nav li.active a {
-  background-color: #4154f1;
+.sidebar-nav li:hover {
+  /* background-color: #81BE41; */
+  background-image: linear-gradient(to right, #82be4192 20%, #ffff 100%);
+}
+
+.sidebar-nav li:visited {
+  /* background-color: #81BE41; */
+  background-image: linear-gradient(to right, #82be4192 20%, #ffff 100%);
 }
 
 /*--------------------------------------------------------------

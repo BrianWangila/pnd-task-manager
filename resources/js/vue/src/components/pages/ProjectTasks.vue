@@ -90,24 +90,24 @@
               <div class="modal-body">
               <form @submit.prevent="addTask">
                 <div class="mb-3">
-                    <label for="projectId" class="form-label">Project</label>
-                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" v-model="data_input.project_id" disabled/>
+                    <label class="form-label">Project</label>
+                    <input type="text" class="form-control" v-model="data_input.project_id" disabled/>
                 </div>
                 <div class="mb-3">
-                    <label for="taskTitle" class="form-label">Task Title</label>
-                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" v-model="data_input.task_title"/>
-                    <div id="emailHelp" class="form-text">Write a short title of the task.</div>
+                    <label class="form-label">Task Title</label>
+                    <input type="text" class="form-control" v-model="data_input.task_title"/>
+                    <div class="form-text">Write a short title of the task.</div>
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Deadline</label>
-                    <input type="date" class="form-control" id="exampleInputPassword1" v-model="data_input.deadline"/>
+                    <label class="form-label">Deadline</label>
+                    <input type="date" class="form-control" v-model="data_input.deadline"/>
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Description</label>
-                    <textarea type="text" rows="5" class="form-control" id="exampleInputPassword1" v-model="data_input.description"></textarea>
+                    <label class="form-label">Description</label>
+                    <textarea type="text" rows="5" class="form-control" v-model="data_input.description"></textarea>
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Assign To</label>
+                    <label class="form-label">Assign To</label>
                     <select class="form-select" v-model="data_input.employee_id">
                         <option v-for="name in employee" :key="name.id" :value="name.id"> {{ name.user.name }}</option>
                     </select>
@@ -168,15 +168,11 @@ export default {
     },
     mounted(){
         var id = this.$route.params.id;
+        
         this.singleProject(id)
-
         this.employeeStore.getEmployees()
-
         this.dptEmployees()
 
-        // console.log(this.employeeStore.dptEmployees)
-
-        console.log(this.employee)
     },
 
     methods: {

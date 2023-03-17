@@ -41,7 +41,10 @@
 
         <div class="pl-5 pt-3 h-300">
             <div class="priority mb-2">
-                <p class="mr-20" style="font-weight: 600;">Priority:</p> <p class="priority-flag"><i class="bi bi-flag"></i> Normal</p>
+                <p class="mr-20" style="font-weight: 600;">Priority:</p> 
+                <p class="priority-flag" v-if="!projectItem.priority"><i class="bi bi-flag"></i> Normal</p>
+                <p class="priority-flag-urgent" v-else><i class="bi bi-flag"></i> Urgent</p>
+
             </div>
             <div class="assigned mb-2">
                 <p style="margin-right: 5px; font-weight: 600;">Assigned To:</p>
@@ -126,6 +129,7 @@ export default {
 
     this.singleProject(id)
     
+    this.priority()
 
   },
 
@@ -146,6 +150,12 @@ export default {
         })
       } catch (error) {
         console.log(error)
+      }
+    },
+
+    priority(){
+      if(this.projectItem.length > 0){
+        console.log(this.projectItem)
       }
     },
 
@@ -179,6 +189,14 @@ export default {
 
     .priority-flag {
         background: rgba(129, 190, 65, 0.7);
+        font-weight: 500;
+        padding: 3px 10px;
+        color: white;
+        border-radius: 4px;
+    }
+
+    .priority-flag-urgent{
+        background: darkorange;
         font-weight: 500;
         padding: 3px 10px;
         color: white;
