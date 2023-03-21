@@ -45,15 +45,15 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form @submit.prevent="addMember">
+                            <form @submit.prevent="addEmployeeForm">
                             
                               <div class="mb-3">
                                   <label class="form-label">Full Names</label>
-                                  <input type="text" class="form-control" />
+                                  <input type="text" class="form-control" v-model="data_input.name"/>
                               </div>
                               <div class="mb-3">
                                   <label class="form-label">Email Address</label>
-                                  <input type="email" class="form-control"/>
+                                  <input type="email" class="form-control" v-model="data_input.email"/>
                               </div>
                               <button type="submit" class="btn btn2">Save</button>
                             </form>
@@ -77,20 +77,20 @@
                             <form @submit.prevent="addEmployeeDets">
                             
                               <div class="mb-3">
-                                  <label class="form-label">Employee ID</label>
-                                  <input type="text" class="form-control" />
+                                  <label class="form-label">User ID</label>
+                                  <input type="text" class="form-control" v-model="data_input.userId"/>
                               </div>
                               <div class="mb-3">
                                   <label class="form-label">Department</label>
-                                  <input type="text" class="form-control" />
+                                  <input type="text" class="form-control" v-model="data_input.department"/>
                               </div>
                               <div class="mb-3">
                                   <label class="form-label">Job Title</label>
-                                  <input type="text" class="form-control"/>
+                                  <input type="text" class="form-control" v-model="data_input.jobTitle"/>
                               </div>
                               <div class="mb-3">
                                   <label class="form-label">Role</label>
-                                  <input type="text" class="form-control"/>
+                                  <input type="text" class="form-control" v-model="data_input.role"/>
                               </div>
                               <button type="submit" class="btn btn2">Submit</button>
                             </form>
@@ -108,7 +108,6 @@
                               <th class="fw-bold">Name and Email</th>
                               <th class="fw-bold">Job Title</th>
                               <th class="fw-bold">Department</th>
-                              <!-- <th class="fw-bold">Current Project</th> -->
                               <th class="fw-bold">Ongoing Tasks</th>
                               <th class="fw-bold">Actions</th>
                           </tr>
@@ -145,7 +144,7 @@
                                   <MDBBtn color="link" size="sm" rounded>
                                       Edit
                                   </MDBBtn>
-                                  <MDBBtn color="link" size="sm" rounded>
+                                  <MDBBtn color="link" size="sm" rounded @click="employeeStore.deleteEmployee(employee.id)">
                                       Delete
                                   </MDBBtn>
                               </td>
@@ -173,6 +172,7 @@
 <script>
   import { Calendar, DatePicker } from 'v-calendar';
   import { useEmployeeStore } from '../../stores/employeeStore';
+  import { useAuthStore } from '../../stores/authStore';
   import { MDBTable, MDBBtn, MDBBadge } from 'mdb-vue-ui-kit';
 
   export default {
@@ -190,7 +190,16 @@
         date: new Date(),
         time: null,
         employeeStore: useEmployeeStore(),
-        employees: []
+        userStore: useAuthStore(),
+        employees: [],
+        data_input: {
+          name: "",
+          email: "",
+          userId: "",
+          department: "",
+          jobTitle: "",
+          role: ""
+        }
 
       };
     },
@@ -205,7 +214,13 @@
     },
 
     methods: {
-      
+      addEmployeeForm(){
+        this.userStore.register(this.data_input)
+      },
+
+      addEmployeeDets(){
+        this.employeeStore.addEmployee(this.data_input)
+      }
     }
   }
 </script>

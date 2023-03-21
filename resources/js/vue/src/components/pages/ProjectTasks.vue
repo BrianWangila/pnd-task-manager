@@ -173,6 +173,10 @@ export default {
         this.employeeStore.getEmployees()
         this.dptEmployees()
 
+        this.assignedEmp(id)
+        console.log(this.taskStore.tasks)
+
+
     },
 
     methods: {
@@ -184,11 +188,13 @@ export default {
                     this.data_input.project_id = this.projectItem.id
                     this.projectTasks = this.projectItem.tasks
 
-                    console.log(this.projectItem.department_id)
+                    console.log(this.projectItem)
                 })
+
             } catch (error) {
                 console.log(error)
             }
+            
         },
         addTask(){
             this.taskStore.addTask(this.data_input)
@@ -202,17 +208,21 @@ export default {
             window.location.reload()
 
         },
+
+        
         dptEmployees(){
             this.employeeStore.getEmployeesByDpt(this.projectItem.department_id)
+        },
+
+        assignedEmp(id){
+            this.taskStore.getTasks()
+            this.taskStore.tasks.find((item) => {
+                console.log(item.employee)
+            })
         }
     },
     computed: {
-        // selectedTitle(){
-        //     const p_title = this.projectItem.find((project) => {
-        //         project.project_id === this.data_input.project_id
-        //     })
-        //     return p_title ? p_title.project_title : "";
-        // }
+        
     }
 }
 </script>

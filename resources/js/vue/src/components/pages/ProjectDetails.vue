@@ -46,8 +46,13 @@
                 <p class="priority-flag-urgent" v-else><i class="bi bi-flag"></i> Urgent</p>
 
             </div>
+            <div class="priority mb-2">
+                <p class="mr-12" style="font-weight: 600;">Department:</p> 
+                <p class="department">{{  }}</p>
+
+            </div>
             <div class="assigned mb-2">
-                <p style="margin-right: 5px; font-weight: 600;">Assigned To:</p>
+                <p style="margin-right: 30px; font-weight: 600;">Members:</p>
                 <ul v-if="dptEmployee.length > 0" v-for="employee in dptEmployee" :key="employee.id">
                     <li>{{ employee.user.name }}</li>
                     
@@ -70,8 +75,12 @@
             </div>
         </div>
       </div>
-      <ProjectTasks v-if="dptEmployee.length > 0" :employee="dptEmployee" style="position: inherit"/>
-      <ProjectTasks v-else style="position: inherit"/>
+
+      <div>
+        <ProjectTasks v-if="dptEmployee.length > 0" :employee="dptEmployee" style="position: inherit"/>
+        <ProjectTasks v-else style="position: inherit"/>
+      </div>
+
 
       <div class="divider">
         <hr class="footer-divider">
@@ -128,8 +137,8 @@ export default {
     var id = this.$route.params.id;
 
     this.singleProject(id)
+
     
-    this.priority()
 
   },
 
@@ -140,6 +149,8 @@ export default {
         await axiosClient.get("/projects/"+id)
         .then((res) => {
           this.projectItem = res.data
+
+          console.log(this.projectItem)
           
           axiosClient.get("/employees/department/"+this.projectItem.department_id)
           .then((res) => {
@@ -153,11 +164,6 @@ export default {
       }
     },
 
-    priority(){
-      if(this.projectItem.length > 0){
-        console.log(this.projectItem)
-      }
-    },
 
   },
 
@@ -187,6 +193,7 @@ export default {
         list-style: none;
     }
 
+    
     .priority-flag {
         background: rgba(129, 190, 65, 0.7);
         font-weight: 500;
@@ -230,7 +237,9 @@ export default {
         height: 80.3vh;
     }
 
-
+    .department {
+      font-weight: 500;
+    }
 
     .footer-divider {
         position: inherit;

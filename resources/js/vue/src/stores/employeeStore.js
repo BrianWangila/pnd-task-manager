@@ -53,18 +53,18 @@ export const useEmployeeStore = defineStore("employeeStore", {
     },
 
 
-    // // add new project
-    // async addProject(data){
+    // add new project
+    async addEmployee(data){
 
-    //   try {
-    //     await axiosClient.post("/projects", data, {headers: {"Content-Type": "application/json"}})
-    //     .then((res) => {
-    //       console.log(res)
-    //     })
-    //   } catch (error) {
-    //     console.log(error)
-    //   }
-    // },
+      try {
+        await axiosClient.post("/employees", data, {headers: {"Content-Type": "application/json"}})
+        .then((res) => {
+          console.log(res)
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    },
 
     // // get one project
     // async singleProject(id){
@@ -79,20 +79,19 @@ export const useEmployeeStore = defineStore("employeeStore", {
     //   }
     // },
 
-    // // Delete A project
-    // async deleteProject(id){
+    // // Delete an Employee
+    async deleteEmployee(id){
       
-    //   try {
-    //     await axiosClient.delete("/projects/"+id)
+      try {
+        await axiosClient.delete("/employees/"+id)
         
-    //     this.projects = this.projects.filter((item) => {
-    //       return item.id !== id
-    //     })
-    //     console.log(this.projects)
+        this.employees = this.employees.filter((item) => {
+          return item.id !== id
+        })
 
-    //   } catch (error) {
-    //     console.log(error)
-    //   }
-    // },
+      } catch (error) {
+        console.log(error)
+      }
+    },
   }
 })

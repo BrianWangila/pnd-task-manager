@@ -38,11 +38,12 @@ Route::group(["middleware" => ["auth:sanctum"]], function(){
     Route::get('projects/{project}', [ProjectController::class, 'show']);
     Route::post('projects', [ProjectController::class, 'store']);
     Route::delete('projects/{project}', [ProjectController::class, 'delete']);
-    Route::patch('projects/{project}', [ProjectController::class, 'update']);
+    Route::put('projects/{project}', [ProjectController::class, 'update']);
     Route::get('employees', [EmployeeController::class, 'index']);
     Route::get('employees/{employee}', [EmployeeController::class, 'show']);
     Route::get('employees/department/{deptID}', [EmployeeController::class, 'employeesByDepartment']);
     Route::post('employees', [EmployeeController::class, 'store']);
+    Route::delete('employees/{employee}', [EmployeeController::class, 'delete']);
     Route::post('employees/{employee}', [EmployeeController::class, 'update']);  //update
     Route::get('departments', [DepartmentController::class, 'index']);
     Route::get('tasks', [TaskController::class, 'index']);

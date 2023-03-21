@@ -67,7 +67,7 @@ class EmployeeController extends Controller
             $allowedExtensions = ['png', 'jpg', 'jpeg', 'webp'];
             $destinationPath  = public_path('/assets/img/profile/');
 
-            if (!in_array($fileExt, $allowedExtensions)) return response(['status' => 500, 'message' => "Sorry, only 'png', 'jpg', 'jpeg' files are allowed "], 500);
+            if (!in_array($fileExt, $allowedExtensions)) return response(['status' => 500, 'message' => "Sorry, only 'png', 'jpg', 'jpeg', 'webp' files are allowed "], 500);
             
             $filename = $filename . '.' . $fileExt;
             $imgFile->move($destinationPath, $filename);
@@ -113,7 +113,13 @@ class EmployeeController extends Controller
     public function store (Request $request)
     {
         try {
-            $employee = Employee::create($request->all());
+            $employee = Employee::create([
+                "department_id" => $request->departmentId, 
+                "user_id" => $request -> userId,
+                "job_title" => $request -> jobTitle, 
+                "role" => $request -> role, 
+            ]);
+
             return response([
                 "data" => $employee,
                 "message" => "Employee profile created"
@@ -134,8 +140,24 @@ class EmployeeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function delete($id)
     {
-        //
+        try {
+            $employee = Employee::find($id);
+            $employee->delete();
+
+            return response([
+                "message" => "Employee Removed"
+            ], 204);
+
+        } catch (\Throwable $th) {
+            $response = [
+                "status" => 500,
+                "message" => "Something went wrong",
+                "error" => $th->getMessage()
+            ];
+
+            return response()->json($response, 500);
+        }
     }
 }

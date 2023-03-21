@@ -63,7 +63,20 @@ export const useAuthStore = defineStore("auth", {
       } catch (error) {
         console.log(error)
       }
-    }
+    },
+
+        // add new project
+        async register(data){
+
+          try {
+            await axiosClient.post("/register", data, {headers: {"Content-Type": "application/json"}})
+            .then((res) => {
+              console.log(res)
+            })
+          } catch (error) {
+            console.log(error)
+          }
+        },
   }
 });
 

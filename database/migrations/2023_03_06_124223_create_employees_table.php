@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string("organization")->default("Peak and Dale Solutions");
             $table->string("address");
             $table->string("phone");
-            $table->text("about");
+            $table->text("about")->nullable();
             $table->string("image_url")->nullable();
             $table->string("country")->default("Kenya");
 

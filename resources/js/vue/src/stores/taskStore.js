@@ -37,7 +37,7 @@ export const useTaskStore = defineStore("taskStore", {
       }
     },
 
-    // add new project
+    // add new task
     async addTask(data){
 
       try {
@@ -53,12 +53,13 @@ export const useTaskStore = defineStore("taskStore", {
       }
     },
 
-    // get one project
+    // get one task
     async singleTask(id){
       try {
         await axiosClient.get("/tasks/"+id)
         .then((res) => {
           this.taskItem = res.data
+          console.log(this.taskItem)
 
         })
       } catch (error) {

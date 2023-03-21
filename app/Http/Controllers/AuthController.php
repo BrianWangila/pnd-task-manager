@@ -18,15 +18,15 @@ class AuthController extends Controller
             $credentials = $request->validate([
                 "name" => "required|string",
                 "email" => "required|string|email",
-                "password" => "required|string|confirmed",
-                "remember" => "boolean"
+                // "password" => "string|confirmed",
+                // "remember" => "boolean"
             ]);
     
             // create a user
             $user = User::create([
             "name" => $credentials["name"],
             "email" => $credentials["email"],
-            "password" => bcrypt($credentials["password"]->default("password"))
+            "password" => bcrypt("password")
             ]);
     
             // create token

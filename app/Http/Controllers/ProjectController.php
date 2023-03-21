@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Project;
 use PhpParser\Node\Stmt\TryCatch;
 use App\Http\Controllers\AuthController;
+use App\Models\Employee;
 use App\Models\Task;
 
 class ProjectController extends Controller
@@ -30,7 +31,12 @@ class ProjectController extends Controller
     }
 
     public function show($id){
-        return Project::with("department", "tasks")->find($id);
+
+        $project = Project::with("department", "tasks")->find($id);
+        // $task = Task::where("employee_id", $project->id)->get();
+
+
+        return $project;
     }
 
     public function store(Request $request){
@@ -42,6 +48,7 @@ class ProjectController extends Controller
                 "department_id" => $request->department_id, 
                 "description" => $request->description,
                 "deadline" => date('Y-m-d', strtotime($request->deadline)),
+                "priority" => $request->priority
             ]);
             return response([
                "data" => $project,
@@ -81,8 +88,43 @@ class ProjectController extends Controller
     }
 
     public function update(Request $request, $id){
+
+        $project_file = $request->file('project_file');
+
+        // check if img is available;
+        if ($project_file) {
+
+            $projectFile    = $project_file;
+            $filename         = "project-".time();
+            $fileExt          = $projectFile->getClientOriginalExtension();
+            $allowedExtensions = ['png', 'jpg', 'jpeg', 'webp', 'pdf', 'docx', 'doc'];
+            $destinationPath  = public_path('/assets/img/projects/');
+
+            if (!in_array($fileExt, $allowedExtensions)) return response(['status' => 500, 'message' => "Kindly upload a valid file format"], 500);
+            
+            $filename = $filename . '.' . $fileExt;
+            $projectFile->move($destinationPath, $filename);
+        }
+
+        $file_url = "/assets/img/projects/";
+
+        
         $project = Project::find($id);
-        $project->update($request->all());
-        return $project;
+
+        $project->update([
+            "project_title" => $request -> project_title,
+            "department_id" => $request -> department_id, 
+            "description" => $request -> description, 
+            "deadline" => $request -> deadline, 
+            // "status" => $request -> status,
+            "priority" => $request -> priority,
+            // "file" => $project_file ? $file_url . $filename : null,
+        ]);
+
+        return response([
+            "data" => Project::with("department", "tasks")->find($id), 
+            "message" => "Project has been updated",
+        ]);
+
     }
 }

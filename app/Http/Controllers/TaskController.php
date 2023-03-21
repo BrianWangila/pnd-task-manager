@@ -15,14 +15,14 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = Task::with("project", "employee")->get();
-        $user = Employee::with('user')->get();
+        // $user = Employee::with('user')->where()->get();
 
-        foreach ($tasks as $task){
+        // foreach ($tasks as $task){
 
-            if(!is_null($task->employee)) {
-                $task['assignee'] = $user;
-            }
-        };
+        //     if(!is_null($task->employee)) {
+        //         $task['assignee'] = $user;
+        //     }
+        // };
 
         return $tasks;
     }
@@ -53,7 +53,14 @@ class TaskController extends Controller
      */
     public function show(string $id)
     {
-        return Task::with("project", "employee")->find($id);
+        // $user = Employee::where('user_id', 'id')->get();
+        $task = Task::with("project", "employee")->find($id);
+
+        // foreach($user as $item){
+        //     $item['user'] = "user";
+        // }
+        
+        return $task;
     }
 
     /**

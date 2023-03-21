@@ -43,7 +43,7 @@
                           </div>
                       </div>
                   </nav>
-                  <button class="card-btn"><span class="mr-1" data-bs-toggle="modal" data-bs-target="#addProjectForm">New Project</span>  <i class="bi bi-folder-plus"></i></button>
+                  <button class="card-btn"><span class="mr-1" @click="isEditing = false" data-bs-toggle="modal" data-bs-target="#addProjectForm">New Project</span>  <i class="bi bi-folder-plus"></i></button>
                 </div>
 
                 <!-- pop-up form -->
@@ -55,7 +55,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form @submit.prevent="addProject">
+                            <form @submit.prevent="submitForm">
                             <div class="mb-3">
                                 <label class="form-label">Select Department</label>
                                 <select class="form-select" v-model="data_input.department_id">
@@ -79,13 +79,14 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Attach File</label>
-                                <input type="file" rows="5" class="form-control"/>
+                                <input type="file" ref="fileInput" rows="5" class="form-control" @change="onSelectFile" />
+
                             </div>
                             <div  class="mb-3">
-                                <input type="checkbox" data-toggle="toggle" data-onlabel="Ready" data-offlabel="Not Ready" data-onstyle="success" data-offstyle="danger">
+                                <input type="checkbox" v-model="data_input.priority">
                                 <label class="form-label ml-2 fw-bold">Urgent</label>
                             </div>
-                            <button type="submit" class="btn btn2">Submit</button>
+                            <button type="submit" class="btn btn2" data-bs-dismiss="modal">{{ isEditing ? 'Save Changes' : 'Add Project' }}</button>
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -100,8 +101,10 @@
 
                     <!-- All projects -->
                       <div v-if="filter === 'all'" class="row">
-                          <div class="card mb-3" style="width: 25rem;" v-for="(project, index) in projectStore.projects" :key="index">
+                          <div class="card mb-3" style="width: 25rem;" v-for="project in projectStore.projects" :key="project.id">
                               <div class="card-body">
+                                  <!-- <i @click="togglePriority(project.id)" :class="{active: project.priority}" class="bi bi-flag-fill priority" title="{ priority }"  type="button"></i> -->
+                                  <i v-if="project.priority" class="bi bi-flag-fill priority" title="Urgent"  type="button"></i>
                                   <div class="title">
                                     <router-link class="card-title" :to="`/projects/${project.id}`">Front-end Development</router-link>
                                     <div
@@ -110,7 +113,7 @@
 
                                       <i type="button" class="bi bi-three-dots"></i>
                                       <div class="delete-edit" :id="'display-action'+project.id" style="display:none">
-                                        <i class="fas fa-edit mb-2" title="Update" style="color: skyblue;" type="button"></i>
+                                        <i @click="editProject(project)" data-bs-toggle="modal" data-bs-target="#addProjectForm" class="fas fa-edit mb-2" title="Update" style="color: skyblue;" type="button"></i>
                                         <i @click="projectStore.deleteProject(project.id)" class="fas fa-trash" title="Delete" style="color: darkorange;" type="button"></i>
                                       </div>
 
@@ -140,7 +143,7 @@
 
                                       <i type="button" class="bi bi-three-dots"></i>
                                       <div class="delete-edit" :id="'display-action'+project.id" style="display:none">
-                                        <i class="fas fa-edit mb-2" title="Update" style="color: skyblue;" type="button"></i>
+                                        <i @click="editProject(project)" data-bs-toggle="modal" data-bs-target="#addProjectForm" class="fas fa-edit mb-2" title="Update" style="color: skyblue;" type="button"></i>
                                         <i @click="projectStore.deleteProject(project.id)" class="fas fa-trash" title="Delete" style="color: darkorange;" type="button"></i>
                                       </div>
 
@@ -170,7 +173,7 @@
 
                                       <i type="button" class="bi bi-three-dots"></i>
                                       <div class="delete-edit" :id="'display-action'+project.id" style="display:none">
-                                        <i class="fas fa-edit mb-2" title="Update" style="color: skyblue;" type="button"></i>
+                                        <i @click="editProject(project)" data-bs-toggle="modal" data-bs-target="#addProjectForm" class="fas fa-edit mb-2" title="Update" style="color: skyblue;" type="button"></i>
                                         <i @click="projectStore.deleteProject(project.id)" class="fas fa-trash" title="Delete" style="color: darkorange;" type="button"></i>
                                       </div>
 
@@ -200,7 +203,7 @@
 
                                       <i type="button" class="bi bi-three-dots"></i>
                                       <div class="delete-edit" :id="'display-action'+project.id" style="display:none">
-                                        <i class="fas fa-edit mb-2" title="Update" style="color: skyblue;" type="button"></i>
+                                        <i @click="editProject(project)" data-bs-toggle="modal" data-bs-target="#addProjectForm" class="fas fa-edit mb-2" title="Update" style="color: skyblue;" type="button"></i>
                                         <i @click="projectStore.deleteProject(project.id)" class="fas fa-trash" title="Delete" style="color: darkorange;" type="button"></i>
                                       </div>
 
@@ -240,6 +243,7 @@
   import { useProjectStore } from '../../stores/projectStore';
   import { useDepartmentStore } from '../../stores/departmentStore';
   import { MDBTable, MDBBtn, MDBBadge } from 'mdb-vue-ui-kit';
+  import axiosClient from '../../axios';
 
 
 export default {
@@ -263,10 +267,15 @@ export default {
         project_title: "",
         department_id: "",
         deadline: "",
-        description: ""
+        description: "",
+        priority: false,
+        file: null
       },
       isOpen: false,
-      filter: "all"
+      filter: "all",
+      isEditing: false,
+      urgent: false,
+      priority: "",
 
     };
   },
@@ -278,24 +287,21 @@ export default {
     this.projectStore.getProjects()
     this.departmentStore.getDepartments()
     this.projectStore.inProgress
-    console.log(this.projectStore.inProgress)
-    console.log(this.projectStore.projects)
 
   },
 
   methods: {
-    addProject(){
-      if(this.data_input.project_title){
-        this.projectStore.addProject(this.data_input)
-
-        this.data_input = {
-          project_title: "",
-          deadline: "",
-          description: ""
-        }
+    submitForm(){
+      this.isEditing ? axiosClient.put("/projects/"+this.data_input.id, this.data_input, {headers: {"Content-Type": "application/json"}}) : this.projectStore.addProject(this.data_input);
+      
+      
+      this.data_input = {
+        project_title: "",
+        deadline: "",
+        description: ""
       }
 
-    this.projectStore.getProjects()
+      this.projectStore.getProjects()
       
     },
 
@@ -314,6 +320,46 @@ export default {
         $('#'+id).css('display', 'none') 
       } 
     },
+
+    editProject(project){
+      this.data_input = project
+      this.isEditing = true;
+
+    },
+
+    togglePriority(id){
+
+      const project = this.projectStore.projects.find((item) => {
+        return item.id === id;
+        
+      })
+      project.priority = !project.priority;
+    },
+
+
+    project(id){
+      const project = this.projectStore.projects.find((item) => {
+        return item.id === id;
+      });
+
+      if(project.priority){
+        this.priority = "normal"
+      } else {
+        this.priority = "urgent"
+      }
+
+    },
+
+    onSelectFile(event){
+        const file = event.target.files[0];
+        // const reader = new FileReader();
+
+        // update file
+        this.data_input.file = file;
+        
+      },
+
+
     showAlert(id) {
       // this.$swal('Hello Vue world!!!');
       if(
@@ -331,7 +377,23 @@ export default {
       
     },
 
-  }
+  },
+
+  // created() {
+  //   const projectId = this.$route.params.id
+  //   if (projectId) {
+  //     // Fetch existing project data from server
+  //     axios.get('/api/projects/' + 3)
+  //       .then(response => {
+  //         this.data_input = response.data
+  //         this.isEditing = true
+  //       })
+  //       .catch(error => {
+  //         console.error(error)
+  //         // Show error message to user
+  //       })
+  //   }
+  // }
 }
 </script>
 
@@ -349,7 +411,7 @@ export default {
 
     .delete-edit {
       position: absolute;
-      left: 18vw;
+      left: 17vw;
       display: flex;
       flex-direction: column;
     }
@@ -405,6 +467,20 @@ export default {
     align-items: center;
     justify-content: space-between;
   }
+
+  .card-body .priority {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: darkorange;
+  }
+
+  .card-body i {
+  margin-right: 15px;
+  color:#839470 ;
+  cursor: pointer;
+}
+
 
   .bi-calendar-event {
     color:#2F5508;
