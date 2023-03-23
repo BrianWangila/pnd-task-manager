@@ -108,7 +108,7 @@
                     <div class="col-md-8 col-lg-9">
                       <img ref="profileImg" :src="user.image_url" alt="Profile">
                       <div class="pt-2">
-                        <p @click="uploadImage" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></p>
+                        <p @click="uploadImage" class="btn btn-color btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></p>
                         <p @click="removeImage" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></p>
                       </div>
                       <input type="file" ref="imageInput" @change="onSelectFile" style="display: none">
@@ -409,9 +409,7 @@
   }
 
  
-  .active2 {
-    color: yellow;
-  }
+
 
   .btn-white i {
     margin-right: 10px;
@@ -447,7 +445,14 @@
     color: #2F5508;
   }
 
- 
+  .card-body .nav-item .active {
+    border-bottom: 2px solid #2F5508;
+  }
 
+ 
+  .btn-color {
+    background-color: #2e5508e9;
+    color: white;
+  }
 
 </style>

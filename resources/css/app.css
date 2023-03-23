@@ -369,7 +369,7 @@ h6 {
 .nav-tabs-bordered .nav-link.active {
   background-color: #81BE41;
   color: red;
-  border-bottom: 2px solid #4154f1;
+  border-bottom: 2px solid #2F5508;
 }
 
 /*--------------------------------------------------------------
@@ -1077,7 +1077,7 @@ h6 {
 .profile .profile-card .social-links a {
   font-size: 20px;
   display: inline-block;
-  color: rgba(1, 41, 112, 0.5);
+  color: #2F5508;
   line-height: 0;
   margin-right: 10px;
   transition: 0.3s;

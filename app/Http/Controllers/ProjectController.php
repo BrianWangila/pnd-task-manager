@@ -13,7 +13,7 @@ class ProjectController extends Controller
 {
     public function index(){
 
-        $projects = Project::with("department", "tasks")->get();
+        $projects = Project::with("department", "tasks", "files")->get();
 
         // $tasks = Task::with('employee')->get();
         // $projectTasks = [];
@@ -32,9 +32,7 @@ class ProjectController extends Controller
 
     public function show($id){
 
-        $project = Project::with("department", "tasks")->find($id);
-        // $task = Task::where("employee_id", $project->id)->get();
-
+        $project = Project::with("department", "tasks", "files")->find($id);
 
         return $project;
     }
@@ -109,41 +107,51 @@ class ProjectController extends Controller
 
     public function update(Request $request, $id){
 
-        $project_file = $request->file('file');
+        try {
+            $project_file = $request->file('file');
 
-        // check if img is available;
-        if ($project_file) {
+            // check if img is available;
+            if ($project_file) {
 
-            $projectFile    = $project_file;
-            $filename         = "project-".time();
-            $fileExt          = $projectFile->getClientOriginalExtension();
-            $allowedExtensions = ['png', 'jpg', 'jpeg', 'webp', 'pdf', 'docx', 'doc'];
-            $destinationPath  = public_path('/assets/img/projects/');
+                $projectFile    = $project_file;
+                $filename         = "project-".time();
+                $fileExt          = $projectFile->getClientOriginalExtension();
+                $allowedExtensions = ['png', 'jpg', 'jpeg', 'webp', 'pdf', 'docx', 'doc'];
+                $destinationPath  = public_path('/assets/img/projects/');
 
-            if (!in_array($fileExt, $allowedExtensions)) return response(['status' => 500, 'message' => "Kindly upload a valid file format"], 500);
+                if (!in_array($fileExt, $allowedExtensions)) return response(['status' => 500, 'message' => "Kindly upload a valid file format"], 500);
+                
+                $filename = $filename . '.' . $fileExt;
+                $projectFile->move($destinationPath, $filename);
+            }
+
+            $file_url = "/assets/img/projects/";
+
             
-            $filename = $filename . '.' . $fileExt;
-            $projectFile->move($destinationPath, $filename);
+            $project = Project::find($id);
+
+            $project->update([
+                "project_title" => $request -> project_title,
+                "department_id" => $request -> department_id, 
+                "description" => $request -> description, 
+                "deadline" => $request -> deadline, 
+                "priority" => $request -> priority ? 1 : 0,
+                "file" => $project_file ? $file_url . $filename : null,
+            ]);
+
+            return response([
+                "data" => Project::with("department", "tasks")->find($id), 
+                "message" => "Project has been updated",
+            ]);
+        } catch (\Throwable $th) {
+            $response = [
+                "status" => 500,
+                "message" => "Something went wrong",
+                "error" => $th->getMessage()
+            ];
+
+            return response()->json($response, 500);
         }
-
-        $file_url = "/assets/img/projects/";
-
-        
-        $project = Project::find($id);
-
-        $project->update([
-            "project_title" => $request -> project_title,
-            "department_id" => $request -> department_id, 
-            "description" => $request -> description, 
-            "deadline" => $request -> deadline, 
-            "priority" => $request -> priority ? 1 : 0,
-            "file" => $project_file ? $file_url . $filename : null,
-        ]);
-
-        return response([
-            "data" => Project::with("department", "tasks")->find($id), 
-            "message" => "Project has been updated",
-        ]);
 
     }
 }

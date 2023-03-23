@@ -90,15 +90,19 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <form @submit.prevent="submitJobFileForm" enctype="multipart/form-data">
+                                            <form @submit.prevent="submitFileForm" enctype="multipart/form-data">
                                                 <div class="form-group">
+                                                    <label>Project</label>
+                                                    <input class="form-control" type="text" :value="projectItem.project_title" disabled>
+                                                    <input class="form-control" type="text" v-model="dataInput.project_id" disabled style="display: none;">
+                                                </div>
+                                                <div class="form-group mt-3">
                                                     <label>File Name<span class="text-danger">*</span></label>
-                                                    <input class="form-control" type="text">
-                                                    <div class="invalid-feedback">Field is required</div>
+                                                    <input class="form-control" type="text" v-model="dataInput.file_name">
                                                 </div>
                                                 <div class="form-group mt-3">
                                                     <label>File </label>
-                                                    <input class="form-control" @change="jobFileUpload" type="file">
+                                                    <input class="form-control" @change="onSelectFile" type="file">
                                                 </div>
                                                 <div class="submit-section">
                                                     <button class="btn mt-3" type="submit">Submit</button>
@@ -108,19 +112,36 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- /Files Modal -->
-
-                            <div class="row">
-                                <div class="files" v-if="projectItem.file">
-                                    <div>
-                                        <img src="../../assets/images/files.png" alt="" />
+                            <!-- Files card -->
+                            <div class="project-files-body">
+                                <div class="row"  v-if="projectItem.files">
+                                    <div class="card files" v-for="file in projectItem.files" :key="file.id">
+                                        <div class="list-btn" type="button" data-bs-toggle="modal" data-bs-target="#file-actions"><i class="bi bi-three-dots-vertical"></i></div>
+                                        <div class="title">
+                                            <img src="../../assets/images/files.png" :alt="file.file_name" />
+                                            <span>{{ file.file_name }}</span>
+                                        </div>
+                                        <button @click="openFile(file.file)">Open</button>
                                     </div>
-                                    <button @click="openFile(projectItem.file)">Open</button>
                                 </div>
-                            </div>
-                            
-                        </div>
 
+                                <!-- file actions modal -->
+                                 <!-- <div id="file-actions" class="custom-modal">
+                                     <div class="">
+                                         <div class="modal-content">
+                                             <div class="modal-body">
+                                                <div>
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </div>
+                                                <div>
+                                                    <i class="bi bi-trash3"></i>
+                                                </div>
+                                             </div>
+                                         </div>
+                                     </div>
+                                </div> -->
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -138,7 +159,8 @@
               <form @submit.prevent="addTask">
                 <div class="mb-3">
                     <label class="form-label">Project</label>
-                    <input type="text" class="form-control" v-model="dataInput.project_id" disabled/>
+                    <input type="text" class="form-control" v-model="dataInput.project_id" disabled style="display: none;"/>
+                    <input type="text" class="form-control" :value="projectItem.project_title" disabled />
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Task Title</label>
@@ -147,7 +169,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Deadline</label>
-                    <input type="date" class="form-control" v-model="dataInput.deadline"/>
+                    <VueDatePicker v-model="dataInput.deadline" :min-date="new Date()" :enable-time-picker="false" />
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Description</label>
@@ -174,12 +196,13 @@
 
 
 <script>
-  import { useProjectStore } from '../../stores/projectStore';
-  import { useTaskStore } from '../../stores/taskStore';
-  import { useDepartmentStore } from '../../stores/departmentStore';
-  import { useEmployeeStore } from '../../stores/employeeStore';
-  import axiosClient from '../../axios';
-  import { MDBTable, MDBBtn, MDBBadge } from 'mdb-vue-ui-kit';
+    import { useProjectStore } from '../../stores/projectStore';
+    import { useTaskStore } from '../../stores/taskStore';
+    import { useDepartmentStore } from '../../stores/departmentStore';
+    import { useEmployeeStore } from '../../stores/employeeStore';
+    import axiosClient from '../../axios';
+    import { MDBTable, MDBBtn, MDBBadge } from 'mdb-vue-ui-kit';
+    import { useFileStore } from '../../stores/fileStore';
 
 
 export default {
@@ -201,6 +224,7 @@ export default {
             taskStore: useTaskStore(),
             employeeStore: useEmployeeStore(),
             departmentStore: useDepartmentStore(),
+            fileStore: useFileStore(),
             projectItem: "",
             projectTasks: "",
             dataInput: {
@@ -209,6 +233,8 @@ export default {
                 task_title: "",
                 deadline: "",
                 description: "",
+                file_name: "",
+                file: ""
             },
             fileUrl: ""
 
@@ -245,7 +271,7 @@ export default {
             }
             
         },
-        addTask(id){
+        addTask(){
             this.taskStore.addTask(this.dataInput)
 
             this.dataInput = {
@@ -255,7 +281,6 @@ export default {
             }
 
             window.location.reload()
-            // this.singleProject(id)
 
         },
 
@@ -269,6 +294,22 @@ export default {
             this.taskStore.tasks.find((item) => {
                 console.log(item.employee)
             })
+        },
+
+        submitFileForm(){
+            this.fileStore.addFile(this.dataInput)
+            
+            // .then(()=>{
+            //     window.location.reload()
+            // })
+
+            
+        },
+
+        onSelectFile(event){
+            const file = event.target.files[0];
+
+            this.dataInput.file = file;
         },
 
         openFile(file) {
@@ -328,8 +369,9 @@ export default {
     }
 
     .project-files .files {
-        border: 1px solid #7dc5309c;
-        width: 10rem;
+        border: 1px solid #366208ec;
+        width: 13rem;
+        height: 15rem;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -337,6 +379,27 @@ export default {
         padding: 1rem;
         border-radius: 10px;
         margin: 20px 10px;
+    }
+
+    /* .project-files-body .custom-modal{
+        position: relative;
+        border: 1px solid red;
+        width: 100px;
+    } */
+
+    .project-files .files .list-btn {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+    }
+
+    .project-files .files .title {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 10px;
+
     }
 
     .project-files .files button {
@@ -354,6 +417,7 @@ export default {
 
     .project-files .files img {
         width: 80px;
+        margin-bottom: 10px;
     }
 
     .project-description hr {

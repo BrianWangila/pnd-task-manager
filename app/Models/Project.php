@@ -35,6 +35,10 @@ class Project extends Model
         return $this->belongsTo(Department::class);
     }
 
+    public function files(){
+        return $this->hasMany(File::class, "project_id");
+    }
+
     // public function employees(){
     //     return $this->hasMany(Employee::class, "id", "task_id");
     // }

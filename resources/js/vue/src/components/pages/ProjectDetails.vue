@@ -1,97 +1,147 @@
 <template>
   <main>
-    <div class="heading">
-      <div>
-        <h2 style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;"></span>All Briefs/Projects</h2>
-        
-        <P style="font-weight: 500;">Home / <span style="font-weight: 400;">Projects</span></P>
-      </div>
-      <div>
-        <div className="btn-group">
-          <button style="border: 1px solid lightgray;" type="button" className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-calendar"></i> Today
-          </button>
-          <ul className="dropdown-menu" >
-            <li><DatePicker v-model="date" /></li>
-          </ul>
-        </div>
-
-        <div className="btn-group" style="margin-left: 20px;">
-          <button style="border: 1px solid lightgray;" type="button" className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-funnel"></i> Filter
-          </button>
-          <ul className="dropdown-menu" >
-            <li><a class="dropdown-item" href="#">Upcoming</a></li>
-            <li><a class="dropdown-item" href="#">Overdue</a></li>
-            <li><a class="dropdown-item" href="#">Ongoing</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="content">
-      <div class="ml-8 mt-3 pb-3 p-3 mr-8 bg-white">
-        <div class="add-project ">
-          <h4 class=" fw-bolder">{{ projectItem.project_title }}</h4>
+      <div class="heading">
           <div>
-              <router-link to="/projects"  style="color: black; font-weight: 500;"><button class="mr-3"><i class="bi bi-arrow-left-short"></i> Back to Projects</button></router-link>
-              <button><span class="mr-1" data-bs-toggle="modal" data-bs-target="#addProjectForm">Update Project</span>  <i class="bi bi-pencil-square"></i></button>
+              <h2 style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;"></span>All Briefs/Projects</h2>
+              
+              <P style="font-weight: 500;">Home / <span style="font-weight: 400;">Projects</span></P>
           </div>
-        </div>
+          <div>
+              <div className="btn-group">
+                  <button style="border: 1px solid lightgray;" type="button" className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="bi bi-calendar"></i> Today
+                  </button>
+                  <ul className="dropdown-menu" >
+                      <li><DatePicker v-model="date" /></li>
+                  </ul>
+              </div>
 
-        <div class="pl-5 pt-3 h-300">
-            <div class="priority mb-2">
-                <p class="mr-20" style="font-weight: 600;">Priority:</p> 
-                <p class="priority-flag" v-if="!projectItem.priority"><i class="bi bi-flag"></i> Normal</p>
-                <p class="priority-flag-urgent" v-else><i class="bi bi-flag"></i> Urgent</p>
-
-            </div>
-            <div class="priority mb-2">
-                <p class="mr-12" style="font-weight: 600;">Department:</p> 
-                <p class="department">{{  }}</p>
-
-            </div>
-            <div class="assigned mb-2">
-                <p style="margin-right: 30px; font-weight: 600;">Members:</p>
-                <ul v-if="dptEmployee.length > 0" v-for="employee in dptEmployee" :key="employee.id">
-                    <li>{{ employee.user.name }}</li>
-                    
-                </ul>
-                <ul v-else >
-                    <li class="fw-bold">No one is working on this project</li>
-                </ul>
-
-            </div>
-            <div class="deadline mb-2">
-                <p style="margin-right: 4rem; font-weight: 600;">Deadline:</p> <p>{{ new Date(projectItem.deadline).toDateString() }}</p>
-            </div>
-            <div class="tags">
-                <p  style="margin-right: 3.7rem; font-weight: 600;">Tags:</p>
-                <ul>
-                    <li style="background-color: rgba(255, 165, 0, 0.2); margin-right: 1rem;">UI Design</li>
-                    <li style="background-color: rgba(128, 0, 128, 0.2); margin-right: 1rem;">Marketing</li>
-                    <li style="background-color: rgba(165, 42, 42, 0.2);">Development</li>
-                </ul>
-            </div>
-        </div>
+              <div className="btn-group" style="margin-left: 20px;">
+                  <button style="border: 1px solid lightgray;" type="button" className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="bi bi-funnel"></i> Filter
+                  </button>
+                  <ul className="dropdown-menu" >
+                      <li><a class="dropdown-item" href="#">Upcoming</a></li>
+                      <li><a class="dropdown-item" href="#">Overdue</a></li>
+                      <li><a class="dropdown-item" href="#">Ongoing</a></li>
+                  </ul>
+              </div>
+          </div>
       </div>
 
-      <div>
-        <ProjectTasks v-if="dptEmployee.length > 0" :employee="dptEmployee" style="position: inherit"/>
-        <ProjectTasks v-else style="position: inherit"/>
+      <div class="content">
+          <div class="ml-8 mt-3 pb-3 p-3 mr-8 bg-white">
+              <div class="add-project ">
+                  <h4 class=" fw-bolder">{{ projectItem.project_title }}</h4>
+                  <div>
+                      <router-link to="/projects"  style="color: black; font-weight: 500;"><button class="mr-3"><i class="bi bi-arrow-left-short"></i> Back to Projects</button></router-link>
+                      <button><span @click="editProject(projectItem)" class="mr-1" data-bs-toggle="modal" data-bs-target="#editProject">Update Project</span>  <i class="bi bi-pencil-square"></i></button>
+                  </div>
+              </div>
+
+              <!-- pop-up form -->
+              <div class="modal fade" id="editProject" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                  <div class="modal-dialog  modal-dialog-centered">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title text-dark" id="ModalLabel">Update Project details</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          <form @submit.prevent="submitForm">
+                            <div class="mb-3">
+                                <label class="form-label">Select Department</label>
+                                <select class="form-select" >
+                                    <option v-for="dpt in departmentStore.departments" :key="dpt.id" :value="dpt.id">{{ dpt.department_name }}</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label  class="form-label">Project/Brief Title</label>
+                                <input type="text" class="form-control" v-model="dataInput.project_title"/>
+                                <div class="form-text">Write a short title of the project.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label  class="form-label">Deadline</label>
+                                <!-- <input type="Date" class="form-control" v-model="data_input.deadline"/> -->
+                                <VueDatePicker v-model="dataInput.deadline" :min-date="new Date()" :enable-time-picker="false" />
+                                
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea type="text" rows="5" class="form-control" id="exampleInputPassword1" v-model="dataInput.description"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Attach File</label>
+                                <input type="file" ref="fileInput" rows="5" class="form-control" @change="onSelectFile" />
+
+                            </div>
+                            <div  class="mb-3">
+                                <input type="checkbox"  true-value="yes" false-value="no" v-model="dataInput.priority">
+                                <label class="form-label ml-2 fw-bold">Urgent</label>
+                            </div>
+                            <button type="submit" class="btn btn2" data-bs-dismiss="modal">Save Changes</button>
+                          </form>
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cancel</button>
+                      </div>
+                  </div>
+                  </div>
+              </div>
+
+              <div class="pl-5 pt-3 h-300">
+                  <div class="priority mb-2">
+                      <p class="mr-20" style="font-weight: 600;">Priority:</p> 
+                      <p class="priority-flag" v-if="!projectItem.priority"><i class="bi bi-flag"></i> Normal</p>
+                      <p class="priority-flag-urgent" v-else><i class="bi bi-flag"></i> Urgent</p>
+
+                  </div>
+                  <div class="priority mb-2">
+                      <p class="mr-12" style="font-weight: 600;">Department:</p> 
+                      <p class="department">{{ }}</p>
+
+                  </div>
+                  <div class="assigned mb-2">
+                      <p style="margin-right: 30px; font-weight: 600;">Members:</p>
+                      <ul v-if="dptEmployee.length > 0" v-for="employee in dptEmployee" :key="employee.id">
+                          <li>{{ employee.user.name }}</li>
+                          
+                      </ul>
+                      <ul v-else >
+                          <li class="fw-bold">No members added</li>
+                      </ul>
+
+                  </div>
+                  <div class="deadline mb-2">
+                      <p style="margin-right: 4rem; font-weight: 600;">Deadline:</p> <p>{{ new Date(projectItem.deadline).toDateString() }}</p>
+                  </div>
+                  <div class="tags">
+                      <p  style="margin-right: 3.7rem; font-weight: 600;">Tags:</p>
+                      <ul>
+                          <li style="background-color: rgba(255, 165, 0, 0.2); margin-right: 1rem;">UI Design</li>
+                          <li style="background-color: rgba(128, 0, 128, 0.2); margin-right: 1rem;">Marketing</li>
+                          <li style="background-color: rgba(165, 42, 42, 0.2);">Development</li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+
+          <div>
+              <ProjectTasks v-if="dptEmployee.length > 0" :employee="dptEmployee" style="position: inherit"/>
+              <ProjectTasks v-else style="position: inherit"/>
+          </div>
+
+
+          <div class="divider">
+              <hr class="footer-divider">
+
+              <footer>
+                  <p> &copy; Copyright <span style="color:#2F5508; font-weight: 600;">Peak&Dale</span>. All Rights Reserved <br/>
+                      Designed by <span style="color: #81BE41">Peak&Dale</span></p>
+              </footer>
+          </div>
+  
       </div>
-
-
-      <div class="divider">
-        <hr class="footer-divider">
-
-        <footer>
-          <p> &copy; Copyright <span style="color:#2F5508; font-weight: 600;">Peak&Dale</span>. All Rights Reserved <br/>
-              Designed by <span style="color: #81BE41">Peak&Dale</span></p>
-        </footer>
-      </div>
- 
-    </div>
   </main>
 </template>
 
@@ -100,72 +150,91 @@
   import { useProjectStore } from '../../stores/projectStore';
   import { useTaskStore } from '../../stores/taskStore';
   import { useEmployeeStore } from '../../stores/employeeStore';
+  import { useDepartmentStore } from '../../stores/departmentStore';
   import axiosClient from '../../axios';
   import { MDBTable, MDBBtn, MDBBadge } from 'mdb-vue-ui-kit';
   import ProjectTasks from './ProjectTasks.vue';
 
 
 export default {
-  components: {
-    ProjectTasks,
-    Calendar,
-    DatePicker,
-    MDBTable,
-    MDBBtn,
-    MDBBadge
+    components: {
+      ProjectTasks,
+      Calendar,
+      DatePicker,
+      MDBTable,
+      MDBBtn,
+      MDBBadge
 
-  },
-  
-  data() {
-    return {
-      date: new Date(),
-      projectStore: useProjectStore(),
-      taskStore: useTaskStore(),
-      employeeStore: useEmployeeStore(),
-      dptEmployee: [],
-      projectItem: "",
-      input_data: {
-        task_title: "",
-        deadline: "",
-        description: ""
-      },
-
-    };
-  },
-  mounted(){
-
-    var id = this.$route.params.id;
-
-    this.singleProject(id)
-
+    },
     
+    data() {
+        return {
+            date: new Date(),
+            projectStore: useProjectStore(),
+            taskStore: useTaskStore(),
+            employeeStore: useEmployeeStore(),
+            departmentStore: useDepartmentStore(),
+            dptEmployee: [],
+            projectItem: "",
+            dataInput: {
+                task_title: "",
+                deadline: "",
+                description: "",
+                priority: "",
+                file: "",
+                priority: ""
+            },
 
-  },
+        };
+    },
+    mounted(){
 
-  methods: {
+        var id = this.$route.params.id;
+        this.singleProject(id)
+        this.departmentStore.getDepartments()
 
-    async singleProject(id){
-      try {
-        await axiosClient.get("/projects/"+id)
-        .then((res) => {
-          this.projectItem = res.data
-
-          console.log(this.projectItem)
-          
-          axiosClient.get("/employees/department/"+this.projectItem.department_id)
-          .then((res) => {
-            this.dptEmployee = res.data
-            console.log(this.dptEmployee)
-          })
-
-        })
-      } catch (error) {
-        console.log(error)
-      }
     },
 
+    methods: {
 
-  },
+        async singleProject(id){
+            try {
+                await axiosClient.get("/projects/"+id)
+                .then((res) => {
+                    this.projectItem = res.data
+
+                    console.log(this.projectItem)
+                    
+                    axiosClient.get("/employees/department/"+this.projectItem.department_id)
+                    .then((res) => {
+                        this.dptEmployee = res.data
+                        console.log(this.dptEmployee)
+                    })
+
+                })
+            } catch (error) {
+                console.log(error)
+            }
+        },
+
+        submitForm(){
+            axiosClient.post("/projects/"+this.dataInput.id, this.dataInput, {headers: {"Content-Type":"multipart/form-data"}})  //edit
+        },
+
+        editProject(projectItem){
+            console.log(projectItem)
+            this.dataInput = projectItem
+
+        },
+
+        onSelectFile(event){
+            const file = event.target.files[0];
+            this.dataInput.file = file;
+            
+        },
+
+
+    },
 
 }
 </script>
@@ -239,6 +308,10 @@ export default {
 
     .department {
       font-weight: 500;
+    }
+
+    .btn2 {
+        border: 1px solid #81BE41;
     }
 
     .footer-divider {

@@ -25,8 +25,9 @@ export const useProjectStore = defineStore("projectStore", {
 
     },
     overdue: (state) => {
+      const today = new Date()
       return state.projects.filter((project) => {
-        return project.status == "Overdue";
+        return new Date(project.deadline) < today;
       });
 
     },
@@ -42,7 +43,7 @@ export const useProjectStore = defineStore("projectStore", {
 
     // Read all projects
     async getProjects(){
-
+      console.log(new Date())
       try {
 
         this.loading = true;

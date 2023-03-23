@@ -70,7 +70,7 @@
                               <div class="mb-3">
                                   <label  class="form-label">Deadline</label>
                                   <!-- <input type="Date" class="form-control" v-model="data_input.deadline"/> -->
-                                  <VueDatePicker v-model="data_input.deadline" :enable-time-picker="false" />
+                                  <VueDatePicker v-model="data_input.deadline" :min-date="new Date()" :enable-time-picker="false" />
                                   
                               </div>
                               <div class="mb-3">
@@ -80,13 +80,12 @@
                               <div class="mb-3">
                                   <label class="form-label">Attach File</label>
                                   <input type="file" ref="fileInput" rows="5" class="form-control" @change="onSelectFile" />
-
                               </div>
                               <div  class="mb-3">
-                                  <input type="checkbox" v-model="data_input.priority" true-value="yes" false-value="no">
+                                  <input type="checkbox" v-model="data_input.priority" >
                                   <label class="form-label ml-2 fw-bold">Urgent</label>
                               </div>
-                              <button type="submit" class="btn btn2" data-bs-dismiss="modal">{{ isEditing ? 'Save Changes' : 'Add Project' }}</button>
+                              <button type="submit" class="btn btn2" data-bs-dismiss="modal">Add Project</button>
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -291,7 +290,7 @@ export default {
   methods: {
     submitForm(){
 
-      this.isEditing ? axiosClient.post("/projects/"+this.data_input.id, this.data_input, {headers: {"Content-Type":"multipart/form-data"}}) : this.projectStore.addProject(this.data_input);
+      this.projectStore.addProject(this.data_input);
       
       
       this.data_input = {
@@ -320,13 +319,6 @@ export default {
       } 
     },
 
-    editProject(project){
-      console.log(project)
-      this.data_input = project
-      this.isEditing = true;
-
-    },
-
     togglePriority(id){
 
       const project = this.projectStore.projects.find((item) => {
@@ -335,18 +327,6 @@ export default {
       })
       project.priority = !project.priority;
     },
-
-
-    onSelectFile(event){
-        const file = event.target.files[0];
-
-        this.data_input.file = file;
-
-        this.fileName = file.name;
-
-        console.log(this.fileName)
-        
-      },
 
 
     showAlert(id) {
@@ -360,22 +340,6 @@ export default {
     },
 
   },
-
-  // created() {
-  //   const projectId = this.$route.params.id
-  //   if (projectId) {
-  //     // Fetch existing project data from server
-  //     axios.get('/api/projects/' + 3)
-  //       .then(response => {
-  //         this.data_input = response.data
-  //         this.isEditing = true
-  //       })
-  //       .catch(error => {
-  //         console.error(error)
-  //         // Show error message to user
-  //       })
-  //   }
-  // }
 }
 </script>
 
