@@ -34,7 +34,7 @@
         <div class="add-project ">
           <h4 class=" fw-bolder">{{ projectItem.project_title }}</h4>
           <div>
-              <button class="mr-3"><router-link to="/projects"  style="color: black; font-weight: 500;"><i class="bi bi-arrow-left-short"></i> Back to Projects</router-link></button>
+              <router-link to="/projects"  style="color: black; font-weight: 500;"><button class="mr-3"><i class="bi bi-arrow-left-short"></i> Back to Projects</button></router-link>
               <button><span class="mr-1" data-bs-toggle="modal" data-bs-target="#addProjectForm">Update Project</span>  <i class="bi bi-pencil-square"></i></button>
           </div>
         </div>

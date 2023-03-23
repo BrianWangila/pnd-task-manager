@@ -67,7 +67,7 @@ export const useProjectStore = defineStore("projectStore", {
     async addProject(data){
 
       try {
-        await axiosClient.post("/projects", data, {headers: {"Content-Type": "application/json"}})
+        await axiosClient.post("/projects", data, {headers: {"Content-Type": "multipart/form-data"}})
         .then((res) => {
           
           toast.success(res.data.message, {timeout: 2000})
@@ -80,22 +80,22 @@ export const useProjectStore = defineStore("projectStore", {
     },
 
     // update project
-    async updateProject(data, id){
+    // async updateProject(data, id){
 
-      try {
-        await axiosClient.put("/projects/"+id, data, {headers: {"Content-Type": "application/json"}})
-        .then((res) => {
+    //   try {
+    //     await axiosClient.put("/projects/"+id, data, {headers: {"Content-Type": "multipart/form-data"}})
+    //     .then((res) => {
 
-          console.log("updated")
+    //       console.log("updated")
           
-          toast.success(res.data.message, {timeout: 2000})
-        })
+    //       toast.success(res.data.message, {timeout: 2000})
+    //     })
 
-      } catch (error) {
-        console.log(error)
-        // toast.error(error.response.data.error, {timeout: 5000})
-      }
-    },
+    //   } catch (error) {
+    //     console.log(error)
+    //     // toast.error(error.response.data.error, {timeout: 5000})
+    //   }
+    // },
 
     // get one project
     async singleProject(id){

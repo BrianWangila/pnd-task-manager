@@ -88,7 +88,7 @@
 
 <style scoped>
   .h-line {
-    width: 15rem;
+    width: 4.7rem;
     background-color: rgba(128, 128, 128, 0.397);
     height: 1px;
     margin-bottom: 8px;
@@ -98,8 +98,15 @@
 
   .sidebar-nav img {
     width: 4rem;
-    margin-left: 2rem;
     margin-bottom: 3rem;
 
+  }
+
+  .side-menu .sidebar {
+    width: 5vw;
+  }
+
+  .side-menu .sidebar .nav-item {
+    margin-top: 18px;
   }
 </style>

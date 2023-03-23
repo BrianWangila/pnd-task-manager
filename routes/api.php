@@ -38,7 +38,7 @@ Route::group(["middleware" => ["auth:sanctum"]], function(){
     Route::get('projects/{project}', [ProjectController::class, 'show']);
     Route::post('projects', [ProjectController::class, 'store']);
     Route::delete('projects/{project}', [ProjectController::class, 'delete']);
-    Route::put('projects/{project}', [ProjectController::class, 'update']);
+    Route::post('projects/{project}', [ProjectController::class, 'update']);
     Route::get('employees', [EmployeeController::class, 'index']);
     Route::get('employees/{employee}', [EmployeeController::class, 'show']);
     Route::get('employees/department/{deptID}', [EmployeeController::class, 'employeesByDepartment']);
@@ -46,6 +46,7 @@ Route::group(["middleware" => ["auth:sanctum"]], function(){
     Route::delete('employees/{employee}', [EmployeeController::class, 'delete']);
     Route::post('employees/{employee}', [EmployeeController::class, 'update']);  //update
     Route::get('departments', [DepartmentController::class, 'index']);
+    Route::get('departments/{department}', [DepartmentController::class, 'show']);
     Route::get('tasks', [TaskController::class, 'index']);
     Route::get('tasks/{task}', [TaskController::class, 'show']);
     Route::delete('tasks/{task}', [TaskController::class, 'destroy']);

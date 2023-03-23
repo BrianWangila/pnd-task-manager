@@ -38,9 +38,11 @@ class DepartmentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($department)
     {
-        //
+        $department = Department::with("employees", "projects")->find($department);
+
+        return $department;        
     }
 
     /**

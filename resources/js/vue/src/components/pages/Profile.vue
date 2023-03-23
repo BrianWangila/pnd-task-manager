@@ -285,8 +285,6 @@
           image_file: ""
         },
         
-
-        
       }
     },
     mounted(){
@@ -330,8 +328,6 @@
       },
       
       async updateEmployee(){
-
-        console.log(this.input_data)
 
         try {
           await axiosClient.post("/employees/"+this.user.id, this.input_data, {headers: {"Content-Type": "multipart/form-data"}})

@@ -43,7 +43,7 @@
                           </div>
                       </div>
                   </nav>
-                  <button class="card-btn"><span class="mr-1" @click="isEditing = false" data-bs-toggle="modal" data-bs-target="#addProjectForm">New Project</span>  <i class="bi bi-folder-plus"></i></button>
+                  <button  data-bs-toggle="modal" data-bs-target="#addProjectForm" @click="isEditing = false" class="card-btn"><span class="mr-1">New Project</span>  <i class="bi bi-folder-plus"></i></button>
                 </div>
 
                 <!-- pop-up form -->
@@ -56,37 +56,37 @@
                         </div>
                         <div class="modal-body">
                             <form @submit.prevent="submitForm">
-                            <div class="mb-3">
-                                <label class="form-label">Select Department</label>
-                                <select class="form-select" v-model="data_input.department_id">
-                                    <option v-for="dpt in departmentStore.departments" :key="dpt.id" :value="dpt.id">{{ dpt.department_name }}</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label  class="form-label">Project/Brief Title</label>
-                                <input type="text" class="form-control" v-model="data_input.project_title"/>
-                                <div class="form-text">Write a short title of the project.</div>
-                            </div>
-                            <div class="mb-3">
-                                <label  class="form-label">Deadline</label>
-                                <!-- <input type="Date" class="form-control" v-model="data_input.deadline"/> -->
-                                <VueDatePicker v-model="data_input.deadline" :enable-time-picker="false" />
-                                
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Description</label>
-                                <textarea type="text" rows="5" class="form-control" id="exampleInputPassword1" v-model="data_input.description"></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Attach File</label>
-                                <input type="file" ref="fileInput" rows="5" class="form-control" @change="onSelectFile" />
+                              <div class="mb-3">
+                                  <label class="form-label">Select Department</label>
+                                  <select class="form-select" v-model="data_input.department_id">
+                                      <option v-for="dpt in departmentStore.departments" :key="dpt.id" :value="dpt.id">{{ dpt.department_name }}</option>
+                                  </select>
+                              </div>
+                              <div class="mb-3">
+                                  <label  class="form-label">Project/Brief Title</label>
+                                  <input type="text" class="form-control" v-model="data_input.project_title"/>
+                                  <div class="form-text">Write a short title of the project.</div>
+                              </div>
+                              <div class="mb-3">
+                                  <label  class="form-label">Deadline</label>
+                                  <!-- <input type="Date" class="form-control" v-model="data_input.deadline"/> -->
+                                  <VueDatePicker v-model="data_input.deadline" :enable-time-picker="false" />
+                                  
+                              </div>
+                              <div class="mb-3">
+                                  <label class="form-label">Description</label>
+                                  <textarea type="text" rows="5" class="form-control" id="exampleInputPassword1" v-model="data_input.description"></textarea>
+                              </div>
+                              <div class="mb-3">
+                                  <label class="form-label">Attach File</label>
+                                  <input type="file" ref="fileInput" rows="5" class="form-control" @change="onSelectFile" />
 
-                            </div>
-                            <div  class="mb-3">
-                                <input type="checkbox" v-model="data_input.priority">
-                                <label class="form-label ml-2 fw-bold">Urgent</label>
-                            </div>
-                            <button type="submit" class="btn btn2" data-bs-dismiss="modal">{{ isEditing ? 'Save Changes' : 'Add Project' }}</button>
+                              </div>
+                              <div  class="mb-3">
+                                  <input type="checkbox" v-model="data_input.priority" true-value="yes" false-value="no">
+                                  <label class="form-label ml-2 fw-bold">Urgent</label>
+                              </div>
+                              <button type="submit" class="btn btn2" data-bs-dismiss="modal">{{ isEditing ? 'Save Changes' : 'Add Project' }}</button>
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -248,38 +248,36 @@
 
 export default {
   components: {
-    Calendar,
-    DatePicker,
-    MDBTable,
-    MDBBtn,
-    MDBBadge
+      Calendar,
+      DatePicker,
+      MDBTable,
+      MDBBtn,
+      MDBBadge
 
   },
 
   
   data() {
-    return {
-      date: new Date(),
-      time: null,
-      projectStore: useProjectStore(),
-      departmentStore: useDepartmentStore(),
-      data_input: {
-        project_title: "",
-        department_id: "",
-        deadline: "",
-        description: "",
-        priority: false,
-        file: null
-      },
-      isOpen: false,
-      filter: "all",
-      isEditing: false,
-      urgent: false,
-      priority: "",
+      return {
+          date: new Date(),
+          time: null,
+          projectStore: useProjectStore(),
+          departmentStore: useDepartmentStore(),
+          data_input: {
+              project_title: "",
+              department_id: "",
+              deadline: "",
+              description: "",
+              priority: false,
+              file: ""
+          },
+          isOpen: false,
+          filter: "all",
+          isEditing: false,
+          fileName: ""
 
-    };
+      };
   },
-  // props: ['project', 'index'],
 
   mounted(){
     const today = new Date()
@@ -292,7 +290,8 @@ export default {
 
   methods: {
     submitForm(){
-      this.isEditing ? axiosClient.put("/projects/"+this.data_input.id, this.data_input, {headers: {"Content-Type": "application/json"}}) : this.projectStore.addProject(this.data_input);
+
+      this.isEditing ? axiosClient.post("/projects/"+this.data_input.id, this.data_input, {headers: {"Content-Type":"multipart/form-data"}}) : this.projectStore.addProject(this.data_input);
       
       
       this.data_input = {
@@ -322,6 +321,7 @@ export default {
     },
 
     editProject(project){
+      console.log(project)
       this.data_input = project
       this.isEditing = true;
 
@@ -337,43 +337,25 @@ export default {
     },
 
 
-    project(id){
-      const project = this.projectStore.projects.find((item) => {
-        return item.id === id;
-      });
-
-      if(project.priority){
-        this.priority = "normal"
-      } else {
-        this.priority = "urgent"
-      }
-
-    },
-
     onSelectFile(event){
         const file = event.target.files[0];
-        // const reader = new FileReader();
 
-        // update file
         this.data_input.file = file;
+
+        this.fileName = file.name;
+
+        console.log(this.fileName)
         
       },
 
 
     showAlert(id) {
-      // this.$swal('Hello Vue world!!!');
-      if(
         this.$swal.fire({
         title: 'Confirm Delete',
         text: 'Are you sure you want to delete?',
         icon: 'info',
         confirmButtonText: 'Cool'
       })
-      ){
-        // this.projectStore.deleteProject(id)
-      }
-      
-
       
     },
 

@@ -74,6 +74,53 @@
                         <div>
                             <h4>Project Files</h4>
                         </div>
+
+                        <div class="project-files">
+                            <div class="upload-btn">
+                                <button  data-bs-toggle="modal" data-bs-target="#job_file_modal"><i class="bi bi-upload mr-2"></i> Upload File</button>
+                            </div>
+                            <!-- Files Modal -->
+                            <div id="job_file_modal" class="modal custom-modal fade" role="dialog">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title"><span style="font-weight: 600;">{{ projectItem.project_title }}</span></h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form @submit.prevent="submitJobFileForm" enctype="multipart/form-data">
+                                                <div class="form-group">
+                                                    <label>File Name<span class="text-danger">*</span></label>
+                                                    <input class="form-control" type="text">
+                                                    <div class="invalid-feedback">Field is required</div>
+                                                </div>
+                                                <div class="form-group mt-3">
+                                                    <label>File </label>
+                                                    <input class="form-control" @change="jobFileUpload" type="file">
+                                                </div>
+                                                <div class="submit-section">
+                                                    <button class="btn mt-3" type="submit">Submit</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /Files Modal -->
+
+                            <div class="row">
+                                <div class="files" v-if="projectItem.file">
+                                    <div>
+                                        <img src="../../assets/images/files.png" alt="" />
+                                    </div>
+                                    <button @click="openFile(projectItem.file)">Open</button>
+                                </div>
+                            </div>
+                            
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -91,28 +138,28 @@
               <form @submit.prevent="addTask">
                 <div class="mb-3">
                     <label class="form-label">Project</label>
-                    <input type="text" class="form-control" v-model="data_input.project_id" disabled/>
+                    <input type="text" class="form-control" v-model="dataInput.project_id" disabled/>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Task Title</label>
-                    <input type="text" class="form-control" v-model="data_input.task_title"/>
+                    <input type="text" class="form-control" v-model="dataInput.task_title"/>
                     <div class="form-text">Write a short title of the task.</div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Deadline</label>
-                    <input type="date" class="form-control" v-model="data_input.deadline"/>
+                    <input type="date" class="form-control" v-model="dataInput.deadline"/>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Description</label>
-                    <textarea type="text" rows="5" class="form-control" v-model="data_input.description"></textarea>
+                    <textarea type="text" rows="5" class="form-control" v-model="dataInput.description"></textarea>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Assign To</label>
-                    <select class="form-select" v-model="data_input.employee_id">
+                    <select class="form-select" v-model="dataInput.employee_id">
                         <option v-for="name in employee" :key="name.id" :value="name.id"> {{ name.user.name }}</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn2" v-if="data_input.task_title">Submit</button>
+                <button type="submit" class="btn btn2" v-if="dataInput.task_title">Submit</button>
               </form>
               </div>
               <div class="modal-footer">
@@ -156,13 +203,14 @@ export default {
             departmentStore: useDepartmentStore(),
             projectItem: "",
             projectTasks: "",
-            data_input: {
+            dataInput: {
                 project_id: "",
                 employee_id: "",
                 task_title: "",
                 deadline: "",
                 description: "",
             },
+            fileUrl: ""
 
         };
     },
@@ -172,6 +220,7 @@ export default {
         this.singleProject(id)
         this.employeeStore.getEmployees()
         this.dptEmployees()
+        
 
         this.assignedEmp(id)
         console.log(this.taskStore.tasks)
@@ -185,7 +234,7 @@ export default {
                 axiosClient.get("/projects/"+id)
                 .then((res) => {
                     this.projectItem = res.data
-                    this.data_input.project_id = this.projectItem.id
+                    this.dataInput.project_id = this.projectItem.id
                     this.projectTasks = this.projectItem.tasks
 
                     console.log(this.projectItem)
@@ -196,16 +245,17 @@ export default {
             }
             
         },
-        addTask(){
-            this.taskStore.addTask(this.data_input)
+        addTask(id){
+            this.taskStore.addTask(this.dataInput)
 
-            this.data_input = {
+            this.dataInput = {
                 task_title: "",
                 deadline: "",
                 description: "",
             }
 
             window.location.reload()
+            // this.singleProject(id)
 
         },
 
@@ -219,7 +269,15 @@ export default {
             this.taskStore.tasks.find((item) => {
                 console.log(item.employee)
             })
-        }
+        },
+
+        openFile(file) {
+            if(file) {
+                let url = this.projectItem.file;
+                url = new URL('../../../../../../public' + file, import.meta.url).href;
+                window.open(url);
+            }
+        },
     },
     computed: {
         
@@ -261,6 +319,41 @@ export default {
 
     .project-description {
       min-height: 33vh;
+    }
+
+    .project-files .upload-btn button {
+        border: 1px solid #7dc530;
+        padding: 2px 15px;
+        border-radius: 5px;
+    }
+
+    .project-files .files {
+        border: 1px solid #7dc5309c;
+        width: 10rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
+        border-radius: 10px;
+        margin: 20px 10px;
+    }
+
+    .project-files .files button {
+        border: 1px solid #7dc5309c;
+        margin-top: 1rem;
+        padding: 2px 13px;
+        border-radius: 5px;
+
+    }
+
+    .project-files button:hover {
+        background-color: #7dc53031;
+        
+    }
+
+    .project-files .files img {
+        width: 80px;
     }
 
     .project-description hr {
