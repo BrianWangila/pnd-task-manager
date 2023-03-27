@@ -134,7 +134,7 @@ class ProjectController extends Controller
                 "project_title" => $request -> project_title,
                 "department_id" => $request -> department_id, 
                 "description" => $request -> description, 
-                "deadline" => $request -> deadline, 
+                "deadline" => date('Y-m-d', strtotime($request->deadline)),
                 "priority" => $request -> priority ? 1 : 0,
                 "file" => $project_file ? $file_url . $filename : null,
             ]);

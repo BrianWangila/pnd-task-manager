@@ -15,6 +15,7 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = Task::with("project", "employee")->get();
+        
         // $user = Employee::with('user')->where()->get();
 
         // foreach ($tasks as $task){
@@ -23,8 +24,8 @@ class TaskController extends Controller
         //         $task['assignee'] = $user;
         //     }
         // };
-
-        return $tasks;
+       return $tasks;
+        
     }
 
     /**
@@ -44,8 +45,30 @@ class TaskController extends Controller
         //     'employee_id' => 'nullable|integer',
         // ]);
 
-        $task = Task::create($request->all());
-        return $task;
+              
+
+        try {
+        $task = Task::create([
+                "task_title" => $request -> task_title,
+                "project_id" => $request -> project_id, 
+                "description" => $request -> description, 
+                "deadline" => date('Y-m-d', strtotime($request->deadline)),
+                "priority" => $request -> priority ? 1 : 0
+            ]);
+
+            return ([
+                $task, 
+                "message" => "Task added to this project"
+            ]);
+        } catch (\Throwable $th) {
+            $response = [
+                "status" => 500,
+                "message" => "Something went wrong",
+                "error" => $th->getMessage()
+            ];
+
+            return response()->json($response, 500);
+        }
     }
 
     /**
@@ -55,12 +78,16 @@ class TaskController extends Controller
     {
         // $user = Employee::where('user_id', 'id')->get();
         $task = Task::with("project", "employee")->find($id);
-
+        $userID = $task->employee->user_id;
+        $user = User::where('id',$userID);
         // foreach($user as $item){
         //     $item['user'] = "user";
         // }
         
-        return $task;
+        return ([
+            $task,
+            $user
+        ]);
     }
 
     /**
@@ -74,9 +101,33 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        
+        try {
+            $task = Task::find($id);
+
+            $task->update([
+                "description" => $request -> description, 
+                "deadline" => date('Y-m-d', strtotime($request->deadline)),
+                "priority" => $request -> priority ? 1 : 0,
+                "employee_id" => $request -> employee_id,
+                "task_title" => $request -> task_title,
+            ]);
+
+            return response([
+                $task,
+                "message" => "Task has been updated",
+            ]);
+        } catch (\Throwable $th) {
+            $response = [
+                "status" => 500,
+                "message" => "Something went wrong",
+                "error" => $th->getMessage()
+            ];
+
+            return response()->json($response, 500);
+        }
     }
 
     /**

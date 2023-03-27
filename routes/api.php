@@ -56,6 +56,7 @@ Route::group(["middleware" => ["auth:sanctum"]], function(){
     Route::get('tasks/{task}', [TaskController::class, 'show']);
     Route::delete('tasks/{task}', [TaskController::class, 'destroy']);
     Route::post('tasks', [TaskController::class, 'store']);
+    Route::post('tasks/{task}', [TaskController::class, 'update']); //update
 
     Route::get('files', [FileController::class, 'index']);
     Route::get('files/{file}', [FileController::class, 'show']);

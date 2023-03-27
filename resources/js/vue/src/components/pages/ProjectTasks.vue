@@ -61,8 +61,11 @@
                                             
                                         </td>
                                         <td>
-                                            <MDBBtn color="link" size="sm" rounded>
+                                            <MDBBtn @click="editTask(task)" data-bs-toggle="modal" data-bs-target="#addTaskForm" color="link" size="sm" rounded>
                                                 Edit
+                                            </MDBBtn>
+                                            <MDBBtn color="link" size="sm" rounded>
+                                                Delete
                                             </MDBBtn>
                                         </td>
                                     </tr>
@@ -79,7 +82,7 @@
                             <div class="upload-btn">
                                 <button  data-bs-toggle="modal" data-bs-target="#job_file_modal"><i class="bi bi-upload mr-2"></i> Upload File</button>
                             </div>
-                            <!-- Files Modal -->
+                            <!-- Popup file upload Modal -->
                             <div id="job_file_modal" class="modal custom-modal fade" role="dialog">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
@@ -181,7 +184,7 @@
                         <option v-for="name in employee" :key="name.id" :value="name.id"> {{ name.user.name }}</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn2" v-if="dataInput.task_title">Submit</button>
+                <button type="submit" class="btn btn2" v-if="dataInput.task_title" data-bs-dismiss="modal">{{ isEditing ? 'Save Changes' : 'Add Task' }}</button>
               </form>
               </div>
               <div class="modal-footer">
@@ -203,127 +206,145 @@
     import axiosClient from '../../axios';
     import { MDBTable, MDBBtn, MDBBadge } from 'mdb-vue-ui-kit';
     import { useFileStore } from '../../stores/fileStore';
+    import { useToast } from 'vue-toastification'
 
 
-export default {
-    name: "ProjectTask",
+    export default {
+        name: "ProjectTask",
 
-    components: {
-        MDBTable,
-        MDBBtn,
-        MDBBadge
+        components: {
+            MDBTable,
+            MDBBtn,
+            MDBBadge
 
-    },
+        },
 
-    props: ["employee"],
+        props: ["employee"],
 
-    data() {
-        return {
-            date: new Date(),
-            projectStore: useProjectStore(),
-            taskStore: useTaskStore(),
-            employeeStore: useEmployeeStore(),
-            departmentStore: useDepartmentStore(),
-            fileStore: useFileStore(),
-            projectItem: "",
-            projectTasks: "",
-            dataInput: {
-                project_id: "",
-                employee_id: "",
-                task_title: "",
-                deadline: "",
-                description: "",
-                file_name: "",
-                file: ""
+        data() {
+            return {
+                date: new Date(),
+                projectStore: useProjectStore(),
+                taskStore: useTaskStore(),
+                employeeStore: useEmployeeStore(),
+                departmentStore: useDepartmentStore(),
+                fileStore: useFileStore(),
+                toast: useToast(),
+                projectItem: "",
+                projectTasks: "",
+                dataInput: {
+                    project_id: "",
+                    employee_id: "",
+                    task_title: "",
+                    deadline: "",
+                    description: "",
+                    file_name: "",
+                    file: ""
+                },
+                fileUrl: "",
+                isEditing: false
+
+            };
+        },
+        mounted(){
+            var id = this.$route.params.id;
+            
+            this.singleProject(id)
+            this.employeeStore.getEmployees()
+            this.dptEmployees()
+            
+
+            this.assignedEmp(id)
+            console.log(this.taskStore.tasks)
+
+
+        },
+
+        methods: {
+            singleProject(id){
+                try {
+                    axiosClient.get("/projects/"+id)
+                    .then((res) => {
+                        this.projectItem = res.data
+                        this.dataInput.project_id = this.projectItem.id
+                        this.projectTasks = this.projectItem.tasks
+
+                        console.log(this.projectItem)
+                    })
+
+                } catch (error) {
+                    console.log(error)
+                }
+                
             },
-            fileUrl: ""
-
-        };
-    },
-    mounted(){
-        var id = this.$route.params.id;
-        
-        this.singleProject(id)
-        this.employeeStore.getEmployees()
-        this.dptEmployees()
-        
-
-        this.assignedEmp(id)
-        console.log(this.taskStore.tasks)
 
 
-    },
+            addTask(){
+                // this.isEditing = !this.isEditing
+                this.isEditing ? axiosClient.post("/tasks/"+this.dataInput.id, this.dataInput, {headers: {"Content-Type":"multipart/form-data"}})  : this.taskStore.addTask(this.dataInput)
 
-    methods: {
-        singleProject(id){
-            try {
-                axiosClient.get("/projects/"+id)
-                .then((res) => {
-                    this.projectItem = res.data
-                    this.dataInput.project_id = this.projectItem.id
-                    this.projectTasks = this.projectItem.tasks
+                this.dataInput = {
+                    task_title: "",
+                    deadline: "",
+                    description: "",
+                }
 
-                    console.log(this.projectItem)
+                this.toast.success("Task Updated", {timeout: 2000})
+
+                // window.location.reload()
+
+            },
+
+
+            editTask(task){
+                this.dataInput = task
+                this.isEditing = true
+            },
+
+            
+            dptEmployees(){
+                this.employeeStore.getEmployeesByDpt(this.projectItem.department_id)
+            },
+
+
+            assignedEmp(id){
+                this.taskStore.getTasks()
+                this.taskStore.tasks.find((item) => {
+                    console.log(item.employee)
                 })
+            },
 
-            } catch (error) {
-                console.log(error)
-            }
+
+            submitFileForm(){
+                this.fileStore.addFile(this.dataInput)
+                
+                // .then(()=>{
+                //     window.location.reload()
+                // })
+
+                
+            },
+
+
+            onSelectFile(event){
+                const file = event.target.files[0];
+
+                this.dataInput.file = file;
+            },
+
+
+            openFile(file) {
+                if(file) {
+                    let url = this.projectItem.file;
+                    url = new URL('../../../../../../public' + file, import.meta.url).href;
+                    window.open(url);
+                }
+            },
+        },
+        computed: {
             
-        },
-        addTask(){
-            this.taskStore.addTask(this.dataInput)
-
-            this.dataInput = {
-                task_title: "",
-                deadline: "",
-                description: "",
-            }
-
-            window.location.reload()
-
-        },
-
-        
-        dptEmployees(){
-            this.employeeStore.getEmployeesByDpt(this.projectItem.department_id)
-        },
-
-        assignedEmp(id){
-            this.taskStore.getTasks()
-            this.taskStore.tasks.find((item) => {
-                console.log(item.employee)
-            })
-        },
-
-        submitFileForm(){
-            this.fileStore.addFile(this.dataInput)
-            
-            // .then(()=>{
-            //     window.location.reload()
-            // })
-
-            
-        },
-
-        onSelectFile(event){
-            const file = event.target.files[0];
-
-            this.dataInput.file = file;
-        },
-
-        openFile(file) {
-            if(file) {
-                let url = this.projectItem.file;
-                url = new URL('../../../../../../public' + file, import.meta.url).href;
-                window.open(url);
-            }
-        },
-    },
-    computed: {
-        
+        }
     }
-}
 </script>
 
 
@@ -403,7 +424,7 @@ export default {
     }
 
     .project-files .files button {
-        border: 1px solid #7dc5309c;
+        border: 1px solid #4f8d0d;
         margin-top: 1rem;
         padding: 2px 13px;
         border-radius: 5px;

@@ -44,12 +44,14 @@ export const useTaskStore = defineStore("taskStore", {
         await axiosClient.post("/tasks", data, {headers: {"Content-Type": "application/json"}})
         .then((res) => {
           console.log(res)
+          toast.success(res.data.message, {timeout: 2000})
         })
 
-        toast.success("New Task Added the Project", {timeout: 2000})
+        
 
       } catch (error) {
         console.log(error)
+        toast.error(error.response.data.message, {timeout: 3000})
       }
     },
 

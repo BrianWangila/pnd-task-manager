@@ -30,48 +30,28 @@
       </div>
   
       <div class="content">
-          <div class="main-content">
-              <div class="">
-                  <div class="card add-project ml-6 mt-3 mb-3">
-                      <h4 class=" fw-bolder fs-5 mt-2">Projects Schedule</h4>
-                  </div>
- 
-                  <div class="projects ">
-                      <div class="row">
-                        <!-- <div>
-                            <h4>YOU DON'T HAVE ANY REPORTS!</h4>
-                            <div class="empty-file">
-                                <div class="empty-file-image1">
-                                    <center><img src="../../assets/images/empty-file.png" alt="empty files" /></center>
-                                    <p> All your files and documents for your projects <br/> and tasks will appear here. </p>
-                                </div>
-                            </div> 
-                        </div> -->
-                        
-                        <!-- <div class="files-image">
-                          <div class="file-image1">
-                            <center><img src="../../assets/images/files.png" alt="files" /></center>
-                            <div>
-                              <p>Project Specification Document</p>
-                              <button>Open</button>
-                            </div>
-                          </div>
-                        </div> -->
-                      </div>
-                  </div>
-              </div>
-          </div>
-          
-  
-        <div class="divider">
-          <hr class="footer-divider">
-  
-          <footer>
-            <p> &copy; Copyright <span style="color:#2F5508; font-weight: 600;">Peak&Dale</span>. All Rights Reserved <br/>
-                Designed by <span style="color: #81BE41">Peak&Dale</span></p>
-          </footer>
-        </div>
-   
+            <div class="main-content">
+                <div class="">
+                    <div class="card add-project ml-6 mt-3 mb-3">
+                        <h4 class=" fw-bolder fs-5 mt-2">Calendar Schedule</h4>
+                    </div>
+
+                    <div class="projects ">
+                        <div id="calendar"></div>
+                    </div>
+                </div>
+            </div>
+            
+    
+            <div class="divider">
+            <hr class="footer-divider">
+    
+            <footer>
+                <p> &copy; Copyright <span style="color:#2F5508; font-weight: 600;">Peak&Dale</span>. All Rights Reserved <br/>
+                    Designed by <span style="color: #81BE41">Peak&Dale</span>
+                </p>
+            </footer>
+            </div>
       </div>
     </main>
   </template>
@@ -81,6 +61,7 @@
     import { useProjectStore } from '../../stores/projectStore';
     import { useDepartmentStore } from '../../stores/departmentStore';
     import { MDBTable, MDBBtn, MDBBadge } from 'mdb-vue-ui-kit';
+    // import calendar from '../../calendar/calendar';
   
   
   export default {

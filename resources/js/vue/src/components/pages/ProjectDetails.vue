@@ -32,7 +32,7 @@
       <div class="content">
           <div class="ml-8 mt-3 pb-3 p-3 mr-8 bg-white">
               <div class="add-project ">
-                  <h4 class=" fw-bolder">{{ projectItem.project_title }}</h4>
+                  <h4 class=" fw-bolder">{{ projectItem.project_title }} <span style="font-weight: 500; font-size: 20px;">({{ countTask }})</span></h4>
                   <div>
                       <router-link to="/projects"  style="color: black; font-weight: 500;"><button class="mr-3"><i class="bi bi-arrow-left-short"></i> Back to Projects</button></router-link>
                       <button><span @click="editProject(projectItem)" class="mr-1" data-bs-toggle="modal" data-bs-target="#editProject">Update Project</span>  <i class="bi bi-pencil-square"></i></button>
@@ -51,7 +51,7 @@
                           <form @submit.prevent="submitForm">
                             <div class="mb-3">
                                 <label class="form-label">Select Department</label>
-                                <select class="form-select" >
+                                <select class="form-select" v-model="dataInput.department_id">
                                     <option v-for="dpt in departmentStore.departments" :key="dpt.id" :value="dpt.id">{{ dpt.department_name }}</option>
                                 </select>
                             </div>
@@ -62,7 +62,6 @@
                             </div>
                             <div class="mb-3">
                                 <label  class="form-label">Deadline</label>
-                                <!-- <input type="Date" class="form-control" v-model="data_input.deadline"/> -->
                                 <VueDatePicker v-model="dataInput.deadline" :min-date="new Date()" :enable-time-picker="false" />
                                 
                             </div>
@@ -76,7 +75,7 @@
 
                             </div>
                             <div  class="mb-3">
-                                <input type="checkbox"  true-value="yes" false-value="no" v-model="dataInput.priority">
+                                <input type="checkbox" v-model="dataInput.priority">
                                 <label class="form-label ml-2 fw-bold">Urgent</label>
                             </div>
                             <button type="submit" class="btn btn2" data-bs-dismiss="modal">Save Changes</button>
@@ -98,7 +97,7 @@
                   </div>
                   <div class="priority mb-2">
                       <p class="mr-12" style="font-weight: 600;">Department:</p> 
-                      <p class="department">{{ }}</p>
+                      <p class="department">{{ dptName }}</p>
 
                   </div>
                   <div class="assigned mb-2">
@@ -146,97 +145,109 @@
 </template>
 
 <script>
-  import { Calendar, DatePicker } from 'v-calendar';
-  import { useProjectStore } from '../../stores/projectStore';
-  import { useTaskStore } from '../../stores/taskStore';
-  import { useEmployeeStore } from '../../stores/employeeStore';
-  import { useDepartmentStore } from '../../stores/departmentStore';
-  import axiosClient from '../../axios';
-  import { MDBTable, MDBBtn, MDBBadge } from 'mdb-vue-ui-kit';
-  import ProjectTasks from './ProjectTasks.vue';
+    import { Calendar, DatePicker } from 'v-calendar';
+    import { useProjectStore } from '../../stores/projectStore';
+    import { useTaskStore } from '../../stores/taskStore';
+    import { useEmployeeStore } from '../../stores/employeeStore';
+    import { useDepartmentStore } from '../../stores/departmentStore';
+    import axiosClient from '../../axios';
+    import { MDBTable, MDBBtn, MDBBadge } from 'mdb-vue-ui-kit';
+    import ProjectTasks from './ProjectTasks.vue';
 
 
-export default {
-    components: {
-      ProjectTasks,
-      Calendar,
-      DatePicker,
-      MDBTable,
-      MDBBtn,
-      MDBBadge
+    export default {
+        components: {
+        ProjectTasks,
+        Calendar,
+        DatePicker,
+        MDBTable,
+        MDBBtn,
+        MDBBadge
 
-    },
-    
-    data() {
-        return {
-            date: new Date(),
-            projectStore: useProjectStore(),
-            taskStore: useTaskStore(),
-            employeeStore: useEmployeeStore(),
-            departmentStore: useDepartmentStore(),
-            dptEmployee: [],
-            projectItem: "",
-            dataInput: {
-                task_title: "",
-                deadline: "",
-                description: "",
-                priority: "",
-                file: "",
-                priority: ""
+        },
+        
+        data() {
+            return {
+                date: new Date(),
+                projectStore: useProjectStore(),
+                taskStore: useTaskStore(),
+                employeeStore: useEmployeeStore(),
+                departmentStore: useDepartmentStore(),
+                dptEmployee: [],
+                projectItem: "",
+                dataInput: {
+                    task_title: "",
+                    department_id: "",
+                    deadline: "",
+                    description: "",
+                    priority: "",
+                    file: "",
+                    priority: ""
+                },
+                dptName: "",
+                countTask: ""
+
+            };
+        },
+        mounted(){
+
+            var id = this.$route.params.id;
+            this.singleProject(id)
+            this.departmentStore.getDepartments()
+
+        },
+
+        methods: {
+
+            async singleProject(id){
+                try {
+                    await axiosClient.get("/projects/"+id)
+                    .then((res) => {
+                        this.projectItem = res.data
+                        this.dptName = this.projectItem.department.department_name
+                        const taskCount = this.projectItem.tasks.length
+                        if(taskCount == 1){
+                            return this.countTask = `${ taskCount } task`
+                        } else if  (taskCount > 1){
+                            return this.countTask = `${ taskCount } tasks`
+                        } else {
+                            return this.countTask = "No tasks"
+                        }
+                        
+                        
+                        axiosClient.get("/employees/department/"+this.projectItem.department_id)
+                        .then((res) => {
+                            this.dptEmployee = res.data
+                            console.log(this.dptEmployee)
+                        })
+                    })
+                } catch (error) {
+                    console.log(error)
+                }
             },
 
-        };
-    },
-    mounted(){
+            submitForm(){
+                
+                axiosClient.post("/projects/"+this.dataInput.id, this.dataInput, {headers: {"Content-Type":"multipart/form-data"}})  //edit
+                // axiosClient.post("/projects/"+this.dataInput.id, this.dataInput, {headers: {"Content-Type":"application/json"}})  //edit
+            },
 
-        var id = this.$route.params.id;
-        this.singleProject(id)
-        this.departmentStore.getDepartments()
+            editProject(projectItem){
+                console.log(projectItem)
+                this.dataInput = projectItem
 
-    },
+            },
 
-    methods: {
+            onSelectFile(event){
+                const file = event.target.files[0];
+                this.dataInput.file = file;
+                
+            },
 
-        async singleProject(id){
-            try {
-                await axiosClient.get("/projects/"+id)
-                .then((res) => {
-                    this.projectItem = res.data
-
-                    console.log(this.projectItem)
-                    
-                    axiosClient.get("/employees/department/"+this.projectItem.department_id)
-                    .then((res) => {
-                        this.dptEmployee = res.data
-                        console.log(this.dptEmployee)
-                    })
-
-                })
-            } catch (error) {
-                console.log(error)
-            }
-        },
-
-        submitForm(){
-            axiosClient.post("/projects/"+this.dataInput.id, this.dataInput, {headers: {"Content-Type":"multipart/form-data"}})  //edit
-        },
-
-        editProject(projectItem){
-            console.log(projectItem)
-            this.dataInput = projectItem
 
         },
 
-        onSelectFile(event){
-            const file = event.target.files[0];
-            this.dataInput.file = file;
-            
-        },
-
-
-    },
-
-}
+    }
 </script>
 
 

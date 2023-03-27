@@ -223,36 +223,6 @@ main {
     font-weight: 600;
   }
 
-  .files-image {
-      border: 1px solid lightgray;
-      width: 16rem;
-      height: 18rem;
-      margin-top: 2vh;
-      border-radius: 10px;
-      background: white;
-      margin-left: 1vw;
-      margin-right: 0.5vw;
-  }
-
-  .file-image1 {
-      text-align: center;
-      position: relative;
-      top: 4vh;
-  }
-
-  .file-image1 p {
-      width: 10vw;
-      margin: auto;
-      margin-top: 1vh;
-      margin-bottom: 2vh;
-  }
-
-  .file-image1 button {
-      border: 1px solid #75c8215d;
-      padding: 5px 30px;
-      border-radius: 5px;
-  }
-
   .empty-file {
       border: 1 px solid lightgray;
       /* background: white; */
@@ -278,7 +248,7 @@ main {
     }
 
     .project-files .files {
-        border: 1px solid #366208ec;
+        border: 1px solid #4f8d0d;
         width: 14rem;
         height: 15rem;
         display: flex;

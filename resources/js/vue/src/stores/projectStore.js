@@ -80,23 +80,6 @@ export const useProjectStore = defineStore("projectStore", {
       }
     },
 
-    // update project
-    // async updateProject(data, id){
-
-    //   try {
-    //     await axiosClient.put("/projects/"+id, data, {headers: {"Content-Type": "multipart/form-data"}})
-    //     .then((res) => {
-
-    //       console.log("updated")
-          
-    //       toast.success(res.data.message, {timeout: 2000})
-    //     })
-
-    //   } catch (error) {
-    //     console.log(error)
-    //     // toast.error(error.response.data.error, {timeout: 5000})
-    //   }
-    // },
 
     // get one project
     async singleProject(id){
@@ -104,6 +87,7 @@ export const useProjectStore = defineStore("projectStore", {
         await axiosClient.get("/projects/"+id)
         .then((res) => {
           this.projectItem = res.data
+          
 
         })
       } catch (error) {

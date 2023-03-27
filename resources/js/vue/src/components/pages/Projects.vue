@@ -58,31 +58,31 @@
                             <form @submit.prevent="submitForm">
                               <div class="mb-3">
                                   <label class="form-label">Select Department</label>
-                                  <select class="form-select" v-model="data_input.department_id">
+                                  <select class="form-select" v-model="dataInput.department_id">
                                       <option v-for="dpt in departmentStore.departments" :key="dpt.id" :value="dpt.id">{{ dpt.department_name }}</option>
                                   </select>
                               </div>
                               <div class="mb-3">
                                   <label  class="form-label">Project/Brief Title</label>
-                                  <input type="text" class="form-control" v-model="data_input.project_title"/>
+                                  <input type="text" class="form-control" v-model="dataInput.project_title"/>
                                   <div class="form-text">Write a short title of the project.</div>
                               </div>
                               <div class="mb-3">
                                   <label  class="form-label">Deadline</label>
-                                  <!-- <input type="Date" class="form-control" v-model="data_input.deadline"/> -->
-                                  <VueDatePicker v-model="data_input.deadline" :min-date="new Date()" :enable-time-picker="false" />
+                                  <!-- <input type="Date" class="form-control" v-model="dataInput.deadline"/> -->
+                                  <VueDatePicker v-model="dataInput.deadline" :min-date="new Date()" :enable-time-picker="false" />
                                   
                               </div>
                               <div class="mb-3">
                                   <label class="form-label">Description</label>
-                                  <textarea type="text" rows="5" class="form-control" id="exampleInputPassword1" v-model="data_input.description"></textarea>
+                                  <textarea type="text" rows="5" class="form-control" id="exampleInputPassword1" v-model="dataInput.description"></textarea>
                               </div>
                               <div class="mb-3">
                                   <label class="form-label">Attach File</label>
                                   <input type="file" ref="fileInput" rows="5" class="form-control" @change="onSelectFile" />
                               </div>
-                              <div  class="mb-3">
-                                  <input type="checkbox" v-model="data_input.priority" >
+                              <div class="mb-3">
+                                  <input type="checkbox" v-model="dataInput.priority" >
                                   <label class="form-label ml-2 fw-bold">Urgent</label>
                               </div>
                               <button type="submit" class="btn btn2" data-bs-dismiss="modal">Add Project</button>
@@ -105,20 +105,21 @@
                                   <!-- <i @click="togglePriority(project.id)" :class="{active: project.priority}" class="bi bi-flag-fill priority" title="{ priority }"  type="button"></i> -->
                                   <i v-if="project.priority" class="bi bi-flag-fill priority" title="Urgent"  type="button"></i>
                                   <div class="title">
-                                    <router-link class="card-title" :to="`/projects/${project.id}`">Front-end Development</router-link>
+                                    <router-link class="card-title" :to="`/projects/${project.id}`">{{ project.project_title }}</router-link>
                                     <div
                                         @mouseenter="toggle('display-action'+project.id)" 
-                                        @mouseleave="toggleOff('display-action'+project.id)" >
+                                        @mouseleave="toggleOff('display-action'+project.id)" 
+                                        >
 
-                                      <i type="button" class="bi bi-three-dots"></i>
+                                      <i type="button" class="bi bi-three-dots dots-btn"></i>
                                       <div class="delete-edit" :id="'display-action'+project.id" style="display:none">
-                                        <i @click="editProject(project)" data-bs-toggle="modal" data-bs-target="#addProjectForm" class="fas fa-edit mb-2" title="Update" style="color: skyblue;" type="button"></i>
+                                        <!-- <i @click="editProject(project)" data-bs-toggle="modal" data-bs-target="#addProjectForm" class="fas fa-edit mb-2" title="Update" style="color: skyblue;" type="button"></i> -->
                                         <i @click="projectStore.deleteProject(project.id)" class="fas fa-trash" title="Delete" style="color: darkorange;" type="button"></i>
                                       </div>
 
                                     </div>
                                   </div>
-                                  <p class="card-text mt-3 fw-bold">{{ project.project_title }}</p>
+                                  <p class="card-text mt-3">{{ project.description.slice(0, 50) }}...</p>
                                   <div>
                                     <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(project.deadline).toDateString() }}</span>
                                   </div>
@@ -262,7 +263,7 @@ export default {
           time: null,
           projectStore: useProjectStore(),
           departmentStore: useDepartmentStore(),
-          data_input: {
+          dataInput: {
               project_title: "",
               department_id: "",
               deadline: "",
@@ -290,10 +291,10 @@ export default {
   methods: {
     submitForm(){
 
-      this.projectStore.addProject(this.data_input);
+      this.projectStore.addProject(this.dataInput);
       
       
-      this.data_input = {
+      this.dataInput = {
         project_title: "",
         deadline: "",
         description: ""
@@ -357,7 +358,8 @@ export default {
 
     .delete-edit {
       position: absolute;
-      left: 17vw;
+      right: 0;
+      top: 40px;
       display: flex;
       flex-direction: column;
     }
@@ -414,6 +416,12 @@ export default {
     justify-content: space-between;
   }
 
+  .card-body .dots-btn {
+    position: relative;
+    right: -30px;
+    top: -20px;
+  }
+
   .card-body .priority {
     position: absolute;
     top: 10px;
@@ -439,8 +447,8 @@ export default {
   .card-title {
     background-color: rgba(255, 165, 0, 0.12);
     color: #FFA500;
-    padding: 10px;
-    border-radius: 25px;
+    padding: 5px 15px;
+    border-radius: 15px;
     font-weight: 600;
   }
 
