@@ -49,50 +49,30 @@
                             
                               <div class="mb-3">
                                   <label class="form-label">Full Names</label>
-                                  <input type="text" class="form-control" v-model="data_input.name"/>
+                                  <input type="text" class="form-control" v-model="dataInput.name"/>
                               </div>
                               <div class="mb-3">
                                   <label class="form-label">Email Address</label>
-                                  <input type="email" class="form-control" v-model="data_input.email"/>
-                              </div>
-                              <button type="submit" class="btn btn2">Save</button>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-warning"  data-bs-target="#addEmployeeInfo" data-bs-toggle="modal">Next</button> 
-                        </div>
-                    </div>
-                    </div>
-                </div>
-
-                <!-- Modal to add employee details -->
-                <div class="modal fade" id="addEmployeeInfo" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
-                    <div class="modal-dialog  modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title text-dark" id="ModalLabel">Add Employee Details</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form @submit.prevent="addEmployeeDets">
-                            
-                              <div class="mb-3">
-                                  <label class="form-label">User ID</label>
-                                  <input type="text" class="form-control" v-model="data_input.userId"/>
+                                  <input type="email" class="form-control" v-model="dataInput.email"/>
                               </div>
                               <div class="mb-3">
-                                  <label class="form-label">Department</label>
-                                  <input type="text" class="form-control" v-model="data_input.department"/>
+                                  <label class="form-label">Select Department</label>
+                                  <select class="form-select" v-model="dataInput.departmentId">
+                                      <option v-for="dpt in departmentStore.departments" :key="dpt.id" :value="dpt.id">{{ dpt.department_name }}</option>
+                                  </select>
                               </div>
                               <div class="mb-3">
                                   <label class="form-label">Job Title</label>
-                                  <input type="text" class="form-control" v-model="data_input.jobTitle"/>
+                                  <input type="text" class="form-control" v-model="dataInput.jobTitle"/>
                               </div>
                               <div class="mb-3">
                                   <label class="form-label">Role</label>
-                                  <input type="text" class="form-control" v-model="data_input.role"/>
+                                  <select class="form-select" v-model="dataInput.role">
+                                      <option value="hod">H.O.D</option>
+                                      <option value="employee">Employee</option>
+                                  </select>
                               </div>
-                              <button type="submit" class="btn btn2">Submit</button>
+                              <button type="submit" class="btn btn2" data-bs-dismiss="modal">Submit</button>
                             </form>
                         </div>
                     </div>
@@ -170,59 +150,69 @@
 </template>
   
 <script>
-  import { Calendar, DatePicker } from 'v-calendar';
-  import { useEmployeeStore } from '../../stores/employeeStore';
-  import { useAuthStore } from '../../stores/authStore';
-  import { MDBTable, MDBBtn, MDBBadge } from 'mdb-vue-ui-kit';
+    import { Calendar, DatePicker } from 'v-calendar';
+    import { useEmployeeStore } from '../../stores/employeeStore';
+    import { useAuthStore } from '../../stores/authStore';
+    import { MDBTable, MDBBtn, MDBBadge } from 'mdb-vue-ui-kit';
+    import { useDepartmentStore } from '../../stores/departmentStore';
 
-  export default {
-    components: {
-      Calendar,
-      DatePicker,
-      MDBTable,
-      MDBBtn,
-      MDBBadge
+    export default {
+        components: {
+            Calendar,
+            DatePicker,
+            MDBTable,
+            MDBBtn,
+            MDBBadge
 
-    },
-    
-    data() {
-      return {
-        date: new Date(),
-        time: null,
-        employeeStore: useEmployeeStore(),
-        userStore: useAuthStore(),
-        employees: [],
-        data_input: {
-          name: "",
-          email: "",
-          userId: "",
-          department: "",
-          jobTitle: "",
-          role: ""
+        },
+        
+        data() {
+            return {
+                date: new Date(),
+                time: null,
+                employeeStore: useEmployeeStore(),
+                userStore: useAuthStore(),
+                departmentStore: useDepartmentStore(),
+                employees: [],
+                dataInput: {
+                    name: "",
+                    email: "",
+                    departmentId: "",
+                    jobTitle: "",
+                    role: ""
+              }
+
+            };
+        },
+
+        mounted(){
+            const today = new Date()
+            this.time = today.getHours()
+            this.employeeStore.getEmployees()
+            this.employees = this.employeeStore.employees
+            this.departmentStore.getDepartments()
+            console.log(this.employeeStore.employees)
+
+
+        },
+
+        methods: {
+            addEmployeeForm(){
+                this.userStore.register(this.dataInput)
+                this.employeeStore.addEmployee(this.dataInput)
+
+                this.dataInput = {
+                    name: "",
+                    email: "",
+                    userId: "",
+                    departmentId: "",
+                    jobTitle: "",
+                    role: ""
+              }
+            },
+
         }
-
-      };
-    },
-
-    mounted(){
-      const today = new Date()
-      this.time = today.getHours()
-      this.employeeStore.getEmployees()
-      this.employees = this.employeeStore.employees
-      console.log(this.employeeStore.employees)
-
-    },
-
-    methods: {
-      addEmployeeForm(){
-        this.userStore.register(this.data_input)
-      },
-
-      addEmployeeDets(){
-        this.employeeStore.addEmployee(this.data_input)
-      }
     }
-  }
 </script>
 
 

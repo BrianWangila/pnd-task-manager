@@ -79,7 +79,8 @@ class TaskController extends Controller
         // $user = Employee::where('user_id', 'id')->get();
         $task = Task::with("project", "employee")->find($id);
         $userID = $task->employee->user_id;
-        $user = User::where('id',$userID);
+        $user = User::where('id', $userID);
+        
         // foreach($user as $item){
         //     $item['user'] = "user";
         // }

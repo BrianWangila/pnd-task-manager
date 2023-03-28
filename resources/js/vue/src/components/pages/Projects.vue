@@ -43,7 +43,7 @@
                           </div>
                       </div>
                   </nav>
-                  <button  data-bs-toggle="modal" data-bs-target="#addProjectForm" @click="isEditing = false" class="card-btn"><span class="mr-1">New Project</span>  <i class="bi bi-folder-plus"></i></button>
+                  <button  data-bs-toggle="modal" data-bs-target="#addProjectForm" @click="isEditing = false" class="card-btn" v-if="user.role == 'admin'"><span class="mr-1">New Project</span>  <i class="bi bi-folder-plus"></i></button>
                 </div>
 
                 <!-- pop-up form -->
@@ -258,8 +258,10 @@ export default {
 
   
   data() {
+      var userData = JSON.parse(localStorage.getItem('user'))
       return {
           date: new Date(),
+          user: userData,
           time: null,
           projectStore: useProjectStore(),
           departmentStore: useDepartmentStore(),

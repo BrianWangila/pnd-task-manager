@@ -20,7 +20,7 @@
           </router-link>
         </li> <!-- End projects Nav -->
 
-        <li class="nav-item">
+        <li class="nav-item" v-if="role == 'admin'">
           <router-link class="nav-link " to="/calendar">
             <i class="bi bi-calendar-check"></i>
             <span>Calendar</span>
@@ -39,7 +39,7 @@
         <li class="nav-item">
           <router-link class="nav-link " to="/teams">
             <i class="bi bi-microsoft-teams"></i>
-            <span>The Team</span>
+            <span>{{ role=='admin' ? 'The Team' : 'My Team' }}</span>
           </router-link>
         </li> <!-- End teams Nav -->
 
@@ -76,7 +76,7 @@
         </li><!-- End settings Nav -->
 
         <li class="nav-item">
-          <router-link to="#" v-slot="{navigate}" @click="user_store.signOut" class="nav-link" >
+          <router-link to="#" v-slot="{navigate}" @click="userStore.signOut" class="nav-link" >
             <i class="bi bi-escape"></i>
             <span>Logout</span>
           </router-link>
@@ -95,9 +95,16 @@
 
     },
     data(){
+      var userData = JSON.parse(localStorage.getItem('user'))
+
       return{
-        user_store: useAuthStore()
+        userStore: useAuthStore(),
+        role: userData.role
       }
+    },
+
+    mounted(){
+        console.log(this.user)
     },
   }
 </script>

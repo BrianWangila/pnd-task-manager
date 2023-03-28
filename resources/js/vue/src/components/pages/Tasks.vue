@@ -32,45 +32,10 @@
       <div class="content">
         <div class="add-project  ml-8 mt-3 mb-2 mr-8">
           <h4 class=" fw-bolder">Upcoming Deadlines</h4>
-          <!-- <button><span class="mr-1" data-bs-toggle="modal" data-bs-target="#addProjectForm">New Project</span>  <i class="bi bi-folder-plus"></i></button> -->
         </div>
-  
-        <!-- pop-up form -->
-        <!-- <div class="modal fade" id="addProjectForm" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
-        <div class="modal-dialog  modal-dialog-centered">
-          <div class="modal-content">
-              <div class="modal-header">
-              <h5 class="modal-title text-dark" id="ModalLabel">Add New Project</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-              <form @submit.prevent="addProject">
-                <div class="mb-3">
-                    <label for="projectTitle" class="form-label">Project/Brief Title</label>
-                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" v-model="data_input.project_title"/>
-                    <div id="emailHelp" class="form-text">Write a short title of the project.</div>
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Deadline</label>
-                    <input type="text" class="form-control" id="exampleInputPassword1" v-model="data_input.deadline"/>
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Description</label>
-                    <textarea type="text" rows="5" class="form-control" id="exampleInputPassword1" v-model="data_input.description"></textarea>
-                </div>
-                <button type="submit" class="btn btn2">Submit</button>
-              </form>
-              </div>
-              <div class="modal-footer">
-              <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cancel</button>
-              </div>
-          </div>
-        </div>
-        </div> -->
-  
-        <div class="">
-        <div class="projects row">
-          <div class="card"  style="width: 25rem;" v-for="task in taskStore.tasks" :key="task.id">
+
+        <div class="projects row" v-if="user.role == 'admin'">
+          <div class="card"  style="width: 25rem;" v-for="task in taskStore.tasks" :key="task.id" >
             <div class="card-body">
               <div class="title">
                 <router-link class="card-title" :to="`/tasks/${task.id}`">Front-end Development</router-link>
@@ -86,8 +51,6 @@
 
                 </div>
               </div>
-  
-              <!-- <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6> --> 
               <p class="card-text mt-3 fw-bold">{{ task.task_title }}</p>
               <div>
                 <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(task.deadline ).toDateString() }}</span>
@@ -98,7 +61,34 @@
             </div>
           </div>
         </div>
-      </div>
+
+        <div class="projects row" v-else>
+          <div class="card"  style="width: 25rem;" v-for="task in tasks" :key="task.id" >
+            <div class="card-body">
+              <div class="title">
+                <router-link class="card-title" :to="`/tasks/${task.id}`">Front-end Development</router-link>
+                <div
+                    @mouseenter="toggle('display-action'+task.id)" 
+                    @mouseleave="toggleOff('display-action'+task.id)" >
+
+                  <i type="button" class="bi bi-three-dots"></i>
+                  <div class="delete-edit" :id="'display-action'+task.id" style="display:none">
+                    <i class="fas fa-edit mb-2" style="color: skyblue;" type="button"></i>
+                    <i @click="taskStore.deleteTask(task.id)" class="fas fa-trash" style="color: darkorange;" type="button"></i>
+                  </div>
+
+                </div>
+              </div>
+              <p class="card-text mt-3 fw-bold">{{ task.task_title }}</p>
+              <div>
+                <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(task.deadline ).toDateString() }}</span>
+              </div>
+                <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                  <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
+                </div>
+            </div>
+          </div>
+        </div>
   
         <div class="divider">
           <hr class="footer-divider">
@@ -116,6 +106,7 @@
   <script>
     import { Calendar, DatePicker } from 'v-calendar';
     import { useTaskStore } from '../../stores/taskStore';
+    import axiosClient from '../../axios';
   
   
   export default {
@@ -126,57 +117,59 @@
     },
     
     data() {
-      return {
-        date: new Date(),
-        time: null,
-        taskStore: useTaskStore(),
-        // data_input: {
-        //   project_title: "",
-        //   deadline: "",
-        //   description: ""
-        // },
-        isOpen: false
-      };
+        var userData = JSON.parse(localStorage.getItem('user'))
+
+        return {
+            user: userData,
+            date: new Date(),
+            time: null,
+            taskStore: useTaskStore(),
+            isOpen: false,
+            tasks: []
+        };
     },
   
     mounted(){
       const today = new Date()
       this.time = today.getHours()
       this.taskStore.getTasks()
+      this.getEmployeeTasks(this.user.id)
   
     },
   
     methods: {
-    //   addTask(){
-    //     if(this.data_input.project_title){
-    //       this.projectStore.addProject(this.data_input)
-  
-    //       this.data_input = {
-    //         project_title: "",
-    //         deadline: "",
-    //         description: ""
-    //       }
-  
-    //       // this.$router.go()
-    //     }
-        
-    //   },
+
+        async getEmployeeTasks(id){
+            try {
+                await axiosClient.get("/employees/"+id)
+
+                .then((res) => {
+                    this.tasks = res.data.tasks
+                    console.log(this.tasks)
+                })
+
+            } catch (error) {
+                console.log(error)
+            }
+
+
+        },
       
-    toggle(id) {
-      var id = id;
-      var id_name  = $('#'+id).attr('id');
-      if(id == id_name){
-        $('#'+id).css('display', 'block') 
-      } 
-    },
-    
-    toggleOff(id) {
-      var id = id;
-      var id_name  = $('#'+id).attr('id');
-      if(id == id_name){
-        $('#'+id).css('display', 'none') 
-      } 
-    },
+        toggle(id) {
+            var id = id;
+            var id_name  = $('#'+id).attr('id');
+            if(id == id_name){
+                $('#'+id).css('display', 'block') 
+            } 
+        },
+        
+        toggleOff(id) {
+            var id = id;
+            var id_name  = $('#'+id).attr('id');
+            if(id == id_name){
+                $('#'+id).css('display', 'none') 
+            } 
+        },
     }
   }
   </script>

@@ -30,12 +30,19 @@ class ProjectController extends Controller
         return $projects;
     }
 
+
+
+
+
     public function show($id){
 
         $project = Project::with("department", "tasks", "files")->find($id);
 
         return $project;
     }
+
+
+
 
     public function store(Request $request){
 
@@ -48,7 +55,7 @@ class ProjectController extends Controller
             $filename         = "project-".time();
             $fileExt          = $projectFile->getClientOriginalExtension();
             $allowedExtensions = ['png', 'jpg', 'jpeg', 'webp', 'pdf', 'docx', 'doc'];
-            $destinationPath  = public_path('/assets/img/projects/');
+            $destinationPath  = public_path('/assets/projects/');
 
             if (!in_array($fileExt, $allowedExtensions)) return response(['status' => 500, 'message' => "Kindly upload a valid file format"], 500);
             
@@ -56,7 +63,7 @@ class ProjectController extends Controller
             $projectFile->move($destinationPath, $filename);
         }
 
-        $file_url = "/assets/img/projects/";
+        $file_url = "/assets/projects/";
 
         try {
 
@@ -68,11 +75,13 @@ class ProjectController extends Controller
                 "deadline" => date('Y-m-d', strtotime($request->deadline)),
                 "priority" => $request->priority ? 1 : 0
             ]);
+            
             return response([
                "data" => $project,
                "message" => "Project created."
             ]);
             
+
         } catch (\Exception $e) {
             $response = [
                 "status" => 500,
@@ -84,6 +93,8 @@ class ProjectController extends Controller
         }
     }
 
+
+
     public function delete($id){
         
         try {
@@ -93,6 +104,7 @@ class ProjectController extends Controller
             return response([
                 "message" => "Project Deleted"
             ], 204);
+
 
         } catch (\Throwable $th) {
             $response = [
@@ -105,19 +117,21 @@ class ProjectController extends Controller
         }
     }
 
+
+
     public function update(Request $request, $id){
 
         try {
             $project_file = $request->file('file');
 
-            // check if img is available;
+            // check if file is available;
             if ($project_file) {
 
                 $projectFile    = $project_file;
                 $filename         = "project-".time();
                 $fileExt          = $projectFile->getClientOriginalExtension();
                 $allowedExtensions = ['png', 'jpg', 'jpeg', 'webp', 'pdf', 'docx', 'doc'];
-                $destinationPath  = public_path('/assets/img/projects/');
+                $destinationPath  = public_path('/assets/projects/');
 
                 if (!in_array($fileExt, $allowedExtensions)) return response(['status' => 500, 'message' => "Kindly upload a valid file format"], 500);
                 
@@ -125,7 +139,7 @@ class ProjectController extends Controller
                 $projectFile->move($destinationPath, $filename);
             }
 
-            $file_url = "/assets/img/projects/";
+            $file_url = "/assets/projects/";
 
             
             $project = Project::find($id);
@@ -143,6 +157,7 @@ class ProjectController extends Controller
                 "data" => Project::with("department", "tasks")->find($id), 
                 "message" => "Project has been updated",
             ]);
+
         } catch (\Throwable $th) {
             $response = [
                 "status" => 500,

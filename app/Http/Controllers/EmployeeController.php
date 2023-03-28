@@ -85,16 +85,10 @@ class EmployeeController extends Controller
         ]);
 
         return response([
-            "data" => Employee::with('user')->find($id), 
+            Employee::with('user')->find($id), 
             "message" => "Employee has been updated",
         ]);
 
-    //     $employees = new Employee ([
-    //         "name" => $request->input("name"),
-    //     ]);
-
-    //     $employees->save();
-    //     return response()->json("Employee has been created");
     }
 
     /**
@@ -110,32 +104,45 @@ class EmployeeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function store (Request $request)
-    {
-        try {
-            $employee = Employee::create([
-                "department_id" => $request->departmentId, 
-                "user_id" => $request -> userId,
-                "job_title" => $request -> jobTitle, 
-                "role" => $request -> role, 
-            ]);
+    // public function store (Request $request)
+    // {
+    //     $employees = Employee::with("department", "user", "tasks")->get();
 
-            return response([
-                "data" => $employee,
-                "message" => "Employee profile created"
-            ]);
-        } catch (\exception $e) {
-            $response = [
+    //     foreach ($employees as $employee){
 
-                "error" => $e->getMessage(),
-                "message" => "Check your input fields, something went wrong",
+    //         if(!is_null($employee->user)) {
+    //             $employee['userId'] = $employee->user->id;
+                
+    //         }
+    //     };
 
-            ];
+    //     try {
+    //         $employee1 = Employee::create([
+    //             "department_id" => $request->departmentId, 
+    //             "user_id" => $request->userId,
+    //             "job_title" => $request -> jobTitle, 
+    //             "role" => $request -> role, 
+    //         ]);
 
-            return response()->json($response, 500);
-        }
+    //         return response([
+    //             $employee1,
+    //             "message" => "Employee profile created"
+    //         ]);
+            
+    //     } catch (\exception $e) {
+    //         $response = [
+
+    //             "error" => $e->getMessage(),
+    //             "message" => "Check your input fields, something went wrong",
+
+    //         ];
+
+    //         return response()->json($response, 500);
+    //     }
     
-    }
+    // }
+
+
 
     /**
      * Remove the specified resource from storage.

@@ -35,7 +35,7 @@
                   <h4 class=" fw-bolder">{{ projectItem.project_title }} <span style="font-weight: 500; font-size: 20px;">({{ countTask }})</span></h4>
                   <div>
                       <router-link to="/projects"  style="color: black; font-weight: 500;"><button class="mr-3"><i class="bi bi-arrow-left-short"></i> Back to Projects</button></router-link>
-                      <button><span @click="editProject(projectItem)" class="mr-1" data-bs-toggle="modal" data-bs-target="#editProject">Update Project</span>  <i class="bi bi-pencil-square"></i></button>
+                      <button  v-if="user.role == 'admin'"><span @click="editProject(projectItem)" class="mr-1" data-bs-toggle="modal" data-bs-target="#editProject" >Update Project</span>  <i class="bi bi-pencil-square"></i></button>
                   </div>
               </div>
 
@@ -126,7 +126,7 @@
           </div>
 
           <div>
-              <ProjectTasks v-if="dptEmployee.length > 0" :employee="dptEmployee" style="position: inherit"/>
+              <ProjectTasks v-if="dptEmployee.length > 0" :employee="dptEmployee" :user="user" style="position: inherit"/>
               <ProjectTasks v-else style="position: inherit"/>
           </div>
 
@@ -167,8 +167,10 @@
         },
         
         data() {
+            var userData = JSON.parse(localStorage.getItem('user'))
             return {
                 date: new Date(),
+                user: userData,
                 projectStore: useProjectStore(),
                 taskStore: useTaskStore(),
                 employeeStore: useEmployeeStore(),

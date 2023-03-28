@@ -9,7 +9,7 @@
                             <button class="nav-link" id="nav-tasks-tab" data-bs-toggle="tab" data-bs-target="#nav-tasks" type="button" role="tab" aria-controls="nav-tasks" aria-selected="false">Project Tasks</button>
                             <button class="nav-link" id="nav-files-tab" data-bs-toggle="tab" data-bs-target="#nav-files" type="button" role="tab" aria-controls="nav-files" aria-selected="false">Project Files</button>
                         </div>
-                        <button class="nav-header-btn"><span class="mr-1" data-bs-toggle="modal" data-bs-target="#addTaskForm">Create Task</span>  <i class="bi bi-pencil-square"></i></button> 
+                        <button class="nav-header-btn"  v-if="user.role == 'admin'"><span class="mr-1" data-bs-toggle="modal" data-bs-target="#addTaskForm" >Create Task</span>  <i class="bi bi-pencil-square"></i></button> 
                     </div>
                     <hr/>
                 </nav>
@@ -219,11 +219,14 @@
 
         },
 
-        props: ["employee"],
+        props: ["employee", 'user'],
 
         data() {
+            var userData = JSON.parse(localStorage.getItem('user'))
+
             return {
                 date: new Date(),
+                user: userData,
                 projectStore: useProjectStore(),
                 taskStore: useTaskStore(),
                 employeeStore: useEmployeeStore(),

@@ -32,11 +32,36 @@ class AuthController extends Controller
             // create token
             $token = $user->createToken("myapptoken")->plainTextToken;
     
-            return $response = ([
+            $response = ([
                 "user" => $user,
                 "token" => $token,
                 "message" => "User created"
             ]);
+
+            try {
+                $employee1 = Employee::create([
+                    "department_id" => $request->departmentId, 
+                    "user_id" => $user->id,
+                    "job_title" => $request -> jobTitle, 
+                    "role" => $request -> role, 
+                ]);
+    
+                return response([
+                    $employee1,
+                    "message" => "Employee profile created"
+                ]);
+                
+            } catch (\exception $e) {
+                $response = [
+    
+                    "error" => $e->getMessage(),
+                    "message" => "Check your input fields, something went wrong",
+    
+                ];
+    
+                return response()->json($response, 500);
+            }
+        
     
             return response($response, 201);
 

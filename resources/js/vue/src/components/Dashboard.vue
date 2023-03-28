@@ -48,12 +48,8 @@
               <AdminDonut4 class="d-1" />
             </div>
             <div class="donut-n">
-              <p>Creatives</p>
+              <p>Creatives & Digital</p>
               <AdminDonut2 class="d-1"/>
-            </div>
-            <div class="donut-n">
-              <p>Digital</p>
-              <AdminDonut3 class="d-1"/>
             </div>
             <div class="donut-n">
               <p>BD & Strategy</p>
@@ -332,12 +328,12 @@
     margin-top: 20px;
     width: 12vw;
     display: flex;
-    padding-left: 20px;
+    padding-left: 50px;
   }
 
   .donut .d-1 {
     position: inherit;
-    margin-right: 6vw;
+    margin-right: 9vw;
     height: 11vh;
   }
 

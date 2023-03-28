@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string("job_title");
             $table->enum("role", ["admin", "hod", "employee"])->default("employee");
             $table->string("organization")->default("Peak and Dale Solutions");
-            $table->string("address");
-            $table->string("phone");
+            $table->string("address")->nullable();
+            $table->string("phone")->nullable();
             $table->text("about")->nullable();
             $table->string("image_url")->nullable();
             $table->string("country")->default("Kenya");

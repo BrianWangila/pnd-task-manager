@@ -57,7 +57,7 @@ export const useEmployeeStore = defineStore("employeeStore", {
     async addEmployee(data){
 
       try {
-        await axiosClient.post("/employees", data, {headers: {"Content-Type": "application/json"}})
+        await axiosClient.post("/register", data, {headers: {"Content-Type": "application/json"}})
         .then((res) => {
           console.log(res)
         })
