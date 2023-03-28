@@ -82,8 +82,11 @@
                                   <input type="file" ref="fileInput" rows="5" class="form-control" @change="onSelectFile" />
                               </div>
                               <div class="mb-3">
-                                  <input type="checkbox" v-model="dataInput.priority" >
-                                  <label class="form-label ml-2 fw-bold">Urgent</label>
+                                  <label class="form-label">Priority</label>
+                                  <select class="form-select" v-model="dataInput.priority">
+                                      <option value="Normal">Normal</option>
+                                      <option value="Urgent">Urgent</option>
+                                  </select>
                               </div>
                               <button type="submit" class="btn btn2" data-bs-dismiss="modal">Add Project</button>
                             </form>
@@ -99,36 +102,74 @@
                   <div class="projects" v-else>
 
                     <!-- All projects -->
-                      <div v-if="filter === 'all'" class="row">
-                          <div class="card mb-3" style="width: 25rem;" v-for="project in projectStore.projects" :key="project.id">
-                              <div class="card-body">
-                                  <!-- <i @click="togglePriority(project.id)" :class="{active: project.priority}" class="bi bi-flag-fill priority" title="{ priority }"  type="button"></i> -->
-                                  <i v-if="project.priority" class="bi bi-flag-fill priority" title="Urgent"  type="button"></i>
-                                  <div class="title">
-                                    <router-link class="card-title" :to="`/projects/${project.id}`">{{ project.project_title }}</router-link>
-                                    <div
-                                        @mouseenter="toggle('display-action'+project.id)" 
-                                        @mouseleave="toggleOff('display-action'+project.id)" 
-                                        >
+                      <div>
+                        <div v-if="filter === 'all' && user.role == 'admin'" class="row">
+                            <div class="card mb-3" style="width: 25rem;" v-for="project in projectStore.projects" :key="project.id">
+                                <div class="card-body">
+                                    <!-- <i @click="togglePriority(project.id)" :class="{active: project.priority}" class="bi bi-flag-fill priority" title="{ priority }"  type="button"></i> -->
+                                    <i v-if="project.priority" class="bi bi-flag-fill priority" title="Urgent"  type="button"></i>
+                                    <div class="title">
+                                        <router-link class="card-title" :to="`/projects/${project.id}`">{{ project.project_title }}</router-link>
+                                        
+                                        <div  
+                                            v-if="user.role !== 'admin'" style="pointer-events: none;"
+                                            @mouseenter="toggle('display-action'+project.id)" 
+                                            @mouseleave="toggleOff('display-action'+project.id)" 
+                                            >
 
-                                      <i type="button" class="bi bi-three-dots dots-btn"></i>
-                                      <div class="delete-edit" :id="'display-action'+project.id" style="display:none">
-                                        <!-- <i @click="editProject(project)" data-bs-toggle="modal" data-bs-target="#addProjectForm" class="fas fa-edit mb-2" title="Update" style="color: skyblue;" type="button"></i> -->
-                                        <i @click="projectStore.deleteProject(project.id)" class="fas fa-trash" title="Delete" style="color: darkorange;" type="button"></i>
-                                      </div>
+                                        <i type="button" class="bi bi-three-dots dots-btn"></i>
+                                        <div class="delete-edit" :id="'display-action'+project.id" style="display:none">
+                                            <!-- <i @click="editProject(project)" data-bs-toggle="modal" data-bs-target="#addProjectForm" class="fas fa-edit mb-2" title="Update" style="color: skyblue;" type="button"></i> -->
+                                            <i @click="projectStore.deleteProject(project.id)" class="fas fa-trash" title="Delete" style="color: darkorange;" type="button"></i>
+                                        </div>
 
+                                        </div>
                                     </div>
-                                  </div>
-                                  <p class="card-text mt-3">{{ project.description.slice(0, 50) }}...</p>
-                                  <div>
-                                    <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(project.deadline).toDateString() }}</span>
-                                  </div>
-                                  <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                                      <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
-                                  </div>
-                              </div>
-                          </div>  
+                                    <p class="card-text mt-3">{{ project.description.slice(0, 50) }}...</p>
+                                    <div>
+                                        <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(project.deadline).toDateString() }}</span>
+                                    </div>
+                                    <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                        <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
+                                    </div>
+                                </div>
+                            </div>  
+                        </div>
+
+                        <div v-if="filter === 'all' && user.role != 'admin'" class="row">
+                            <div class="card mb-3" style="width: 25rem;" v-for="project in projectStore.projectsByDpt" :key="project.id">
+                                <div class="card-body">
+                                    <!-- <i @click="togglePriority(project.id)" :class="{active: project.priority}" class="bi bi-flag-fill priority" title="{ priority }"  type="button"></i> -->
+                                    <i v-if="project.priority" class="bi bi-flag-fill priority" title="Urgent"  type="button"></i>
+                                    <div class="title">
+                                        <router-link class="card-title" :to="`/projects/${project.id}`">{{ project.project_title }}</router-link>
+                                        
+                                        <div  
+                                            v-if="user.role !== 'admin'" style="pointer-events: none;"
+                                            @mouseenter="toggle('display-action'+project.id)" 
+                                            @mouseleave="toggleOff('display-action'+project.id)" 
+                                            >
+
+                                        <i type="button" class="bi bi-three-dots dots-btn"></i>
+                                        <div class="delete-edit" :id="'display-action'+project.id" style="display:none">
+                                            <!-- <i @click="editProject(project)" data-bs-toggle="modal" data-bs-target="#addProjectForm" class="fas fa-edit mb-2" title="Update" style="color: skyblue;" type="button"></i> -->
+                                            <i @click="projectStore.deleteProject(project.id)" class="fas fa-trash" title="Delete" style="color: darkorange;" type="button"></i>
+                                        </div>
+
+                                        </div>
+                                    </div>
+                                    <p class="card-text mt-3">{{ project.description.slice(0, 50) }}...</p>
+                                    <div>
+                                        <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(project.deadline).toDateString() }}</span>
+                                    </div>
+                                    <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                        <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
+                                    </div>
+                                </div>
+                            </div>  
+                        </div>
                       </div>
+                      
                       
                       <!-- Projects that are in progress -->
                       <div v-if="filter === 'progress'" class="row">
@@ -239,111 +280,135 @@
 </template>
 
 <script>
-  import { Calendar, DatePicker } from 'v-calendar';
-  import { useProjectStore } from '../../stores/projectStore';
-  import { useDepartmentStore } from '../../stores/departmentStore';
-  import { MDBTable, MDBBtn, MDBBadge } from 'mdb-vue-ui-kit';
-  import axiosClient from '../../axios';
+    import { Calendar, DatePicker } from 'v-calendar';
+    import { useProjectStore } from '../../stores/projectStore';
+    import { useDepartmentStore } from '../../stores/departmentStore';
+    import { MDBTable, MDBBtn, MDBBadge } from 'mdb-vue-ui-kit';
+    import {useFileStore} from '../../stores/fileStore'
 
 
-export default {
-  components: {
-      Calendar,
-      DatePicker,
-      MDBTable,
-      MDBBtn,
-      MDBBadge
+    export default {
+    components: {
+        Calendar,
+        DatePicker,
+        MDBTable,
+        MDBBtn,
+        MDBBadge
 
-  },
-
-  
-  data() {
-      var userData = JSON.parse(localStorage.getItem('user'))
-      return {
-          date: new Date(),
-          user: userData,
-          time: null,
-          projectStore: useProjectStore(),
-          departmentStore: useDepartmentStore(),
-          dataInput: {
-              project_title: "",
-              department_id: "",
-              deadline: "",
-              description: "",
-              priority: false,
-              file: ""
-          },
-          isOpen: false,
-          filter: "all",
-          isEditing: false,
-          fileName: ""
-
-      };
-  },
-
-  mounted(){
-    const today = new Date()
-    this.time = today.getHours()
-    this.projectStore.getProjects()
-    this.departmentStore.getDepartments()
-    this.projectStore.inProgress
-
-  },
-
-  methods: {
-    submitForm(){
-
-      this.projectStore.addProject(this.dataInput);
-      
-      
-      this.dataInput = {
-        project_title: "",
-        deadline: "",
-        description: ""
-      }
-
-      this.projectStore.getProjects()
-      
     },
 
-    toggle(id) {
-      var id = id;
-      var id_name  = $('#'+id).attr('id');
-      if(id == id_name){
-        $('#'+id).css('display', 'block') 
-      } 
+    
+    data() {
+        var userData = JSON.parse(localStorage.getItem('user'))
+        return {
+            date: new Date(),
+            user: userData,
+            time: null,
+            projectStore: useProjectStore(),
+            departmentStore: useDepartmentStore(),
+            fileStore: useFileStore(),
+            dataInput: {
+                project_title: "",
+                department_id: "",
+                deadline: "",
+                description: "",
+                priority: "",
+                file: ""
+            },
+            isOpen: false,
+            filter: "all",
+            isEditing: false,
+            fileName: ""
+
+        };
     },
 
-    toggleOff(id) {
-      var id = id;
-      var id_name  = $('#'+id).attr('id');
-      if(id == id_name){
-        $('#'+id).css('display', 'none') 
-      } 
+    mounted(){
+        const today = new Date()
+        this.time = today.getHours()
+        this.projectStore.getProjects()
+        this.departmentStore.getDepartments()
+        this.projectStore.inProgress
+        this.projectStore.projectsByDpt
+
+        console.log(this.projectStore.projectsByDpt)
+
+
     },
 
-    togglePriority(id){
+    methods: {
+            submitForm(){
 
-      const project = this.projectStore.projects.find((item) => {
-        return item.id === id;
-        
-      })
-      project.priority = !project.priority;
-    },
+            this.projectStore.addProject(this.dataInput);
+            // this.fileStore.addFile(this.dataInput)
+            
+            this.dataInput = {
+                project_title: "",
+                department_id: "",
+                deadline: "",
+                description: "",
+                priority: "",
+                file: ""
+            }
+
+            this.projectStore.getProjects()
+            
+            },
+
+            toggle(id) {
+            var id = id;
+            var id_name  = $('#'+id).attr('id');
+            if(id == id_name){
+                $('#'+id).css('display', 'block') 
+            } 
+            },
+
+            toggleOff(id) {
+            var id = id;
+            var id_name  = $('#'+id).attr('id');
+            if(id == id_name){
+                $('#'+id).css('display', 'none') 
+            } 
+            },
+
+            togglePriority(id){
+
+                const project = this.projectStore.projects.find((item) => {
+                    return item.id === id;
+                    
+                })
+            },
+
+            onSelectFile(event){
+                const file = event.target.files[0];
+
+                this.dataInput.file = file;
+            },
 
 
-    showAlert(id) {
-        this.$swal.fire({
-        title: 'Confirm Delete',
-        text: 'Are you sure you want to delete?',
-        icon: 'info',
-        confirmButtonText: 'Cool'
-      })
-      
-    },
+            showAlert(id) {
+                this.$swal.fire({
+                    title: 'Confirm Delete',
+                    text: 'Are you sure you want to delete?',
+                    icon: 'info',
+                    confirmButtonText: 'Cool'
+                })
+            },
 
-  },
-}
+            // projectsByDpts(id){
+            //     if (this.user.role !== "admin") {
+            //         this.projectStore.projects.filter((project) => {
+            //             return project.department_id == id
+            //         })
+            //     }
+            //     // return state.projects.filter((project) => {
+            //     //     return project.status == "In progress";
+            //     // });
+
+            // },
+
+        },
+    }
 </script>
 
 

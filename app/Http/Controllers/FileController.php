@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\File;
+use App\Models\Project;
 use Illuminate\Http\Request;
 
 class FileController extends Controller
@@ -32,7 +33,7 @@ class FileController extends Controller
                 $projectFile    = $project_file;
                 $filename         = $request->file_name;
                 $fileExt          = $projectFile->getClientOriginalExtension();
-                $allowedExtensions = ['png', 'jpg', 'jpeg', 'webp', 'pdf'];
+                $allowedExtensions = ['png', 'jpg', 'jpeg', 'webp', 'pdf', 'docx', 'doc'];
                 $destinationPath  = public_path('/assets/projects/');
 
                 if (!in_array($fileExt, $allowedExtensions)) return response(['status' => 500, 'message' => "Kindly upload a valid file format"], 500);

@@ -5,38 +5,48 @@ import { useToast } from 'vue-toastification'
 
 const toast = useToast()
 
-
+var userData = JSON.parse(localStorage.getItem('user'))
 
 export const useProjectStore = defineStore("projectStore", {
 
   state: () => {
-    return {
-      projects: [],
-      projectItem: "",
-      loading: false,
-    }
+      return {
+          projects: [],
+          projectItem: "",
+          loading: false,
+      }
   },
 
   getters: {
-    inProgress: (state) => {
-      return state.projects.filter((project) => {
-        return project.status == "In progress";
-      });
+      projectsByDpt: (state) => {
+          return state.projects.filter((project) => {
+            return project.department_id == userData.department_id;
+          });
 
-    },
-    overdue: (state) => {
-      const today = new Date()
-      return state.projects.filter((project) => {
-        return new Date(project.deadline) < today;
-      });
+      },
 
-    },
-    finished: (state) => {
-      return state.projects.filter((project) => {
-        return project.status == "Completed";
-      });
+      inProgress: (state) => {
+          return state.projects.filter((project) => {
+            return project.status == "In progress";
+          });
 
-    },
+      },
+
+      overdue: (state) => {
+          const today = new Date()
+          return state.projects.filter((project) => {
+            return new Date(project.deadline) < today;
+          });
+
+      },
+
+      finished: (state) => {
+          return state.projects.filter((project) => {
+            return project.status == "Completed";
+          });
+
+      },
+
   },
 
   actions: {

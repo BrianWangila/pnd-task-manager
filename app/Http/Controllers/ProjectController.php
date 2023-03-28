@@ -7,7 +7,9 @@ use App\Models\Project;
 use PhpParser\Node\Stmt\TryCatch;
 use App\Http\Controllers\AuthController;
 use App\Models\Employee;
+use App\Models\File;
 use App\Models\Task;
+use App\Models\User;
 
 class ProjectController extends Controller
 {
@@ -37,6 +39,22 @@ class ProjectController extends Controller
     public function show($id){
 
         $project = Project::with("department", "tasks", "files")->find($id);
+
+        // $task = Task::with("employee")->find($id);
+        
+        // $employee = User::where('id', $userID)->get();
+        
+        
+        // $project->tasks['name'] = $employee;
+        // // $task->employee['email'] = $employee;
+        
+
+        foreach ($project->tasks as $task){
+
+            $employee = Employee::with('user')->find($task->employee_id);
+
+            $task['assignee'] = $employee->user;
+        };
 
         return $project;
     }
@@ -71,10 +89,17 @@ class ProjectController extends Controller
                 "project_title" => $request->project_title,
                 "department_id" => $request->department_id, 
                 "description" => $request->description,
-                "file" => $project_file ? $file_url .  $filename : null,
                 "deadline" => date('Y-m-d', strtotime($request->deadline)),
-                "priority" => $request->priority ? 1 : 0
+                "priority" => $request->priority
+                
             ]);
+
+            File::create([
+                "project_id" => $project->id,
+                "file_name" => $request->project_title,
+                "file" => $project_file ? $file_url . $filename : null,
+            ]);
+
             
             return response([
                "data" => $project,
@@ -149,8 +174,7 @@ class ProjectController extends Controller
                 "department_id" => $request -> department_id, 
                 "description" => $request -> description, 
                 "deadline" => date('Y-m-d', strtotime($request->deadline)),
-                "priority" => $request -> priority ? 1 : 0,
-                "file" => $project_file ? $file_url . $filename : null,
+                "priority" => $request -> priority
             ]);
 
             return response([

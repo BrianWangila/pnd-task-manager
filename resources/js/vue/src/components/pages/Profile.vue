@@ -15,7 +15,7 @@
         <div class="card">
           <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-            <img v-if="user.image_url == null" src="./images/profile-img.jpg" alt="Profile" class="rounded-circle" >
+            <img v-if="!user.image_url" src="./images/profile-img.jpg" alt="Profile" class="rounded-circle" >
             <img v-else :src="user.image_url" alt="Profile" class="rounded-circle" >
             
             <h2 style="font-weight: 400;">{{ title }}</h2>
@@ -125,7 +125,7 @@
                   <div class="row mb-3">
                     <label for="about" class="col-md-4 col-lg-3 col-form-label">About</label>
                     <div class="col-md-8 col-lg-9">
-                      <textarea name="about" class="form-control" id="about" rows="5" v-model="input_data.about" >{{ user.about }}</textarea>
+                      <textarea name="about" class="form-control" id="about" rows="5" v-model="inputData.about" >{{ user.about }}</textarea>
                     </div>
                   </div>
 
@@ -153,14 +153,14 @@
                   <div class="row mb-3">
                     <label for="Address" class="col-md-4 col-lg-3 col-form-label">Address</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="address" type="text" class="form-control" id="Address" v-model="input_data.address">
+                      <input name="address" type="text" class="form-control" id="Address" v-model="inputData.address">
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="phone" type="text" class="form-control" id="Phone"  v-model="input_data.phone" >
+                      <input name="phone" type="text" class="form-control" id="Phone"  v-model="inputData.phone" >
                     </div>
                   </div>
 
@@ -269,29 +269,29 @@
       Footer,
     },
     data(){
-      var userData = JSON.parse(localStorage.getItem('user'))
-      return {
-        user: userData,
-        authStore: useAuthStore(),
-        toast: useToast(),
-        time_title: "",
-        title: "",
-        firstName: "",
-        input_data: {
-          about: userData.about,
-          address: userData.address,
-          phone: userData.phone,
-          country: userData.country,
-          image_file: ""
-        },
-        
-      }
+        var userData = JSON.parse(localStorage.getItem('user'))
+        return {
+            user: userData,
+            authStore: useAuthStore(),
+            toast: useToast(),
+            time_title: "",
+            title: "",
+            firstName: "",
+            inputData: {
+                about: userData.about,
+                address: userData.address,
+                phone: userData.phone,
+                country: userData.country,
+                image_file: ""
+            },
+          
+        }
     },
     mounted(){
 
-      this.greeting();
-      this.displayName();
-      this.splitName();
+        this.greeting();
+        this.displayName();
+        this.splitName();
 
     }, 
     methods: {
@@ -330,41 +330,41 @@
       async updateEmployee(){
 
         try {
-          await axiosClient.post("/employees/"+this.user.id, this.input_data, {headers: {"Content-Type": "multipart/form-data"}})
-          .then((res) => {
-            console.log(res)
-            var employee = res.data.data;
+            await axiosClient.post("/employees/"+this.user.id, this.inputData, {headers: {"Content-Type": "multipart/form-data"}})  //update
+            .then((res) => {
+                console.log(res)
+                var employee = res.data.data;
 
-            localStorage.removeItem("user")
-            localStorage.setItem("user", JSON.stringify(employee))
+                localStorage.removeItem("user")
+                localStorage.setItem("user", JSON.stringify(employee))
 
-            this.toast.success(res.data.message, {timeout: 2000})
-          })
-          location.reload()
+                this.toast.success(res.data.message, {timeout: 2000})
+            })
+            location.reload()
           
         } catch (error) {
-            console.log(error)
-            this.toast.error(error.response.data.message, {timeout: 5000})
+              console.log(error)
+              this.toast.error(error.response.data.message, {timeout: 5000})
           }
       },
 
       uploadImage() {
-        this.$refs.imageInput.click();
+          this.$refs.imageInput.click();
       },
 
       onSelectFile(event){
-        const file = event.target.files[0];
-        const reader = new FileReader();
+          const file = event.target.files[0];
+          const reader = new FileReader();
 
-        reader.onload = () => {
-          this.$refs.profileImg.src = reader.result;
-          this.imageUrl = reader.result;
-        };
-        reader.readAsDataURL(file);
+          reader.onload = () => {
+              this.$refs.profileImg.src = reader.result;
+              this.imageUrl = reader.result;
+          };
+          reader.readAsDataURL(file);
 
-        // update image file
-        this.input_data.image_file = file;
-        
+          // update image file
+          this.inputData.image_file = file;
+          
       },
       removeImage() {
         this.$refs.profileImg.src = "./images/profile-img.jpg";

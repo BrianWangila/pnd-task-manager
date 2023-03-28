@@ -26,12 +26,12 @@
                             <MDBTable hover class="align-middle bg-white task-table">
                                 <thead class="bg-light bg-red">
                                     <tr>
-                                        <th class="fw-bold">Project Title</th>
+                                        <th class="fw-bold">Task</th>
                                         <th class="fw-bold">Description</th>
                                         <th class="fw-bold">Status</th>
                                         <th class="fw-bold">Date Assigned</th>
                                         <th class="fw-bold">Assignee</th>
-                                        <th class="fw-bold">Actions</th>
+                                        <th  v-if="user.role == 'admin'" class="fw-bold">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody class="t-body">
@@ -54,13 +54,13 @@
                                             <div class="assignee">
                                                 <img class="rounded-circle" src="https://mdbootstrap.com/img/new/avatars/8.jpg" alt="" style="width: 45px; height: 45px" >
                                                 <div class="ms-3" style="display: flex; flex-direction: column;">
-                                                    <span class="fw-bold mb-1">John Doe</span>
-                                                    <span class="text-muted mb-0">john.doe@gmail.com</span>
+                                                    <span class="fw-bold mb-1">{{ task.assignee.name }}</span>
+                                                    <span class="text-muted mb-0">{{ task.assignee.email }}</span>
                                                 </div>
                                             </div>
                                             
                                         </td>
-                                        <td>
+                                        <td v-if="user.role == 'admin'">
                                             <MDBBtn @click="editTask(task)" data-bs-toggle="modal" data-bs-target="#addTaskForm" color="link" size="sm" rounded>
                                                 Edit
                                             </MDBBtn>
@@ -79,7 +79,7 @@
                         </div>
 
                         <div class="project-files">
-                            <div class="upload-btn">
+                            <div class="upload-btn"  v-if="user.role == 'admin'">
                                 <button  data-bs-toggle="modal" data-bs-target="#job_file_modal"><i class="bi bi-upload mr-2"></i> Upload File</button>
                             </div>
                             <!-- Popup file upload Modal -->
@@ -88,15 +88,12 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title"><span style="font-weight: 600;">{{ projectItem.project_title }}</span></h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
+                                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
                                             </button>
                                         </div>
                                         <div class="modal-body">
                                             <form @submit.prevent="submitFileForm" enctype="multipart/form-data">
                                                 <div class="form-group">
-                                                    <label>Project</label>
-                                                    <input class="form-control" type="text" :value="projectItem.project_title" disabled>
                                                     <input class="form-control" type="text" v-model="dataInput.project_id" disabled style="display: none;">
                                                 </div>
                                                 <div class="form-group mt-3">
@@ -182,6 +179,7 @@
                     <label class="form-label">Assign To</label>
                     <select class="form-select" v-model="dataInput.employee_id">
                         <option v-for="name in employee" :key="name.id" :value="name.id"> {{ name.user.name }}</option>
+                        
                     </select>
                 </div>
                 <button type="submit" class="btn btn2" v-if="dataInput.task_title" data-bs-dismiss="modal">{{ isEditing ? 'Save Changes' : 'Add Task' }}</button>
@@ -219,7 +217,7 @@
 
         },
 
-        props: ["employee", 'user'],
+        props: ["employee"],
 
         data() {
             var userData = JSON.parse(localStorage.getItem('user'))
@@ -258,7 +256,9 @@
             
 
             this.assignedEmp(id)
-            console.log(this.taskStore.tasks)
+
+           
+            
 
 
         },
@@ -272,7 +272,7 @@
                         this.dataInput.project_id = this.projectItem.id
                         this.projectTasks = this.projectItem.tasks
 
-                        console.log(this.projectItem)
+                        console.log(this.projectTasks)
                     })
 
                 } catch (error) {
@@ -281,18 +281,19 @@
                 
             },
 
+            
 
             addTask(){
                 // this.isEditing = !this.isEditing
                 this.isEditing ? axiosClient.post("/tasks/"+this.dataInput.id, this.dataInput, {headers: {"Content-Type":"multipart/form-data"}})  : this.taskStore.addTask(this.dataInput)
-
+                console.log(this.dataInput)
                 this.dataInput = {
                     task_title: "",
                     deadline: "",
                     description: "",
                 }
 
-                this.toast.success("Task Updated", {timeout: 2000})
+                this.isEditing ? this.toast.success("Task Updated", {timeout: 2000}) : null
 
                 // window.location.reload()
 

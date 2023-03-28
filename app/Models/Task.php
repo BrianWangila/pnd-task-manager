@@ -17,7 +17,7 @@ class Task extends Model
         "task_title", 
         "description", 
         "deadline", 
-        "is_complete",
+        "status",
         "reminder"
     ];
 

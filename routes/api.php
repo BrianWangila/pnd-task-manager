@@ -51,6 +51,7 @@ Route::group(["middleware" => ["auth:sanctum"]], function(){
     Route::get('files', [FileController::class, 'index']);
     Route::get('files/{file}', [FileController::class, 'show']);
     Route::post('files', [FileController::class, 'store']);
+    //Route::post('files', [ProjectController::class, 'store']); //store files in projects
     Route::post('files/{file}', [FileController::class, 'update']);  //update
     Route::delete('files/{file}', [FileController::class, 'delete']);
 

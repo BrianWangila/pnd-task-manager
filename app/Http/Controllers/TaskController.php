@@ -41,16 +41,12 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        // $validatedData = $request->validate([
-        //     'employee_id' => 'nullable|integer',
-        // ]);
-
-              
 
         try {
         $task = Task::create([
                 "task_title" => $request -> task_title,
-                "project_id" => $request -> project_id, 
+                "project_id" => $request -> project_id,
+                "employee_id" => $request -> employee_id,
                 "description" => $request -> description, 
                 "deadline" => date('Y-m-d', strtotime($request->deadline)),
                 "priority" => $request -> priority ? 1 : 0
@@ -76,19 +72,17 @@ class TaskController extends Controller
      */
     public function show(string $id)
     {
-        // $user = Employee::where('user_id', 'id')->get();
+        
         $task = Task::with("project", "employee")->find($id);
         $userID = $task->employee->user_id;
-        $user = User::where('id', $userID);
+        $employee = User::where('id', $userID)->get();
         
-        // foreach($user as $item){
-        //     $item['user'] = "user";
-        // }
         
-        return ([
-            $task,
-            $user
-        ]);
+        $task->employee['name'] = $employee[0]->name;
+        $task->employee['email'] = $employee[0]->email;
+        
+        
+        return $task;
     }
 
     /**
@@ -112,6 +106,7 @@ class TaskController extends Controller
                 "description" => $request -> description, 
                 "deadline" => date('Y-m-d', strtotime($request->deadline)),
                 "priority" => $request -> priority ? 1 : 0,
+                "status" => $request -> status,
                 "employee_id" => $request -> employee_id,
                 "task_title" => $request -> task_title,
             ]);

@@ -22,9 +22,7 @@ class Project extends Model
         "description", 
         "deadline", 
         "status",
-        "priority",
-        "file",
-        
+        "priority"
     ];
 
     public function tasks(){

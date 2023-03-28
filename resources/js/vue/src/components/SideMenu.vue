@@ -104,7 +104,7 @@
     },
 
     mounted(){
-        console.log(this.user)
+        
     },
   }
 </script>

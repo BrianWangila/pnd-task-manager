@@ -96,7 +96,9 @@ class EmployeeController extends Controller
      */
     public function show(string $id)
     {
-        return Employee::with("department", "user", "tasks")->find($id);
+        $employee = Employee::with("department", "user", "tasks")->find($id);
+
+        return $employee;
     }
 
   

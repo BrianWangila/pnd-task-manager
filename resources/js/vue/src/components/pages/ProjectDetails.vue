@@ -39,7 +39,7 @@
                   </div>
               </div>
 
-              <!-- pop-up form -->
+              <!-- project update pop-up form -->
               <div class="modal fade" id="editProject" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
                   <div class="modal-dialog  modal-dialog-centered">
                   <div class="modal-content">
@@ -70,14 +70,12 @@
                                 <textarea type="text" rows="5" class="form-control" id="exampleInputPassword1" v-model="dataInput.description"></textarea>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Attach File</label>
-                                <input type="file" ref="fileInput" rows="5" class="form-control" @change="onSelectFile" />
-
-                            </div>
-                            <div  class="mb-3">
-                                <input type="checkbox" v-model="dataInput.priority">
-                                <label class="form-label ml-2 fw-bold">Urgent</label>
-                            </div>
+                                  <label class="form-label">Priority</label>
+                                  <select class="form-select" v-model="dataInput.priority">
+                                      <option value="Normal">Normal</option>
+                                      <option value="Urgent">Urgent</option>
+                                  </select>
+                              </div>
                             <button type="submit" class="btn btn2" data-bs-dismiss="modal">Save Changes</button>
                           </form>
                       </div>
@@ -91,8 +89,8 @@
               <div class="pl-5 pt-3 h-300">
                   <div class="priority mb-2">
                       <p class="mr-20" style="font-weight: 600;">Priority:</p> 
-                      <p class="priority-flag" v-if="!projectItem.priority"><i class="bi bi-flag"></i> Normal</p>
-                      <p class="priority-flag-urgent" v-else><i class="bi bi-flag"></i> Urgent</p>
+                      <p v-if="projectItem.priority == 'Urgent'" class="priority-flag" style="background-color: orange"><i class="bi bi-flag pr-2"></i>{{ projectItem.priority }}</p>
+                      <p v-else class="priority-flag"><i class="bi bi-flag pr-2" ></i>{{ projectItem.priority }}</p>
 
                   </div>
                   <div class="priority mb-2">
@@ -183,7 +181,6 @@
                     deadline: "",
                     description: "",
                     priority: "",
-                    file: "",
                     priority: ""
                 },
                 dptName: "",
@@ -207,22 +204,26 @@
                     .then((res) => {
                         this.projectItem = res.data
                         this.dptName = this.projectItem.department.department_name
+
+                        console.log(this.projectItem )
+
                         const taskCount = this.projectItem.tasks.length
                         if(taskCount == 1){
                             return this.countTask = `${ taskCount } task`
-                        } else if  (taskCount > 1){
-                            return this.countTask = `${ taskCount } tasks`
-                        } else {
-                            return this.countTask = "No tasks"
-                        }
+                            } else if  (taskCount > 1){
+                                return this.countTask = `${ taskCount } tasks`
+                            } else {
+                                return this.countTask = "No tasks"
+                            }
                         
+                        })
                         
                         axiosClient.get("/employees/department/"+this.projectItem.department_id)
                         .then((res) => {
                             this.dptEmployee = res.data
                             console.log(this.dptEmployee)
                         })
-                    })
+                    
                 } catch (error) {
                     console.log(error)
                 }
@@ -232,6 +233,15 @@
                 
                 axiosClient.post("/projects/"+this.dataInput.id, this.dataInput, {headers: {"Content-Type":"multipart/form-data"}})  //edit
                 // axiosClient.post("/projects/"+this.dataInput.id, this.dataInput, {headers: {"Content-Type":"application/json"}})  //edit
+
+                this.dataInput = {
+                    task_title: "",
+                    department_id: "",
+                    deadline: "",
+                    description: "",
+                    priority: "",
+                    priority: ""
+                }
             },
 
             editProject(projectItem){

@@ -92,7 +92,7 @@
                               <th class="fw-bold">Actions</th>
                           </tr>
                       </thead>
-                      <tbody class="t-body" v-if="employeeStore.employees.length > 0">
+                      <tbody class="t-body"  v-if="employeeStore.employees.length > 0">
                           <tr v-for="employee in employeeStore.employees" :key="employee.id">
                               <td>
                                   <div class="assignee">
@@ -109,16 +109,56 @@
                               <td>
                                   <MDBBadge badge="success" pill class="d-inline">{{ employee.department.department_name }}</MDBBadge>
                               </td>
-                              <!-- <td>
-                                  {{ employee.project.project_title }}
-                              </td> -->
                               <td>
-                                  <div v-if="employee.tasks.length > 0" v-for="task in employee.tasks" :key="task.id">
-                                      <p v-if="task.task_title"><button type="button">{{ task.task_title }}</button></p>
+                                  <div v-if="employee.tasks.length > 0">
+                                      <button data-bs-toggle="modal" data-bs-target="#tasksList"  class="task-btn" type="button">Tasks</button>
                                   </div>
                                   <div v-else>
                                       <p>No Tasks</p>
                                   </div>
+                                  
+
+                                   <!-- Tasks pop up form -->
+                                <div class="modal fade" id="tasksList" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog  modal-dialog-centered modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title text-dark" id="ModalLabel">Active Tasks</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <MDBTable hover class="align-middle bg-white task-table">
+                                                    <thead class="bg-light bg-red">
+                                                        <tr>
+                                                            <th class="fw-bold">Task</th>
+                                                            <th class="fw-bold">Description</th>
+                                                            <th class="fw-bold">Status</th>
+                                                            <th class="fw-bold">Due Date</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="t-body" v-if="employee.tasks.length > 0">
+                                                        <tr v-for="task in employee.tasks" :key="task.id">
+                                                            <td>
+                                                                <div class="d-flex align-items-center">
+                                                                    <div>
+                                                                        <span class="mb-1" style="font-weight: 500;">{{ task.task_title }}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <span class="fw-normal">{{ task.description }}</span>
+                                                            </td>
+                                                            <td>
+                                                                <MDBBadge badge="success" pill class="d-inline">In Progress</MDBBadge>
+                                                            </td>
+                                                            <td>{{ new Date(task.deadline).toDateString() }}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </MDBTable>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                               </td>
                               <td>
                                   <MDBBtn color="link" size="sm" rounded>
@@ -131,9 +171,11 @@
                           </tr>
                       </tbody>
                   </MDBTable>
-                </div>
+
+                 
             </div>
         </div>
+    </div>
         
 
       <div class="divider">
@@ -167,13 +209,16 @@
         },
         
         data() {
+            var userData = JSON.parse(localStorage.getItem('user'))
             return {
+                user: userData,
                 date: new Date(),
                 time: null,
                 employeeStore: useEmployeeStore(),
                 userStore: useAuthStore(),
                 departmentStore: useDepartmentStore(),
                 employees: [],
+                employeeData: [],
                 dataInput: {
                     name: "",
                     email: "",
@@ -184,6 +229,7 @@
 
             };
         },
+        
 
         mounted(){
             const today = new Date()
@@ -191,10 +237,11 @@
             this.employeeStore.getEmployees()
             this.employees = this.employeeStore.employees
             this.departmentStore.getDepartments()
+            this.getTeamMembers()
             console.log(this.employeeStore.employees)
 
-
         },
+
 
         methods: {
             addEmployeeForm(){
@@ -210,8 +257,24 @@
                     role: ""
               }
             },
+            
 
-        }
+            getTeamMembers(){
+                if(this.employeeStore.employees.length > 0){
+                    if (this.user.role == 'admin') {
+                        this.employeeData = this.employeeStore.employees
+                        console.log(this.employeeData)  
+                    } else {
+                        this.employeeData = this.employeeStore.dptEmployees 
+                    }
+                }
+
+                
+            },
+
+        },
+
+        
     }
 </script>
 
@@ -299,6 +362,12 @@ main {
     padding: 0.5rem;
     border-radius: 5px;
     font-weight: 600;
+  }
+
+  .task-btn {
+    background: lightgray;
+    padding: 5px 15px;
+    border-radius: 5px;
   }
 
 
