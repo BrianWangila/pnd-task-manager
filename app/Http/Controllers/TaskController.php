@@ -43,7 +43,7 @@ class TaskController extends Controller
     {
 
         try {
-        $task = Task::create([
+            $task = Task::create([
                 "task_title" => $request -> task_title,
                 "project_id" => $request -> project_id,
                 "employee_id" => $request -> employee_id,
@@ -130,8 +130,8 @@ class TaskController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(string $id){
-        $project = Task::find($id);
-        $project->delete();
+        $task = Task::find($id);
+        $task->delete();
         return response()->json(null, 204);
     }
 }

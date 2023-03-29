@@ -2,7 +2,8 @@
     <main>
       <div class="heading">
         <div>
-          <h2 style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;"></span>All Tasks</h2>
+          <h2 v-if="user.role=='admin'" style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;"></span>All Tasks</h2>
+          <h2 v-else style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;"></span>My Tasks</h2>
           
           <P style="font-weight: 500;">Home / <span style="font-weight: 400;">Tasks</span></P>
         </div>
@@ -35,7 +36,7 @@
         </div>
 
         <div class="projects row" v-if="user.role == 'admin'">
-          <div class="card"  style="width: 25rem;" v-for="task in taskStore.tasks" :key="task.id" >
+          <div class="card"  style="width: 25rem; " v-for="task in taskStore.tasks" :key="task.id" >
             <div class="card-body">
               <div class="title">
                 <router-link class="card-title" :to="`/tasks/${task.id}`">Front-end Development</router-link>
@@ -218,8 +219,12 @@
     }
   
     .projects {
+      width: 66vw;
       flex:1; 
       margin-left: 25px;
+      /* border: solid red;
+      min-height: 60vh; */
+      
       /* display: flex;
       flex-direction: row; */
     }

@@ -16,7 +16,7 @@
           </router-link>
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item" v-if="role == 'admin'">
           <router-link class="nav-link " to="/calendar">
             <i class="bi bi-calendar-check"></i>
           </router-link>
@@ -42,7 +42,7 @@
         </li>
 
         <div class="h-line"></div>
-        <li class="nav-item">
+        <li class="nav-item" v-if="role == 'admin'">
           <router-link class="nav-link " to="/reports">
             <i class="bi bi-file-text"></i>
           </router-link>

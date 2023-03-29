@@ -333,14 +333,13 @@
             await axiosClient.post("/employees/"+this.user.id, this.inputData, {headers: {"Content-Type": "multipart/form-data"}})  //update
             .then((res) => {
                 console.log(res)
-                var employee = res.data.data;
-
+                var employee = res.data[0];
                 localStorage.removeItem("user")
                 localStorage.setItem("user", JSON.stringify(employee))
 
                 this.toast.success(res.data.message, {timeout: 2000})
             })
-            location.reload()
+            window.location.reload()
           
         } catch (error) {
               console.log(error)

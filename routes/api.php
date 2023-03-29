@@ -6,6 +6,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\SubtaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +48,12 @@ Route::group(["middleware" => ["auth:sanctum"]], function(){
     Route::delete('tasks/{task}', [TaskController::class, 'destroy']);
     Route::post('tasks', [TaskController::class, 'store']);
     Route::post('tasks/{task}', [TaskController::class, 'update']); //update
+
+    Route::get('subTasks', [SubtaskController::class, 'index']);
+    Route::get('subTasks/{subTask}', [SubtaskController::class, 'show']);
+    Route::post('subTasks', [SubtaskController::class, 'store']);
+    Route::put('subTasks/{subTask}', [SubtaskController::class, 'update']);
+    Route::delete('subTasks/{subTask}', [SubtaskController::class, 'delete']);
 
     Route::get('files', [FileController::class, 'index']);
     Route::get('files/{file}', [FileController::class, 'show']);

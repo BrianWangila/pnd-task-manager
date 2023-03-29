@@ -32,9 +32,16 @@
     <div class="content">
         <div class="main-content">
             <div class="">
-                <div class="card add-project ml-6 mt-3 mb-3">
-                    <h4 class="fw-bolder fs-5 mt-2"></h4>
-                    <h4 class="fw-bolder fs-5 mt-2 add-member-btn" data-bs-toggle="modal" data-bs-target="#addUserForm" type="button">Add Member <i class="bi bi-plus fs-4"></i></h4>
+                <div>
+                    <div class="card add-project ml-6 mt-3 mb-3">
+                        <h4 class="fw-light fs-5 mt-2"><span class="fw-bold">{{ user.role == 'admin' ? 'All Members': 'Department Members' }}</span> </h4>
+                        <h4  v-if="user.role == 'admin'" class="fw-bolder fs-5 mt-2 add-member-btn" data-bs-toggle="modal" data-bs-target="#addUserForm" type="button">Add Member<i class="bi bi-plus fs-4"></i></h4>
+                    </div>
+                    <!-- <div  v-else class="card add-project ml-6 mt-3 mb-3">
+                        <h4 class="fw-light fs-5 mt-2">Department Members</h4>
+                        <h4 class="fw-bolder fs-5 mt-2 add-member-btn" data-bs-toggle="modal" data-bs-target="#addUserForm" type="button">Add Member<i class="bi bi-plus fs-4"></i></h4>
+                    </div> -->
+                    
 
                     <!-- pop-up modal to add user -->
                 <div class="modal fade" id="addUserForm" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
@@ -89,17 +96,17 @@
                               <th class="fw-bold">Job Title</th>
                               <th class="fw-bold">Department</th>
                               <th class="fw-bold">Ongoing Tasks</th>
-                              <th class="fw-bold">Actions</th>
+                              <th v-if="user.role == 'admin'" class="fw-bold">Actions</th>
                           </tr>
                       </thead>
-                      <tbody class="t-body"  v-if="employeeStore.employees.length > 0">
-                          <tr v-for="employee in employeeStore.employees" :key="employee.id">
+                      <tbody class="t-body"  v-if="employeeData.length > 0">
+                          <tr v-for="employee in employeeData" :key="employee.id">
                               <td>
                                   <div class="assignee">
                                       <img class="rounded-circle" src="https://mdbootstrap.com/img/new/avatars/8.jpg" alt="" style="width: 45px; height: 45px" >
                                       <div class="ms-3" style="display: flex; flex-direction: column;">
-                                          <span class="fw-bold mb-1">{{ employee.user_name }}</span>
-                                          <span class="text-muted mb-0">{{ employee.user_email }}</span>
+                                          <span class="fw-bold mb-1">{{ employee.user.name }}</span>
+                                          <span class="text-muted mb-0">{{ employee.user.email }}</span>
                                       </div>
                                   </div>
                               </td>
@@ -111,15 +118,16 @@
                               </td>
                               <td>
                                   <div v-if="employee.tasks.length > 0">
-                                      <button data-bs-toggle="modal" data-bs-target="#tasksList"  class="task-btn" type="button">Tasks</button>
+                                      <button data-bs-toggle="modal" :data-bs-target="'#tasksList'+employee.id"  class="task-btn" type="button">{{ employee.tasks.length > 1 ? `${employee.tasks.length} Tasks` : `${employee.tasks.length} Task`  }} </button>
                                   </div>
+                                  
                                   <div v-else>
                                       <p>No Tasks</p>
                                   </div>
                                   
 
                                    <!-- Tasks pop up form -->
-                                <div class="modal fade" id="tasksList" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                                <div class="modal fade" :id="'tasksList'+employee.id" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
                                     <div class="modal-dialog  modal-dialog-centered modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -160,7 +168,7 @@
                                     </div>
                                 </div>
                               </td>
-                              <td>
+                              <td v-if="user.role == 'admin'" >
                                   <MDBBtn color="link" size="sm" rounded>
                                       Edit
                                   </MDBBtn>
@@ -171,8 +179,6 @@
                           </tr>
                       </tbody>
                   </MDBTable>
-
-                 
             </div>
         </div>
     </div>
@@ -218,14 +224,14 @@
                 userStore: useAuthStore(),
                 departmentStore: useDepartmentStore(),
                 employees: [],
-                employeeData: [],
+                employeeData: "",
                 dataInput: {
                     name: "",
                     email: "",
                     departmentId: "",
                     jobTitle: "",
                     role: ""
-              }
+                },
 
             };
         },
@@ -237,8 +243,11 @@
             this.employeeStore.getEmployees()
             this.employees = this.employeeStore.employees
             this.departmentStore.getDepartments()
+            this.employeeStore.getEmployeesByDpt(this.user.department_id)
             this.getTeamMembers()
-            console.log(this.employeeStore.employees)
+            // console.log(this.employeeStore.employees)
+
+    
 
         },
 
@@ -261,11 +270,14 @@
 
             getTeamMembers(){
                 if(this.employeeStore.employees.length > 0){
+
                     if (this.user.role == 'admin') {
                         this.employeeData = this.employeeStore.employees
                         console.log(this.employeeData)  
+
                     } else {
-                        this.employeeData = this.employeeStore.dptEmployees 
+                        this.employeeData = this.employeeStore.dptEmployees
+                        console.log(this.employeeData)
                     }
                 }
 

@@ -35,7 +35,7 @@
                   <h4 class=" fw-bolder">{{ taskItem.task_title }} <span style="font-weight: 500; font-size: 20px;">()</span></h4>
                   <div>
                       <router-link to="/tasks"  style="color: black; font-weight: 500;"><button class="mr-3"><i class="bi bi-arrow-left-short"></i> Back to Tasks</button></router-link>
-                      <button  v-if="user.role !== 'admin'"><span @click="addSubTasks" class="mr-1" data-bs-toggle="modal" data-bs-target="#subTaskForm" >Create Milestones</span><i class="bi bi-pencil-square"></i></button>
+                      <button v-if="user.role != 'admin'"><span class="mr-1" data-bs-toggle="modal" data-bs-target="#subTaskForm" >Create Milestones</span><i class="bi bi-pencil-square"></i></button>
                   </div>
               </div>
 
@@ -51,12 +51,15 @@
                           <form @submit.prevent="submitForm">
                             <div class="mb-3">
                                 <label  class="form-label">Title</label>
-                                <input type="text" class="form-control" v-model="dataInput.project_title"/>
-                                <div class="form-text">Write a short title of the task.</div>
+                                <input type="text" class="form-control" v-model="dataInput.title"/>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Description</label>
+                                <label class="form-label">Description (<span class="fs-7">Optional</span>)</label>
                                 <textarea type="text" rows="5" class="form-control" v-model="dataInput.description"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Due Date/Time</label>
+                                <VueDatePicker style="width: 15rem;" v-model="dataInput.dueDate" :min-date="new Date()"  />
                             </div>
                             <button type="submit" class="btn btn2" data-bs-dismiss="modal">Submit</button>
                           </form>
@@ -67,11 +70,11 @@
                   </div>
                   </div>
               </div>
-
-              <div class="pl-5 pt-3 h-300">
+              <div class="task-detail-content">
+                <div class="pl-5 pt-3 h-300">
                   <div class="priority mb-2">
-                      <p class="mr-20" style="font-weight: 600;">Project:</p> 
-                      <p class="priority-flag" style="background-color: lightgray; color: black;">{{ taskItem.project.project_title }}</p>
+                      <p class="mr-10" style="font-weight: 600;">Project Title:</p> 
+                      <p class="fw-bold" style=" color: black;">{{ project.project_title}}</p>
 
                   </div>
                   <div class="assigned mb-2">
@@ -92,19 +95,73 @@
                           <li style="background-color: rgba(165, 42, 42, 0.2);">Development</li>
                       </ul>
                   </div>
+                </div>
+                <div class="task-content-description">
+                    <!-- <p class="fw-bold"><center>Description</center></p> -->
+                    <p>{{ taskItem.description }}</p>
+                </div>
               </div>
+              
           </div>
 
 
 
-          <div class="ml-8 mt-3 pb-3 p-3 mr-8 bg-white">
+          <div class="ml-8 mt-3 pb-3 p-3 mr-8 bg-white subtask-body">
               <div class="subtasks">
-                  <div class="task-title">
-                      <h4>These are your sub-tasks</h4>
+                  <div class="task-title d-flex">
+                      <h4 class="fs-5 fw-bold">These are your sub-tasks</h4>
+                      <div class="subtask-count">
+                        <div>{{ subTaskStore.subTasks.length }} </div>
+                        <div class="partition">
+                            <div class="v-line"></div>
+                            <button class="fs-6 mr-1" title="Create a subtask" data-bs-toggle="modal" data-bs-target="#subTaskForm">+</button>
+                        </div>
+                    </div>
                   </div>
 
                   <div class="task-content">
-                    
+                    <div>
+                        <MDBTable hover class="align-middle bg-white task-table">
+                            <thead class="bg-light bg-red">
+                                <tr>
+                                    <th class="fw-bold"></th>
+                                    <th class="fw-bold">Task</th>
+                                    <th class="fw-bold">Description</th>
+                                    <th class="fw-bold">Due Date</th>
+                                    <th class="fw-bold"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="t-body">
+                                <tr class="table-row" v-for="subTask in subTaskStore.subTasks" :key="subTask.id">
+                                    <td style="width: 5rem;">
+                                        <MDBBadge badge="info" class="d-inline">{{ subTask.status }}</MDBBadge>
+                                    </td>
+                                    <td class="table-title">
+                                        <div class="d-flex align-items-center">
+                                            <div>
+                                                <span class="mb-1" style="font-weight: 500;">{{ subTask.title }}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="table-desc">
+                                        <span class="fw-normal">{{ subTask.description }}</span>
+                                    </td>
+                                    <td class="table-due">{{ new Date(subTask.dueDate).toDateString() }}</td>
+                                    <td class="subtask-dots" v-if="user.role != 'admin'">
+                                        <MDBBtn pill size="sm" @click="showMenu = !showMenu"><i class="bi bi-three-dots"></i></MDBBtn>
+                                        <div v-if="showMenu" class="actions">
+                                            <ul>
+                                                <li><a href="#">Edit</a></li>
+                                                <li><a href="#">Delete</a></li>
+                                                <li><a href="#">Share</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </MDBTable>
+                    </div>
+                      
                   </div>
               </div>
           </div>
@@ -128,16 +185,15 @@
     import { Calendar, DatePicker } from 'v-calendar';
     import { useProjectStore } from '../../stores/projectStore';
     import { useTaskStore } from '../../stores/taskStore';
+    import { useSubTaskStore } from '../../stores/subTaskStore';
     import { useEmployeeStore } from '../../stores/employeeStore';
     import { useDepartmentStore } from '../../stores/departmentStore';
     import axiosClient from '../../axios';
     import { MDBTable, MDBBtn, MDBBadge } from 'mdb-vue-ui-kit';
-    import ProjectTasks from './ProjectTasks.vue';
 
 
     export default {
         components: {
-        ProjectTasks,
         Calendar,
         DatePicker,
         MDBTable,
@@ -153,20 +209,21 @@
                 user: userData,
                 projectStore: useProjectStore(),
                 taskStore: useTaskStore(),
+                subTaskStore: useSubTaskStore(),
                 employeeStore: useEmployeeStore(),
                 departmentStore: useDepartmentStore(),
                 dptEmployee: [],
-                taskItem: null,
+                taskItem: "",
+                project: "",
                 dataInput: {
-                    task_title: "",
-                    department_id: "",
-                    deadline: "",
+                    title: "",
+                    taskId: "",
+                    dueDate: "",
                     description: "",
-                    priority: "",
-                    priority: ""
                 },
                 dptName: "",
-                countTask: ""
+                countTask: "",
+                showMenu: false
 
             };
         },
@@ -175,7 +232,7 @@
             var id = this.$route.params.id;
             this.singleTask(id)
             this.departmentStore.getDepartments()
-
+            this.subTaskStore.getTasks()
         },
 
         methods: {
@@ -185,6 +242,7 @@
                     await axiosClient.get("/tasks/"+id)
                     .then((res) => {
                         this.taskItem = res.data
+                        this.project = this.taskItem.project
 
                         console.log(this.taskItem )
 
@@ -211,17 +269,20 @@
             },
 
             submitForm(){
-                axiosClient.post("/projects/"+this.dataInput.id, this.dataInput, {headers: {"Content-Type":"multipart/form-data"}})  //edit
-                // axiosClient.post("/projects/"+this.dataInput.id, this.dataInput, {headers: {"Content-Type":"application/json"}})  //edit
+                // axiosClient.put("/subTasks/"+this.dataInput.id, this.dataInput, {headers: {"Content-Type":"application/json"}})
+
+                this.dataInput.taskId = this.taskItem.id;
+
+                this.subTaskStore.addSubTask(this.dataInput)
 
                 this.dataInput = {
-                    task_title: "",
-                    department_id: "",
-                    deadline: "",
+                    title: "",
+                    taskId: "",
+                    dueDate: "",
                     description: "",
-                    priority: "",
-                    priority: ""
                 }
+
+                this.subTaskStore.getTasks()
             },
 
             editProject(taskItem){
@@ -265,23 +326,6 @@
         list-style: none;
     }
 
-    
-    .priority-flag {
-        background: rgba(129, 190, 65, 0.7);
-        font-weight: 500;
-        padding: 3px 10px;
-        color: white;
-        border-radius: 4px;
-    }
-
-    .priority-flag-urgent{
-        background: darkorange;
-        font-weight: 500;
-        padding: 3px 10px;
-        color: white;
-        border-radius: 4px;
-    }
-
     .tags li{
         border-radius: 5px;
         padding: 4px 20px;
@@ -309,17 +353,12 @@
         height: 80.3vh;
     }
 
-    .department {
-      font-weight: 500;
-    }
-
     .btn2 {
         border: 1px solid #81BE41;
     }
 
     .footer-divider {
         position: inherit;
-        margin-top: 5vh;
     }
 
     footer p {
@@ -340,6 +379,85 @@
         padding: 0.5rem;
         border-radius: 5px;
         font-weight: 600;
+    }
+
+    .task-detail-content {
+        display: flex;
+        align-items: center;
+    }
+
+    .task-detail-content .task-content-description {
+        border: 1px solid rgba(211, 211, 211, 0.479);
+        height: 12rem;
+        margin-left: 50px;
+        padding: 20px;
+        border-radius: 10px;
+        width: 35rem;
+    }
+
+    .task-content .subtask-dots {
+        /* position: relative;
+        left: 100px; */
+        width: 30px;
+        visibility: hidden;
+    }
+
+    .table-row:hover .subtask-dots {
+        visibility: visible;
+    }
+
+    .table-row .table-title{
+        width: 20rem;
+    }
+
+    .table-row .table-desc{
+        width: 25rem;
+    }
+
+    .table-row .table-due{
+        width: 8.5rem;
+    }
+
+    .task-content .actions{
+        position: absolute;
+        border: 1px solid lightgray;
+        border-radius: 5px;
+        background-color: white;
+        right: 70px;
+        width: 100px;
+        height: 100px;
+        margin-top: 10px;
+        padding: 10px 0;
+    }
+
+    .subtask-body {
+        overflow-y: scroll;
+        height: 37vh;
+    }
+
+    .subtask-count {
+        border: 1px solid lightgray;
+        padding: 3px;
+        width: 50px;
+        margin-left: 10px;
+        text-align: center;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .subtask-count .partition {
+        display: flex;
+        align-items: center;
+        
+    }
+
+    .subtask-count .v-line {
+        width: 1px;
+        height: 15px;
+        background-color: lightgray;
+        margin-right: 7px;
     }
 
 </style>

@@ -124,22 +124,6 @@
                                         <button @click="openFile(file.file)">Open</button>
                                     </div>
                                 </div>
-
-                                <!-- file actions modal -->
-                                 <!-- <div id="file-actions" class="custom-modal">
-                                     <div class="">
-                                         <div class="modal-content">
-                                             <div class="modal-body">
-                                                <div>
-                                                    <i class="bi bi-pencil-square"></i>
-                                                </div>
-                                                <div>
-                                                    <i class="bi bi-trash3"></i>
-                                                </div>
-                                             </div>
-                                         </div>
-                                     </div>
-                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -159,7 +143,7 @@
               <form @submit.prevent="addTask">
                 <div class="mb-3">
                     <label class="form-label">Project</label>
-                    <input type="text" class="form-control" v-model="dataInput.project_id" disabled style="display: none;"/>
+                    <input type="text" class="form-control" v-model="dataInput.project_id" disabled style="display;"/>
                     <input type="text" class="form-control" :value="projectItem.project_title" disabled />
                 </div>
                 <div class="mb-3">

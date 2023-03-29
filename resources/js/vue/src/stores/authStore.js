@@ -65,7 +65,7 @@ export const useAuthStore = defineStore("auth", {
       }
     },
 
-        // add new project
+        // add new team member
         async register(data){
 
           try {

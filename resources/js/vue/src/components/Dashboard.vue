@@ -184,69 +184,70 @@
 
 
 <script>
-  import { Calendar, DatePicker } from 'v-calendar';
-  import AdminDonut from './charts/donuts/AdminDonut.vue';
-  import AdminDonut1 from './charts/donuts/AdminDonut1.vue';
-  import AdminDonut2 from './charts/donuts/AdminDonut2.vue';
-  import AdminDonut3 from './charts/donuts/AdminDonut3.vue';
-  import AdminDonut4 from './charts/donuts/AdminDonut4.vue';
-  import Ongoing from './charts/Ongoing.vue';
-  import WorkLoad from './charts/WorkLoad.vue';
+    import { Calendar, DatePicker } from 'v-calendar';
+    import AdminDonut from './charts/donuts/AdminDonut.vue';
+    import AdminDonut1 from './charts/donuts/AdminDonut1.vue';
+    import AdminDonut2 from './charts/donuts/AdminDonut2.vue';
+    import AdminDonut3 from './charts/donuts/AdminDonut3.vue';
+    import AdminDonut4 from './charts/donuts/AdminDonut4.vue';
+    import Ongoing from './charts/Ongoing.vue';
+    import WorkLoad from './charts/WorkLoad.vue';
 
   
-  export default {
-    components: {
-      Calendar,
-      DatePicker,
-      AdminDonut, AdminDonut1, AdminDonut2, AdminDonut3, AdminDonut4,
-      Ongoing,
-      WorkLoad,
-    },
-    
-    data() {
-      return {
-        date: new Date(),
-        time: null,
-        user: JSON.parse(localStorage.getItem('user')),
-        dashboard_title: "",
-        firstName: ""
-      };
-    },
+    export default {
 
-    mounted(){
+        components: {
+            Calendar,
+            DatePicker,
+            AdminDonut, AdminDonut1, AdminDonut2, AdminDonut3, AdminDonut4,
+            Ongoing,
+            WorkLoad,
+        },
+        
+        data() {
+            return {
+                date: new Date(),
+                time: null,
+                user: JSON.parse(localStorage.getItem('user')),
+                dashboard_title: "",
+                firstName: ""
+            };
+        },
 
-      this.greeting();
-      this.splitName();
-      
-    }, 
-    methods: {
-      greeting(){
+        mounted(){
 
-        const today = new Date()
-        let time = today.getHours()
+            this.greeting();
+            this.splitName();
+            
+        }, 
+        methods: {
+            greeting(){
 
-        if(time > 1 && time < 12) {
+                const today = new Date()
+                let time = today.getHours()
 
-          this.dashboard_title = "Good morning,";       
-        }
-        else if (time >= 12 && time < 16) {
-          
-          this.dashboard_title = "Good afternoon,";
-        }
-        else {
+                if(time > 1 && time < 12) {
 
-          this.dashboard_title = "Good evening,";
-        }
-      },
+                this.dashboard_title = "Good morning,";       
+                }
+                else if (time >= 12 && time < 16) {
+                
+                this.dashboard_title = "Good afternoon,";
+                }
+                else {
 
-      splitName(){
-        const name = this.user.user.name;
-        this.firstName = name.split(" ");
-        console.log(this.firstName)
-      },
+                this.dashboard_title = "Good evening,";
+                }
+            },
 
-    },
-  }
+            splitName(){
+                const name = this.user.user.name;
+                this.firstName = name.split(" ");
+                console.log(this.firstName)
+            },
+
+        },
+    }
 </script>
 
 <style scoped>

@@ -41,8 +41,10 @@ class EmployeeController extends Controller
     }
 
     public function employeesByDepartment($departmentId) 
+
+
     {
-        $employees = Employee::with('user')->where('department_id', $departmentId)->get();
+        $employees = Employee::with("department", "user", "tasks")->where('department_id', $departmentId)->get();
 
         return $employees;
     }
@@ -84,10 +86,10 @@ class EmployeeController extends Controller
             "image_url" =>  $image_file ? $image_url . $filename : null,
         ]);
 
-        return response([
-            Employee::with('user')->find($id), 
+        return [
+            Employee::with('user', 'department')->find($id), 
             "message" => "Employee has been updated",
-        ]);
+        ];
 
     }
 

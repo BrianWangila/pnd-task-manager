@@ -3,8 +3,9 @@ import axiosClient from "../axios";
 import { useToast } from 'vue-toastification'
 
 
-const toast = useToast();
 
+
+const toast = useToast();
 
 
 export const useFileStore = defineStore("fileStore", {
@@ -36,6 +37,7 @@ export const useFileStore = defineStore("fileStore", {
             }
         },
 
+        
         // add new file
         async addFile(data){
 
