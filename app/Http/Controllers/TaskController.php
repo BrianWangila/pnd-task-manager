@@ -73,7 +73,7 @@ class TaskController extends Controller
     public function show(string $id)
     {
         
-        $task = Task::with("project", "employee")->find($id);
+        $task = Task::with("project", "employee", 'subtasks')->find($id);
         $userID = $task->employee->user_id;
         $employee = User::where('id', $userID)->get();
         

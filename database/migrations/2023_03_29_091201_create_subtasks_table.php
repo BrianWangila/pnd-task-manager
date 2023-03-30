@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->dateTime('dueDate');
             $table->enum('status', ['to-do', 'complete', 'late'])->default('to-do');
-            $table->foreignId('taskId');
+            $table->foreignId('task_id');
             $table->timestamps();
         });
     }

@@ -30,7 +30,7 @@ class Task extends Model
     }
 
     public function subtasks(){
-        return $this->hasMany(Subtask::class, 'id', 'taskId');
+        return $this->hasMany(Subtask::class, 'task_id');
 
         
     }

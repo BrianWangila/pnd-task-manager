@@ -32,14 +32,14 @@
       <div class="content">
           <div class="ml-8 mt-3 pb-3 p-3 mr-8 bg-white">
               <div class="add-project ">
-                  <h4 class=" fw-bolder">{{ taskItem.task_title }} <span style="font-weight: 500; font-size: 20px;">()</span></h4>
+                  <h4 class=" fw-bolder">{{ taskItem.task_title }}</h4>
                   <div>
                       <router-link to="/tasks"  style="color: black; font-weight: 500;"><button class="mr-3"><i class="bi bi-arrow-left-short"></i> Back to Tasks</button></router-link>
                       <button v-if="user.role != 'admin'"><span class="mr-1" data-bs-toggle="modal" data-bs-target="#subTaskForm" >Create Milestones</span><i class="bi bi-pencil-square"></i></button>
                   </div>
               </div>
 
-              <!-- project update pop-up form -->
+              <!-- subtask create/update pop-up form -->
               <div class="modal fade" id="subTaskForm" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
                   <div class="modal-dialog  modal-dialog-centered">
                   <div class="modal-content">
@@ -61,7 +61,7 @@
                                 <label class="form-label">Due Date/Time</label>
                                 <VueDatePicker style="width: 15rem;" v-model="dataInput.dueDate" :min-date="new Date()"  />
                             </div>
-                            <button type="submit" class="btn btn2" data-bs-dismiss="modal">Submit</button>
+                            <button type="submit" class="btn btn2" data-bs-dismiss="modal">{{ isEditing ? 'Save Changes' : 'Add Subtask' }}</button>
                           </form>
                       </div>
                       <div class="modal-footer">
@@ -110,8 +110,8 @@
               <div class="subtasks">
                   <div class="task-title d-flex">
                       <h4 class="fs-5 fw-bold">These are your sub-tasks</h4>
-                      <div class="subtask-count">
-                        <div>{{ subTaskStore.subTasks.length }} </div>
+                      <div v-if="user.role != 'admin'" class="subtask-count">
+                        <div>{{ subTasks.length }} </div>
                         <div class="partition">
                             <div class="v-line"></div>
                             <button class="fs-6 mr-1" title="Create a subtask" data-bs-toggle="modal" data-bs-target="#subTaskForm">+</button>
@@ -120,7 +120,7 @@
                   </div>
 
                   <div class="task-content">
-                    <div>
+                    <div v-if="subTasks.length > 0">
                         <MDBTable hover class="align-middle bg-white task-table">
                             <thead class="bg-light bg-red">
                                 <tr>
@@ -132,9 +132,9 @@
                                 </tr>
                             </thead>
                             <tbody class="t-body">
-                                <tr class="table-row" v-for="subTask in subTaskStore.subTasks" :key="subTask.id">
+                                <tr class="table-row" v-for="subTask in subTasks" :key="subTask.id" :class="{'complete': subTask.status == 'complete'}">
                                     <td style="width: 5rem;">
-                                        <MDBBadge badge="info" class="d-inline">{{ subTask.status }}</MDBBadge>
+                                        <MDBBadge :class="{'badge badge-primary': subTask.status === 'to-do', 'badge badge-success': subTask.status === 'complete'}"  >{{ subTask.status }}</MDBBadge> 
                                     </td>
                                     <td class="table-title">
                                         <div class="d-flex align-items-center">
@@ -147,19 +147,28 @@
                                         <span class="fw-normal">{{ subTask.description }}</span>
                                     </td>
                                     <td class="table-due">{{ new Date(subTask.dueDate).toDateString() }}</td>
-                                    <td class="subtask-dots" v-if="user.role != 'admin'">
-                                        <MDBBtn pill size="sm" @click="showMenu = !showMenu"><i class="bi bi-three-dots"></i></MDBBtn>
-                                        <div v-if="showMenu" class="actions">
+                                    <td class="subtask-dots1" v-if="user.role != 'admin'">
+                                        <MDBBtn class="subtask-dots" pill size="sm" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></MDBBtn>
+                                        <div class="actions dropdown-menu">
                                             <ul>
-                                                <li><a href="#">Edit</a></li>
-                                                <li><a href="#">Delete</a></li>
-                                                <li><a href="#">Share</a></li>
+                                                <li @click="subTaskStore.toggleStatus(subTask.id)"><i class="bi bi-check2-all mr-2"></i>Mark as Done</li>
+                                                <li @click="editSubTask(subTask)" data-bs-toggle="modal" data-bs-target="#subTaskForm"><i class="bi bi-pencil-square mr-2"></i>Edit Subtask</li>
+                                                <li><i class="bi bi-download mr-2"></i>Archive</li>
+                                                <li><hr class="dropdown-divider"/></li>
+                                                <li style="color: darkOrange; padding-top: 10px;" @click="subTaskStore.deleteSubTask(subTask.id)"><i class="bi bi-trash3 mr-2"></i> Delete</li>
                                             </ul>
                                         </div>
                                     </td>
                                 </tr>
                             </tbody>
                         </MDBTable>
+                    </div>
+
+                    <div v-else class="no-subtasks mt-20">
+                        <center>
+                            <p>You haven't created any milestones. Create one now</p>
+                            <button data-bs-toggle="modal" data-bs-target="#subTaskForm">+</button>
+                        </center>
                     </div>
                       
                   </div>
@@ -214,6 +223,7 @@
                 departmentStore: useDepartmentStore(),
                 dptEmployee: [],
                 taskItem: "",
+                subTasks: [],
                 project: "",
                 dataInput: {
                     title: "",
@@ -223,7 +233,10 @@
                 },
                 dptName: "",
                 countTask: "",
-                showMenu: false
+                showMenu: false,
+                isEditing: false,
+                status: "to-do"
+                
 
             };
         },
@@ -232,7 +245,8 @@
             var id = this.$route.params.id;
             this.singleTask(id)
             this.departmentStore.getDepartments()
-            this.subTaskStore.getTasks()
+            this.subTaskStore.getSubTasks()
+            this.taskStore.getTasks()
         },
 
         methods: {
@@ -243,37 +257,21 @@
                     .then((res) => {
                         this.taskItem = res.data
                         this.project = this.taskItem.project
+                        this.subTasks = this.taskItem.subtasks
 
-                        console.log(this.taskItem )
+                        console.log(this.subTasks )
 
-                        // const taskCount = this.taskItem.tasks.length
-                        // if(taskCount == 1){
-                        //     return this.countTask = `${ taskCount } task`
-                        //     } else if  (taskCount > 1){
-                        //         return this.countTask = `${ taskCount } tasks`
-                        //     } else {
-                        //         return this.countTask = "No tasks"
-                        //     }
-                        
-                        })
-                        
-                        // axiosClient.get("/employees/department/"+this.taskItem.department_id)
-                        // .then((res) => {
-                        //     this.dptEmployee = res.data
-                        //     console.log(this.dptEmployee)
-                        // })
-                    
+                    })
                 } catch (error) {
                     console.log(error)
                 }
             },
 
             submitForm(){
-                // axiosClient.put("/subTasks/"+this.dataInput.id, this.dataInput, {headers: {"Content-Type":"application/json"}})
-
                 this.dataInput.taskId = this.taskItem.id;
+                // axiosClient.put("/subTasks/"+this.dataInput.id, this.dataInput, {headers: {"Content-Type":"application/json"}}) 
 
-                this.subTaskStore.addSubTask(this.dataInput)
+                this.isEditing ? this.subTaskStore.editSubTask(this.dataInput.id, this.dataInput, this.status) : this.subTaskStore.addSubTask(this.dataInput);
 
                 this.dataInput = {
                     title: "",
@@ -283,6 +281,10 @@
                 }
 
                 this.subTaskStore.getTasks()
+                this.singleTask(this.id)
+
+                // this.isEditing ? this.toast.success("Task Updated", {timeout: 2000}) : null
+
             },
 
             editProject(taskItem){
@@ -296,6 +298,51 @@
                 this.dataInput.file = file;
                 
             },
+
+            editSubTask(subTask){
+                this.dataInput = subTask;
+                this.isEditing = true
+            },
+
+            markAsDone(id){
+                this.dataInput.id = id
+                console.log(this.dataInput.id)
+                this.status = 'Complete'
+                
+            }
+
+
+            // showHover(event){
+            //     this.showTooltip = true
+
+            //     const row = event.currentTarget.getBoundingClientRect();
+            //     const tooltip = this.$el.querySelector('.hover-tooltip');
+            //     const tooltipRect = tooltip.getBoundingClientRect();
+            //     const x = row.left + window.scrollX;
+            //     const y = row.top + window.scrollY + row.height - tooltipRect.height;
+            //     tooltip.style.left = `${x}px`;
+            //     tooltip.style.top = `${y}px`;
+
+            //     const x = event.clientX;
+            //     const y = event.clientY;
+
+            //     this.$nextTick(() => {
+            //         const tooltip = this.$el.querySelector('.hover-tooltip');
+            //         tooltip.style.left = `${x}px`;
+            //         tooltip.style.top = `${y}px`;
+            //     });
+
+            //     const tooltip = this.$el.querySelector('.hover-tooltip');
+            //     const tooltipRect = tooltip.getBoundingClientRect();
+            //     const x = event.clientX - tooltipRect.width / 2;
+            //     const y = event.clientY - 20;
+            //     tooltip.style.left = `${x}px`;
+            //     tooltip.style.top = `${y}px`;
+            // },
+
+            // hideHover(){
+            //     this.showTooltip = false
+            // },
 
 
         },
@@ -395,14 +442,14 @@
         width: 35rem;
     }
 
-    .task-content .subtask-dots {
+    .task-content .subtask-dots1 {
         /* position: relative;
         left: 100px; */
         width: 30px;
         visibility: hidden;
     }
 
-    .table-row:hover .subtask-dots {
+    .table-row:hover .subtask-dots1 {
         visibility: visible;
     }
 
@@ -410,28 +457,53 @@
         width: 20rem;
     }
 
-    .table-row .table-desc{
+    .table-row .table-desc {
         width: 25rem;
     }
 
-    .table-row .table-due{
+    .table-row .table-due {
         width: 8.5rem;
     }
 
-    .task-content .actions{
+    .d-inline {
+        background-color: lightgray;
+        color: black;
+    }
+
+    .task-content .actions {
         position: absolute;
         border: 1px solid lightgray;
         border-radius: 5px;
         background-color: white;
         right: 70px;
-        width: 100px;
-        height: 100px;
+        width: 170px;
+        height: 170px;
         margin-top: 10px;
-        padding: 10px 0;
+        padding: 10px 20px 10px 0;
+    }
+
+    .task-content .actions ul li {
+        padding: 5px 0;
+        font-weight: 500;
+        margin-left: -10px;
+        cursor: pointer;
+    }
+
+    .task-content .actions .dropdown-divider {
+        margin-top: 5px;
+        width: 170px;
+        margin-left: -25px;
+        color: red;        
+
+    }
+
+    .task-content .actions ul li:hover {
+        font-size: 15px;
+        font-weight: 900;
     }
 
     .subtask-body {
-        overflow-y: scroll;
+        overflow-y: auto;
         height: 37vh;
     }
 
@@ -453,11 +525,46 @@
         
     }
 
+    .complete {
+        text-decoration: line-through;
+    }
+
+
     .subtask-count .v-line {
         width: 1px;
         height: 15px;
         background-color: lightgray;
         margin-right: 7px;
     }
+
+    .no-subtasks button {
+        border: 1px solid lightgray;
+        padding: 5px 15px;
+        box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.3);
+        background-color: rgba(211, 211, 211, 0.671);
+        border-radius: 5px;
+        font-size: 20px;
+    }
+
+    .no-subtasks button:hover {
+        background-color: rgba(6, 43, 4, 0.884);
+        padding: 10px 20px;
+        font-size: 20px;
+        color: white;
+    }
+
+    /* tr:hover {
+        background-color: #f5f5f5;
+        cursor: pointer;
+    }
+
+    .hover-tooltip {
+        position: absolute;
+        z-index: 999;
+        padding: 10px;
+        background-color: #fff;
+        box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.3);
+        border-radius: 3px;
+    } */
 
 </style>

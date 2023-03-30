@@ -16,7 +16,7 @@ class Subtask extends Model
         'description',
         'status',
         'dueDate',
-        'taskId'
+        'task_id'
         
     ];
 

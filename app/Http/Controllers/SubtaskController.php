@@ -27,7 +27,7 @@ class SubtaskController extends Controller
         try {
             $subtask = Subtask::create([
                 "title" => $request -> title,
-                "taskId" => $request -> taskId,
+                "task_id" => $request -> taskId,
                 "description" => $request -> description, 
                 "dueDate" => date('Y-m-d', strtotime($request->dueDate)),
             ]);
@@ -67,12 +67,14 @@ class SubtaskController extends Controller
         try {
             $subtask = Subtask::find($id);
 
-            $subtask->update([
-                "title" => $request -> title,
-                "status" => $request -> status,
-                "description" => $request -> description, 
-                "dueDate" => date('Y-m-d', strtotime($request->dueDate)),
-            ]);
+            $subtask->update($request->all());
+                
+            //     [
+            //     "title" => $request -> title,
+            //     "status" => $request -> status,
+            //     "description" => $request -> description, 
+            //     "dueDate" => date('Y-m-d', strtotime($request->dueDate)),
+            // ]);
 
             return ([
                 $subtask, 

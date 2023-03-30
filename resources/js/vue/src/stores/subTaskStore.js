@@ -23,10 +23,10 @@ export const useSubTaskStore = defineStore("subTaskStore", {
   actions: {
 
     // Read all subTasks
-    async getTasks(){
+    async getSubTasks(){
 
         try {
-            await axiosClient.get("/subTasks")
+            await axiosClient.get("/subtasks")
             .then((res) => {
               this.subTasks = res.data
             })
@@ -40,7 +40,7 @@ export const useSubTaskStore = defineStore("subTaskStore", {
     async addSubTask(data){
 
         try {
-            await axiosClient.post("/subTasks", data, {headers: {"Content-Type": "application/json"}})
+            await axiosClient.post("/subtasks", data, {headers: {"Content-Type": "application/json"}})
             .then((res) => {
               console.log(res)
               toast.success(res.data.message, {timeout: 2000})
@@ -54,18 +54,65 @@ export const useSubTaskStore = defineStore("subTaskStore", {
         }
     },
 
+     // edit subTask
+     async editSubTask(id, data){
+
+      try {
+          await axiosClient.patch("/subtasks/"+id, data, {headers: {"Content-Type": "application/json"}})
+          .then((res) => {
+            console.log(res)
+            toast.success(res.data.message, {timeout: 2000})
+          })
+
+        
+
+      } catch (error) {
+          console.log(error)
+          toast.error(error.response.data.message, {timeout: 3000})
+      }
+  },
+
     // Delete A subtask
     async deleteSubTask(id){
         try {
-            await axiosClient.delete("/subTasks/"+id)
+            await axiosClient.delete("/subtasks/"+id)
             
             this.subTasks = this.subTasks.filter((item) => {
-              return item.id !== id
+                return item.id !== id
+
             })
+
+            toast.success('item deleted', {timeout: 2000})
+
 
         } catch (error) {
             console.log(error)
         }
     },
+
+
+    // toggle status
+    async toggleStatus(id){
+
+        const subtask = this.subTasks.find((item) => {
+            return item.id === id;
+        })
+
+        subtask.status = 'complete';
+  
+        try {
+            const data = {
+                status: subtask.status
+            };
+          
+            await axiosClient.patch("/subtasks/"+id, data);
+          
+            toast.success("Milestone status set to 'Complete'", {timeout: 3000});
+          
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response.data.message, {timeout: 3000})
+        }
+      }
   }
 })

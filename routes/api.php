@@ -49,11 +49,11 @@ Route::group(["middleware" => ["auth:sanctum"]], function(){
     Route::post('tasks', [TaskController::class, 'store']);
     Route::post('tasks/{task}', [TaskController::class, 'update']); //update
 
-    Route::get('subTasks', [SubtaskController::class, 'index']);
-    Route::get('subTasks/{subTask}', [SubtaskController::class, 'show']);
-    Route::post('subTasks', [SubtaskController::class, 'store']);
-    Route::put('subTasks/{subTask}', [SubtaskController::class, 'update']);
-    Route::delete('subTasks/{subTask}', [SubtaskController::class, 'delete']);
+    Route::get('subtasks', [SubtaskController::class, 'index']);
+    Route::get('subtasks/{subtask}', [SubtaskController::class, 'show']);
+    Route::post('subtasks', [SubtaskController::class, 'store']);
+    Route::patch('subtasks/{subtask}', [SubtaskController::class, 'update']);
+    Route::delete('subtasks/{subtask}', [SubtaskController::class, 'destroy']);
 
     Route::get('files', [FileController::class, 'index']);
     Route::get('files/{file}', [FileController::class, 'show']);
