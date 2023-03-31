@@ -1,7 +1,10 @@
 import { defineStore } from "pinia";
 import axiosClient from "../axios";
+import { useToast } from 'vue-toastification';
 
 
+
+const toast = useToast()
 
 export const useEmployeeStore = defineStore("employeeStore", {
 
@@ -54,17 +57,17 @@ export const useEmployeeStore = defineStore("employeeStore", {
 
 
     // add new project
-    async addEmployee(data){
+    // async addEmployee(data){
 
-      try {
-        await axiosClient.post("/register", data, {headers: {"Content-Type": "application/json"}})
-        .then((res) => {
-          console.log(res)
-        })
-      } catch (error) {
-        console.log(error)
-      }
-    },
+    //   try {
+    //     await axiosClient.post("/register", data, {headers: {"Content-Type": "application/json"}})
+    //     .then((res) => {
+    //       console.log(res)
+    //     })
+    //   } catch (error) {
+    //     console.log(error)
+    //   }
+    // },
 
     // // get one project
     // async singleProject(id){
@@ -88,6 +91,8 @@ export const useEmployeeStore = defineStore("employeeStore", {
         this.employees = this.employees.filter((item) => {
           return item.id !== id
         })
+
+        toast.success("Employee removed", {timeout: 2000})
 
       } catch (error) {
         console.log(error)

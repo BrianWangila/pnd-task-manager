@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import axiosClient from "../axios";
 
 
+var userData = JSON.parse(localStorage.getItem('user'))
 
 export const useDepartmentStore = defineStore("departmentStore", {
 
@@ -12,7 +13,12 @@ export const useDepartmentStore = defineStore("departmentStore", {
   },
 
   getters: {
+      dptByEmployee: (state) => {
+          return state.departments.filter((dpt) => {
+              return dpt.id == userData.department_id;
+          });
 
+      },
   },
 
   actions: {
@@ -20,16 +26,16 @@ export const useDepartmentStore = defineStore("departmentStore", {
     // get all departments
     async getDepartments(){
 
-      try {
+        try {
 
-        await axiosClient.get("/departments")
-        .then((res) => {
-          this.departments = res.data
-        })
+            await axiosClient.get("/departments")
+            .then((res) => {
+                this.departments = res.data
+            })
 
-      } catch (error) {
-        console.log(error)
-      }
+        } catch (error) {
+            console.log(error)
+        }
     },
 
     // // add new project
