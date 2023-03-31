@@ -2,9 +2,9 @@
   <main>
       <div class="heading">
           <div>
-              <h2 style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;"></span>All Briefs/Projects</h2>
+              <h2 style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;"></span>Task and Subtasks</h2>
               
-              <P style="font-weight: 500;">Home / <span style="font-weight: 400;">Projects</span></P>
+              <P style="font-weight: 500;">Home / <span style="font-weight: 400;">Project / Tasks / {{ taskItem.task_title }}</span></P>
           </div>
           <div>
               <div className="btn-group">
@@ -32,12 +32,13 @@
       <div class="content">
           <div class="ml-8 mt-3 pb-3 p-3 mr-8 bg-white">
               <div class="add-project ">
-                  <h4 class=" fw-bolder">{{ taskItem.task_title }}</h4>
+                  <h4 class=" fw-bolder">{{ taskItem.task_title }} <span style="font-weight: 400;" v-if="user.role == 'admin'">({{ employee.name }})</span></h4>
                   <div>
                       <router-link to="/tasks"  style="color: black; font-weight: 500;"><button class="mr-3"><i class="bi bi-arrow-left-short"></i> Back to Tasks</button></router-link>
                       <button v-if="user.role != 'admin'"><span class="mr-1" data-bs-toggle="modal" data-bs-target="#subTaskForm" >Create Milestones</span><i class="bi bi-pencil-square"></i></button>
                   </div>
               </div>
+
 
               <!-- subtask create/update pop-up form -->
               <div class="modal fade" id="subTaskForm" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
@@ -70,31 +71,39 @@
                   </div>
                   </div>
               </div>
+
+
               <div class="task-detail-content">
                 <div class="pl-5 pt-3 h-300">
-                  <div class="priority mb-2">
-                      <p class="mr-10" style="font-weight: 600;">Project Title:</p> 
-                      <p class="fw-bold" style=" color: black;">{{ project.project_title}}</p>
+                    <div class="priority mb-2">
+                        <p class="mr-10" style="font-weight: 600;">Department:</p> 
+                        <p class="fw-bold" style=" color: black;">{{  }}</p>
+                    </div>
 
-                  </div>
-                  <div class="assigned mb-2">
-                      <p style="margin-right: 30px; font-weight: 600;">Status:</p>
-                      <ul>
-                          <li>{{ taskItem.status }}</li>
-                      </ul>
+                    <div class="priority mb-2">
+                        <p class="mr-10" style="font-weight: 600;">Project Title:</p> 
+                        <p class="fw-bold" style=" color: black;">{{ project.project_title}}</p>
+                    </div>
 
-                  </div>
-                  <div class="deadline mb-2">
-                      <p style="margin-right: 4rem; font-weight: 600;">Deadline:</p> <p>{{ new Date(taskItem.deadline).toDateString() }}</p>
-                  </div>
-                  <div class="tags">
-                      <p  style="margin-right: 3.7rem; font-weight: 600;">Tags:</p>
-                      <ul>
-                          <li style="background-color: rgba(255, 165, 0, 0.2); margin-right: 1rem;">UI Design</li>
-                          <li style="background-color: rgba(128, 0, 128, 0.2); margin-right: 1rem;">Marketing</li>
-                          <li style="background-color: rgba(165, 42, 42, 0.2);">Development</li>
-                      </ul>
-                  </div>
+                    <div class="assigned mb-2">
+                        <p style="margin-right: 30px; font-weight: 600;">Status:</p>
+                        <ul>
+                            <li>{{ taskItem.status }}</li>
+                        </ul>
+                    </div>
+
+                    <div class="deadline mb-2">
+                        <p style="margin-right: 4rem; font-weight: 600;">Deadline:</p> <p>{{ new Date(taskItem.deadline).toDateString() }}</p>
+                    </div>
+
+                    <div class="tags">
+                        <p  style="margin-right: 3.7rem; font-weight: 600;">Tags:</p>
+                        <ul>
+                            <li style="background-color: rgba(255, 165, 0, 0.2); margin-right: 1rem;">UI Design</li>
+                            <li style="background-color: rgba(128, 0, 128, 0.2); margin-right: 1rem;">Marketing</li>
+                            <li style="background-color: rgba(165, 42, 42, 0.2);">Development</li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="task-content-description">
                     <!-- <p class="fw-bold"><center>Description</center></p> -->
@@ -128,13 +137,14 @@
                                     <th class="fw-bold">Task</th>
                                     <th class="fw-bold">Description</th>
                                     <th class="fw-bold">Due Date</th>
-                                    <th class="fw-bold"></th>
+                                    <th class="fw-bold" v-if="user.role != 'admin'"></th>
+                                    <th class="fw-bold" v-if="user.role == 'admin'">Date Completed</th>
                                 </tr>
                             </thead>
                             <tbody class="t-body">
                                 <tr class="table-row" v-for="subTask in subTasks" :key="subTask.id" :class="{'complete': subTask.status == 'complete'}">
                                     <td style="width: 5rem;">
-                                        <MDBBadge :class="{'badge badge-primary': subTask.status === 'to-do', 'badge badge-success': subTask.status === 'complete'}"  >{{ subTask.status }}</MDBBadge> 
+                                        <MDBBadge :class="{'badge bg-warning': subTask.status === 'to-do', 'badge bg-success': subTask.status === 'complete'}"  >{{ subTask.status }}</MDBBadge> 
                                     </td>
                                     <td class="table-title">
                                         <div class="d-flex align-items-center">
@@ -147,17 +157,22 @@
                                         <span class="fw-normal">{{ subTask.description }}</span>
                                     </td>
                                     <td class="table-due">{{ new Date(subTask.dueDate).toDateString() }}</td>
-                                    <td class="subtask-dots1" v-if="user.role != 'admin'">
-                                        <MDBBtn class="subtask-dots" pill size="sm" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></MDBBtn>
-                                        <div class="actions dropdown-menu">
-                                            <ul>
-                                                <li @click="subTaskStore.toggleStatus(subTask.id)"><i class="bi bi-check2-all mr-2"></i>Mark as Done</li>
-                                                <li @click="editSubTask(subTask)" data-bs-toggle="modal" data-bs-target="#subTaskForm"><i class="bi bi-pencil-square mr-2"></i>Edit Subtask</li>
-                                                <li><i class="bi bi-download mr-2"></i>Archive</li>
-                                                <li><hr class="dropdown-divider"/></li>
-                                                <li style="color: darkOrange; padding-top: 10px;" @click="subTaskStore.deleteSubTask(subTask.id)"><i class="bi bi-trash3 mr-2"></i> Delete</li>
-                                            </ul>
+                                    <td class="subtask-dots" v-if="user.role != 'admin'">
+                                        <div class="subtask-dots1" >
+                                            <MDBBtn pill size="sm" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></MDBBtn>
+                                            <div class="actions dropdown-menu">
+                                                <ul>
+                                                    <li @click="subTaskStore.toggleStatus(subTask.id)"><i class="bi bi-check2-all mr-2"></i>Mark as Done</li>
+                                                    <li @click="editSubTask(subTask)" data-bs-toggle="modal" data-bs-target="#subTaskForm"><i class="bi bi-pencil-square mr-2"></i>Edit Subtask</li>
+                                                    <li><i class="bi bi-download mr-2"></i>Archive</li>
+                                                    <li><hr class="dropdown-divider"/></li>
+                                                    <li style="color: darkOrange; padding-top: 10px;" @click="subTaskStore.deleteSubTask(subTask.id)"><i class="bi bi-trash3 mr-2"></i> Delete</li>
+                                                </ul>
+                                            </div>
                                         </div>
+                                    </td>
+                                    <td v-if="user.role == 'admin'">
+                                        {{ new Date(subTask.updated_at).toDateString()  }}
                                     </td>
                                 </tr>
                             </tbody>
@@ -165,9 +180,12 @@
                     </div>
 
                     <div v-else class="no-subtasks mt-20">
-                        <center>
-                            <p>You haven't created any milestones. Create one now</p>
+                        <center v-if="user.role != 'admin'">
+                            <p class="fs-5">You haven't created any milestones. Create one now</p>
                             <button data-bs-toggle="modal" data-bs-target="#subTaskForm">+</button>
+                        </center>
+                        <center v-else>
+                            <p class="fs-5">There are no milestones/subtasks for this task.</p>
                         </center>
                     </div>
                       
@@ -235,7 +253,8 @@
                 countTask: "",
                 showMenu: false,
                 isEditing: false,
-                status: "to-do"
+                status: "to-do",
+                employee: ""
                 
 
             };
@@ -258,8 +277,9 @@
                         this.taskItem = res.data
                         this.project = this.taskItem.project
                         this.subTasks = this.taskItem.subtasks
+                        this.employee = this.taskItem.employee
 
-                        console.log(this.subTasks )
+                        console.log(this.taskItem )
 
                     })
                 } catch (error) {
@@ -347,7 +367,7 @@
 
         },
 
-    }
+    };
 </script>
 
 
@@ -442,9 +462,11 @@
         width: 35rem;
     }
 
+     .task-content .subtask-dots {
+        width: 30px;
+    }
+
     .task-content .subtask-dots1 {
-        /* position: relative;
-        left: 100px; */
         width: 30px;
         visibility: hidden;
     }
@@ -527,6 +549,11 @@
 
     .complete {
         text-decoration: line-through;
+        background-color: #82be4134;
+    }
+
+    .complete:hover {
+        background-color: #82be4134;
     }
 
 

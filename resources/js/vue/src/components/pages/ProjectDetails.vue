@@ -2,9 +2,9 @@
   <main>
       <div class="heading">
           <div>
-              <h2 style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;"></span>All Briefs/Projects</h2>
+              <h2 style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;"></span>Active Project</h2>
               
-              <P style="font-weight: 500;">Home / <span style="font-weight: 400;">Projects</span></P>
+              <P style="font-weight: 500;">Home / <span style="font-weight: 400;">Projects / {{ projectItem.project_title }}</span></P>
           </div>
           <div>
               <div className="btn-group">

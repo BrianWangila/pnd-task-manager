@@ -2,7 +2,8 @@
   <main>
     <div class="heading">
       <div style="min-height: 8.5vh;">
-        <h2 style="font-size:25px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;"></span>All Briefs / Projects</h2>
+        <h2 v-if="user.role == 'admin'" style="font-size:25px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;"></span>All Briefs / Projects</h2>
+        <h2 v-else style="font-size:25px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;"></span> {{ department.department_name }} Department Briefs / Projects</h2>
         
         <P style="font-weight: 500;">Home / <span style="font-weight: 400;">Projects</span></P>
       </div>
@@ -112,7 +113,7 @@
                                         <router-link class="card-title" :to="`/projects/${project.id}`">{{ project.project_title }}</router-link>
                                         
                                         <div  
-                                            v-if="user.role !== 'admin'" style="pointer-events: none;"
+                                            v-if="user.role == 'admin'"
                                             @mouseenter="toggle('display-action'+project.id)" 
                                             @mouseleave="toggleOff('display-action'+project.id)" 
                                             >
@@ -318,20 +319,28 @@
             isOpen: false,
             filter: "all",
             isEditing: false,
-            fileName: ""
+            fileName: "",
+            department: "",
 
         };
     },
 
     mounted(){
-        const today = new Date()
-        this.time = today.getHours()
-        this.projectStore.getProjects()
-        this.departmentStore.getDepartments()
-        this.projectStore.inProgress
-        this.projectStore.projectsByDpt
+        const today = new Date();
+        const id = this.user.department_id;
 
-        console.log(this.projectStore.projectsByDpt)
+        console.log(id)
+
+        this.time = today.getHours();
+        this.projectStore.getProjects();
+        this.departmentStore.getDepartments();
+        this.projectStore.inProgress;
+        this.projectStore.projectsByDpt;
+        this.getDepartment(id);
+
+        // console.log(this.departmentStore.dptByEmployee)
+
+        // console.log(this.projectStore.projectsByDpt);
 
 
     },
@@ -340,7 +349,7 @@
             submitForm(){
 
             this.projectStore.addProject(this.dataInput);
-            // this.fileStore.addFile(this.dataInput)
+            // this.fileStore.addFile(this.dataInput);
             
             this.dataInput = {
                 project_title: "",
@@ -392,7 +401,18 @@
                     text: 'Are you sure you want to delete?',
                     icon: 'info',
                     confirmButtonText: 'Cool'
-                })
+                });
+            },
+
+
+            getDepartment(id){
+
+                 this.departmentStore.departments.filter((dpt) => {
+
+                    this.department = dpt.id == id;
+                });
+
+                // console.log(this.departmentName);
             },
 
             // projectsByDpts(id){

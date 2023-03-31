@@ -39,7 +39,7 @@
                   <div class="projects project-files">
                       <div class="ml-2">
                         <div class="row col-12" v-if="fileStore.files.length > 0">
-                          <div class="card files" v-for="file in fileStore.files" :key="file.id">
+                          <div class="card files" v-for="file in fileStore.files" :key="file.id" :title="file.project.project_title">
                               <div class="list-btn" type="button" data-bs-toggle="modal" data-bs-target="#file-actions"><i class="bi bi-three-dots-vertical"></i></div>
                               <div class="title">
                                   <img src="../../assets/images/files.png" :alt="file.file_name" />

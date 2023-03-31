@@ -255,7 +255,7 @@
         methods: {
             addEmployeeForm(){
                 this.userStore.register(this.dataInput)
-                this.employeeStore.addEmployee(this.dataInput)
+                // this.employeeStore.addEmployee(this.dataInput)
 
                 this.dataInput = {
                     name: "",

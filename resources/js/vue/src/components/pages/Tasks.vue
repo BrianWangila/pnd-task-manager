@@ -29,35 +29,46 @@
           </div>
         </div>
       </div>
+
   
       <div class="content">
         <div class="add-project  ml-8 mt-3 mb-2 mr-8">
-          <h4 class=" fw-bolder">Upcoming Deadlines</h4>
+          <h4 v-if="user.role == 'admin'" style="font-weight: 600; ">Active Tasks <span style="font-weight: 500; ">({{ taskStore.tasks.length }})</span></h4>
+          <h4 v-else style="font-weight: 600; ">My Active Tasks <span style="font-weight: 500; ">({{ tasks.length }})</span></h4>
         </div>
 
         <div class="projects row" v-if="user.role == 'admin'">
           <div class="card"  style="width: 25rem; " v-for="task in taskStore.tasks" :key="task.id" >
             <div class="card-body">
               <div class="title">
-                <router-link class="card-title" :to="`/tasks/${task.id}`">Front-end Development</router-link>
+                <router-link class="card-title" :to="`/tasks/${task.id}`">{{ task.project.project_title }}</router-link>
                 <div
                     @mouseenter="toggle('display-action'+task.id)" 
                     @mouseleave="toggleOff('display-action'+task.id)" >
 
-                  <i type="button" class="bi bi-three-dots"></i>
-                  <div class="delete-edit" :id="'display-action'+task.id" style="display:none">
-                    <i class="fas fa-edit mb-2" style="color: skyblue;" type="button"></i>
-                    <i @click="taskStore.deleteTask(task.id)" class="fas fa-trash" style="color: darkorange;" type="button"></i>
-                  </div>
+                    <i type="button" class="bi bi-three-dots"></i>
+                    <div class="delete-edit" :id="'display-action'+task.id" style="display:none">
+                        <i class="fas fa-edit mb-2" style="color: skyblue;" type="button"></i>
+                        <i @click="taskStore.deleteTask(task.id)" class="fas fa-trash" style="color: darkorange;" type="button"></i>
+                    </div>
 
                 </div>
-              </div>
-              <p class="card-text mt-3 fw-bold">{{ task.task_title }}</p>
-              <div>
-                <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(task.deadline ).toDateString() }}</span>
-              </div>
-                <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                  <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
+                </div>
+                <p class="card-text mt-3 fw-bold">Task: <span style="font-weight: 500;">{{ task.task_title }}</span></p>
+                <div>
+                    <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(task.deadline ).toDateString() }}</span>
+                </div>
+                <div class="mt-3">
+                    <div class="task-employee-container">
+                        <img class="task-employee-image" src="../../assets/images/avatar.png" alt="{{ task.employee.name }}" >
+                        <div class="task-employee-name">
+                            <p>{{ task.employee.name }}</p>
+                            <!-- <p>{{ task.employee.email }}</p> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="progress mt-3" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
                 </div>
             </div>
           </div>
@@ -66,24 +77,34 @@
         <div class="projects row" v-else>
           <div class="card"  style="width: 25rem;" v-for="task in tasks" :key="task.id" >
             <div class="card-body">
-              <div class="title">
-                <router-link class="card-title" :to="`/tasks/${task.id}`">Front-end Development</router-link>
-                <div
+                <div class="title">
+                    <router-link class="card-title" :to="`/tasks/${task.id}`">Task Title goes here</router-link>
+                    <div
                     @mouseenter="toggle('display-action'+task.id)" 
                     @mouseleave="toggleOff('display-action'+task.id)" >
 
-                  <i type="button" class="bi bi-three-dots"></i>
-                  <div class="delete-edit" :id="'display-action'+task.id" style="display:none">
-                    <i class="fas fa-edit mb-2" style="color: skyblue;" type="button"></i>
-                    <i @click="taskStore.deleteTask(task.id)" class="fas fa-trash" style="color: darkorange;" type="button"></i>
-                  </div>
+                    <i type="button" class="bi bi-three-dots"></i>
+                    <div class="delete-edit" :id="'display-action'+task.id" style="display:none">
+                        <i class="fas fa-edit mb-2" style="color: skyblue;" type="button"></i>
+                        <i @click="taskStore.deleteTask(task.id)" class="fas fa-trash" style="color: darkorange;" type="button"></i>
+                    </div>
 
+                    </div>
                 </div>
-              </div>
-              <p class="card-text mt-3 fw-bold">{{ task.task_title }}</p>
-              <div>
-                <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(task.deadline ).toDateString() }}</span>
-              </div>
+                <p class="card-text mt-3 fw-bold">Task: <span style="font-weight: 500;">{{ task.task_title }}</span></p>
+                <div>
+                    <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(task.deadline ).toDateString() }}</span>
+                </div>
+                <!-- <div class="mt-3">
+                    <div class="task-employee-container">
+                        <img class="task-employee-image" src="../../assets/images/avatar.png" alt="{{  }}" >
+                        <div class="task-employee-name">
+                            <p>Name</p>
+                            <p>{{ task.employee.name }}</p>
+                            <p>{{ task.employee.email }}</p>
+                        </div>
+                    </div>
+                </div> -->
                 <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
                   <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
                 </div>
@@ -134,6 +155,9 @@
       const today = new Date()
       this.time = today.getHours()
       this.taskStore.getTasks()
+
+      
+
       this.getEmployeeTasks(this.user.id)
   
     },
@@ -270,6 +294,35 @@
     .btn2 {
       border: 1px solid #81BE41;
     }
+
+    /* Style for the container */
+    .task-employee-container {
+        display: flex;
+        align-items: center;
+        /* justify-content: center; */
+        border: 1px solid #ccc;
+        border-radius: 50px;
+        padding: 1px;
+        width: 170px;
+        /* border: 1px solid red; */
+    }
+
+    /* Style for the image */
+    .task-employee-image {
+        width: 30px;
+        height: 30px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    /* Style for the name */
+    .task-employee-name {
+        font-size: 16px;
+        margin-bottom: -15px;
+        font-weight: 400;
+    }
+
   
   
   </style>
