@@ -40,8 +40,8 @@ class AuthController extends Controller
 
             try {
                 $employee1 = Employee::create([
-                    "department_id" => $request->departmentId, 
-                    "user_id" => $user->id,
+                    "department_id" => $request -> departmentId, 
+                    "user_id" => $user -> id,
                     "job_title" => $request -> jobTitle, 
                     "role" => $request -> role, 
                 ]);

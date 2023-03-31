@@ -13,7 +13,7 @@ class SubtaskController extends Controller
      */
     public function index()
     {
-        $subtasks = Subtask::get();
+        $subtasks = Subtask::orderBy('status', 'DESC')->get();
         return $subtasks;
     }
 
@@ -48,6 +48,8 @@ class SubtaskController extends Controller
         }
     }
 
+
+
     /**
      * Display the specified resource.
      */
@@ -57,6 +59,8 @@ class SubtaskController extends Controller
         
         return $subtask;
     }
+
+
 
 
     /**
@@ -91,6 +95,9 @@ class SubtaskController extends Controller
             return response()->json($response, 500);
         }
     }
+
+
+
 
     /**
      * Remove the specified resource from storage.

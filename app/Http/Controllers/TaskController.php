@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Task;
 use App\Models\User;
@@ -14,16 +15,20 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::with("project", "employee")->get();
+        $tasks = Task::with("project", "employee", 'subtasks')->get();
+
+        foreach($tasks as $task){
+
+            // if($task->id == $id){
+                $userID = $task->employee->user_id;
+                $employee = User::where('id', $userID)->get();
+                
+                $task->employee->name = $employee[0]->name;
+                $task->employee->email = $employee[0]->email;
+            // }
+        };
         
-        // $user = Employee::with('user')->where()->get();
-
-        // foreach ($tasks as $task){
-
-        //     if(!is_null($task->employee)) {
-        //         $task['assignee'] = $user;
-        //     }
-        // };
+        
        return $tasks;
         
     }
@@ -76,10 +81,12 @@ class TaskController extends Controller
         $task = Task::with("project", "employee", 'subtasks')->find($id);
         $userID = $task->employee->user_id;
         $employee = User::where('id', $userID)->get();
+        // $employeeDpt = Department::where('id', $userID)->get();
         
         
         $task->employee['name'] = $employee[0]->name;
         $task->employee['email'] = $employee[0]->email;
+        // $task->employee['department'] = $employeeDpt;
         
         
         return $task;
