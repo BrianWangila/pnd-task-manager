@@ -100,8 +100,8 @@
                   </div>
                   <div class="assigned mb-2">
                       <p style="margin-right: 30px; font-weight: 600;">Members:</p>
-                      <ul v-if="dptEmployee.length > 0" v-for="employee in dptEmployee" :key="employee.id">
-                          <li>{{ employee.user.name }}</li>
+                      <ul v-if="assignees.length > 0" v-for="employee in assignees" :key="employee.id">
+                          <li>{{ employee.name }}</li>
                           
                       </ul>
                       <ul v-else >
@@ -184,7 +184,8 @@
                     priority: ""
                 },
                 dptName: "",
-                countTask: ""
+                countTask: "",
+                assignees: [],
 
             };
         },
@@ -204,8 +205,9 @@
                     .then((res) => {
                         this.projectItem = res.data
                         this.dptName = this.projectItem.department.department_name
+                        this.assignees = this.projectItem.assignees
 
-                        console.log(this.projectItem )
+                        console.log(this.assignees )
 
                         const taskCount = this.projectItem.tasks.length
                         if(taskCount == 1){

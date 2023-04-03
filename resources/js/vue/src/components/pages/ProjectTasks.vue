@@ -143,7 +143,7 @@
               <form @submit.prevent="addTask">
                 <div class="mb-3">
                     <label class="form-label">Project</label>
-                    <input type="text" class="form-control" v-model="dataInput.project_id" disabled style="display;"/>
+                    <input type="text" class="form-control" v-model="dataInput.project_id" disabled style="display: none;"/>
                     <input type="text" class="form-control" :value="projectItem.project_title" disabled />
                 </div>
                 <div class="mb-3">

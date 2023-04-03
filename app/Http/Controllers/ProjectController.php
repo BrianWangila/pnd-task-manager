@@ -17,18 +17,27 @@ class ProjectController extends Controller
 
         $projects = Project::with("department", "tasks", "files")->get();
 
-        // $tasks = Task::with('employee')->get();
-        // $projectTasks = [];
-    
+        $tasks = Task::with('employee')->get();
 
-        // foreach($projects as $project) {
-        //     foreach($tasks as $task) {
-        //         if($project->id == $task->project_id) {
-        //             $projectTasks[] = $task;
-        //         }
-        //         $project['tasks'] = $projectTasks;
-        //     }
-        // }
+        
+    
+        foreach($projects as $project) {
+
+            $projectAssignees = [];
+
+            foreach($tasks as $task) {
+                $employee = Employee::with('user')->find($task->employee_id);
+
+                if(!in_array($employee, $projectAssignees)){
+                    if($project->id == $task->project_id){
+
+                        $projectAssignees[] = $employee;
+                    }
+                }
+            }
+
+            $project['assignees'] = $projectAssignees;
+        }
         return $projects;
     }
 
@@ -39,22 +48,19 @@ class ProjectController extends Controller
     public function show($id){
 
         $project = Project::with("department", "tasks", "files")->find($id);
-
-        // $task = Task::with("employee")->find($id);
         
-        // $employee = User::where('id', $userID)->get();
-        
-        
-        // $project->tasks['name'] = $employee;
-        // // $task->employee['email'] = $employee;
-        
+        $projectAssignees = [];
 
         foreach ($project->tasks as $task){
 
             $employee = Employee::with('user')->find($task->employee_id);
-
             $task['assignee'] = $employee->user;
+
+            if(!in_array($task->assignee, $projectAssignees)){
+                $projectAssignees[] = $task->assignee;
+            }
         };
+        $project['assignees'] = $projectAssignees;
 
         return $project;
     }

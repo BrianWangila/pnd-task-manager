@@ -38,9 +38,9 @@
                       <div class="nav-header">
                           <div class=" nav-color" id="nav-tab" >
                               <button @click="filter = 'all'" class="nav-link" >All</button>
-                              <button @click="filter = 'progress'" class="nav-link " style="color: orange;">In Progress</button>
-                              <button @click="filter = 'overdue'" class="nav-link" style="color: darkorange;" >Overdue</button>
-                              <button @click="filter = 'finished'" class="nav-link" style="color: #81BE41;">Finished</button>
+                              <button v-if="user.role == 'admin'" @click="filter = 'progress'" class="nav-link " style="color: orange;">In Progress</button>
+                              <button v-if="user.role == 'admin'"  @click="filter = 'overdue'" class="nav-link" style="color: darkorange;" >Overdue</button>
+                              <button v-if="user.role == 'admin'"  @click="filter = 'finished'" class="nav-link" style="color: #81BE41;">Finished</button>
                           </div>
                       </div>
                   </nav>
@@ -130,6 +130,12 @@
                                     <div>
                                         <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(project.deadline).toDateString() }}</span>
                                     </div>
+                                    <div class="assignee-image">
+                                      <div v-for="assignee in project.assignees" :key="assignee.id">
+                                        <img :src="assignee.image_url" alt="..." :title="assignee.user.name"/>
+                                      </div>
+                                    </div>
+                                    
                                     <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
                                         <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
                                     </div>
@@ -163,6 +169,11 @@
                                     <div>
                                         <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(project.deadline).toDateString() }}</span>
                                     </div>
+                                    <div class="assignee-image">
+                                      <div v-for="assignee in project.assignees" :key="assignee.id">
+                                        <img :src="assignee.image_url" alt="..." :title="assignee.user.name"/>
+                                      </div>
+                                    </div>
                                     <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
                                         <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
                                     </div>
@@ -173,7 +184,7 @@
                       
                       
                       <!-- Projects that are in progress -->
-                      <div v-if="filter === 'progress'" class="row">
+                      <div v-if="filter === 'progress' && user.role == 'admin'" class="row">
                           <div v-if="projectStore.inProgress.length == 0"><center class="mt-5"><h4>No Ongoing Project</h4></center></div>
                           <div v-else class="card mb-3" style="width: 25rem;" v-for="(project, index) in projectStore.inProgress" :key="index">
                               <div class="card-body">
@@ -195,6 +206,11 @@
                                   <div>
                                     <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(project.deadline).toDateString() }}</span>
                                   </div>
+                                  <div class="assignee-image">
+                                      <div v-for="assignee in project.assignees" :key="assignee.id">
+                                        <img :src="assignee.image_url" alt="..." :title="assignee.user.name"/>
+                                      </div>
+                                    </div>
                                   <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
                                       <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
                                   </div>
@@ -203,7 +219,7 @@
                       </div>
 
                       <!-- Projects that are overdue -->
-                      <div v-if="filter === 'overdue'" class="row">
+                      <div v-if="filter === 'overdue' && user.role == 'admin'" class="row">
                           <div v-if="projectStore.overdue.length == 0"><center class="mt-5"><h4>No Overdue Project</h4></center></div>
                           <div v-else class="card mb-3" style="width: 25rem;" v-for="(project, index) in projectStore.overdue" :key="index">
                               <div class="card-body">
@@ -225,6 +241,11 @@
                                   <div>
                                     <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(project.deadline).toDateString() }}</span>
                                   </div>
+                                  <div class="assignee-image">
+                                      <div v-for="assignee in project.assignees" :key="assignee.id">
+                                        <img :src="assignee.image_url" alt="..." :title="assignee.user.name"/>
+                                      </div>
+                                    </div>
                                   <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
                                       <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
                                   </div>
@@ -233,7 +254,7 @@
                       </div>
 
                        <!-- Projects that are completed -->
-                       <div v-if="filter === 'finished'" class="row">
+                       <div v-if="filter === 'finished' && user.role == 'admin'" class="row">
                           <div v-if="projectStore.finished.length == 0"><center class="mt-5"><h4>No Finished Project</h4></center></div>
                           <div v-else class="card mb-3" style="width: 25rem;" v-for="(project, index) in projectStore.finished" :key="index">
                               <div class="card-body">
@@ -255,6 +276,11 @@
                                   <div>
                                     <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(project.deadline).toDateString() }}</span>
                                   </div>
+                                  <div class="assignee-image">
+                                      <div v-for="assignee in project.assignees" :key="assignee.id">
+                                        <img :src="assignee.image_url" alt="..." :title="assignee.user.name"/>
+                                      </div>
+                                    </div>
                                   <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
                                       <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
                                   </div>
@@ -412,20 +438,7 @@
                     this.department = dpt.id == id;
                 });
 
-                // console.log(this.departmentName);
             },
-
-            // projectsByDpts(id){
-            //     if (this.user.role !== "admin") {
-            //         this.projectStore.projects.filter((project) => {
-            //             return project.department_id == id
-            //         })
-            //     }
-            //     // return state.projects.filter((project) => {
-            //     //     return project.status == "In progress";
-            //     // });
-
-            // },
 
         },
     }
@@ -520,6 +533,27 @@
   margin-right: 15px;
   color:#839470 ;
   cursor: pointer;
+}
+
+
+.assignee-image  {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  /* overflow: hidden; */
+}
+
+.assignee-image img {
+  /* position: absolute;  */
+  z-index: 1;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-top: 10px;
+  margin-bottom: -30px;
+  /* top: 0;
+  left: 0;
+  margin-left: -50px;  */
 }
 
 

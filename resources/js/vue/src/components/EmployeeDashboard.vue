@@ -36,7 +36,7 @@
                 <div class="dashboard-top">
                     <div class="dash-top-left">
                         <div class="title">
-                            <h5>TO-DO LIST</h5>
+                            <h5>TODO List</h5>
                         </div>
 
                         <div class="to-do-list">
@@ -52,6 +52,7 @@
                             <div class="to-do-btn">
                                 <button><i class="bi bi-plus-lg mr-2"></i>CREATE A TO-DO</button>
                             </div>
+
                         </div>
                     </div>
 
@@ -64,35 +65,203 @@
                             <div class="tasks">
                                 <div class="my-tasks mb-3">
                                     <p>My Tasks</p>
+                                    <div class="tasks-stats">
+                                        <div style="margin-top: -15px;"><CompletionRate/></div>
+                                        <div>
+                                            <div class="contents">
+                                                <p class="stats-dot"></p>
+                                                <p>KCA December Report KCA December Report </p>
+                                            </div>
+                                            <div class="contents">
+                                                <p class="stats-dot" style="background-color: orange;"></p> 
+                                                <p>KCA December Report</p>
+                                            </div>
+                                            <div class="contents">
+                                                <p class="stats-dot" style="background-color: orangered;"></p> 
+                                                <p>KCA December Report</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="team-tasks">
                                     <p>Team Tasks</p>
+                                    <div class="tasks-stats">
+                                        <div style="margin-top: -15px;"><CompletionRate/></div>
+                                        <div>
+                                            <div class="contents">
+                                                <p class="stats-dot"></p>
+                                                <p>KCA December Report KCA December Report</p>
+                                            </div>
+                                            <div class="contents">
+                                                <p class="stats-dot" style="background-color: orange;"></p> 
+                                                <p>KCA December Report</p>
+                                            </div>
+                                            <div class="contents">
+                                                <p class="stats-dot" style="background-color: orangered;"></p> 
+                                                <p>KCA December Report</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="team-members">
                                 <div class="team">
-                                    <p class="fw-bold"><i class="bi bi-microsoft-teams mr-2 "></i>My team</p>
+                                    <p class="fw-bold"> <i class="bi bi-microsoft-teams mr-2 "></i>My team</p>
                                     <p>Team Members</p>
                                     <div class="team-profiles">
-                                        <img src="../assets/images/avatar.png" alt="team">
-                                        <img src="../assets/images/avatar.png" alt="team">
-                                        <img src="../assets/images/avatar.png" alt="team">
+                                        <div class="profile" >
+                                            <img src="../assets/images/avatar.png" alt="team">
+                                            <img src="../assets/images/avatar.png" alt="team">
+                                            <img src="../assets/images/avatar.png" alt="team">
+                                        </div>
+                                        <!-- <div class="toggle-profiles" @click="showAll = !showAll">
+                                            <i :class="showAll ? 'bi bi-dash' : 'bi bi-plus'"></i>
+                                        </div> -->
                                     </div>
                                 </div>
 
                                 <div class="completion-rate">
                                     <p>Project Completion Rate</p>
+                                    <!-- <CompletionRate class=""/> -->
                                 </div>
 
                                 <div class="go-to-team">
-                                    <p>Go to <span style="color: #2F5508; font-weight: 600; cursor:pointer ;">My Team</span><i class="bi bi-arrow-right ml-2"></i></p>
+                                    <p>Go to <router-link style="color: #2F5508; font-weight: 600; cursor:pointer ;" to="/teams">My Team <i class="bi bi-arrow-right ml-2"></i></router-link></p>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
+                <div class="dashboard-bottom">
+                    <div>
+                        <div class="tasks-card-title">
+                            <h5>Active Tasks</h5>
+                            <p type="button" style="font-size: 15px;">See All Tasks <i class="bi bi-chevron-right"></i></p>
+                        </div>
+                        <div class="tasks-card">
+                            <div class="play"><i class="bi bi-play-circle-fill ml-2"></i></div>
+                            <div class="assigned">
+                                <h5>Assigned</h5>
+                                <div class="assigned-time">
+                                    <i class="bi bi-calendar3 mr-3"></i>
+                                    <div>
+                                        <div id="date">17/02/2023</div>
+                                        <div id="date">10.30 a.m</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="task-title">
+                                <h5>Create a database for XYZ</h5>
+                                <div style="font-size: 10px;">
+                                    <i class="bi bi-paperclip"></i> <span>4</span> Files
+                                    <i class="bi bi-list-task ml-2"></i> <span>4</span> Subtasks 
+                                </div>
+                            </div>
+                            <div>
+                                <h5>25% Complete</h5>
+                                <div class="progress" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                    <div class="progress-bar"  style="background-color: orange; border-radius: 5px; width: 25%;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <button><i class="bi bi-alarm mr-2"></i> Reminder</button>
+
+                            </div>
+                        </div>
+
+                        <div class="tasks-card">
+                            <div class="play"><i class="bi bi-play-circle-fill ml-2"></i></div>
+                            <div class="assigned">
+                                <h5>Assigned</h5>
+                                <div class="assigned-time">
+                                    <i class="bi bi-calendar3 mr-3"></i>
+                                    <div>
+                                        <div id="date">17/02/2023</div>
+                                        <div id="date">10.30 a.m</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="task-title">
+                                <h5>Create a database for XYZ</h5>
+                                <div style="font-size: 10px;">
+                                    <i class="bi bi-paperclip"></i> <span>4</span> Files
+                                    <i class="bi bi-list-task ml-2"></i> <span>4</span> Subtasks 
+                                </div>
+                            </div>
+                            <div>
+                                <h5>50% Complete</h5>
+                                <div class="progress" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                    <div class="progress-bar"  style="background-color: darkorange; border-radius: 5px; width: 50%;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <button><i class="bi bi-alarm mr-2"></i> Reminder</button>
+
+                            </div>
+                        </div>
+
+                        <div class="tasks-card">
+                            <div class="play"><i class="bi bi-play-circle-fill ml-2"></i></div>
+                            <div class="assigned">
+                                <h5>Assigned</h5>
+                                <div class="assigned-time">
+                                    <i class="bi bi-calendar3 mr-3"></i>
+                                    <div>
+                                        <div id="date">17/02/2023</div>
+                                        <div id="date">10.30 a.m</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="task-title">
+                                <h5>Create a database for XYZ</h5>
+                                <div style="font-size: 10px;">
+                                    <i class="bi bi-paperclip"></i> <span>4</span> Files
+                                    <i class="bi bi-list-task ml-2"></i> <span>4</span> Subtasks 
+                                </div>
+                            </div>
+                            <div>
+                                <h5>75% Complete</h5>
+                                <div class="progress" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                    <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 75%;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <button><i class="bi bi-alarm mr-2"></i> Reminder</button>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="top-priority-card">
+                        <div class="red-dot">
+                            <h5>Top-priority Tasks</h5> 
+                            <div class="top-priority-dot"></div>
+                        </div>
+                        <div class="top-priority">
+                            <div class="top-priority-dets">
+                                <div class="priority-title">Organize KCA Meeting</div>
+                                <div class="priority-due">Thur March 2023</div>
+                            </div>
+                            <div class="top-priority-dets">
+                                <div class="priority-title">Organize KCA Meeting</div>
+                                <div class="priority-due">Thur March 2023</div>
+                            </div>
+                            <div class="top-priority-dets">
+                                <div class="priority-title">Organize KCA Meeting</div>
+                                <div class="priority-due">Thur March 2023</div>
+                            </div>
+                            <div class="top-priority-dets">
+                                <div class="priority-title">Organize KCA Meeting</div>
+                                <div class="priority-due">Thur March 2023</div>
+                            </div>
+                            <div class="top-priority-dets">
+                                <div class="priority-title">Organize KCA Meeting</div>
+                                <div class="priority-due">Thur March 2023</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
             </div>
@@ -117,6 +286,7 @@
 
 <script>
     import { Calendar, DatePicker } from 'v-calendar';
+    import CompletionRate from './charts/donuts/CompletionRate.vue'
 
   
     export default {
@@ -124,6 +294,7 @@
         components: {
             Calendar,
             DatePicker,
+            CompletionRate,
         },
         
         data() {
@@ -132,7 +303,16 @@
                 time: null,
                 user: JSON.parse(localStorage.getItem('user')),
                 dashboard_title: "",
-                firstName: ""
+                firstName: "",
+                showAll: false,
+                profiles: [
+                    { image: '../assets/images/avatar.png' },
+                    { image: '../assets/images/avatar.png' },
+                    { image: '../assets/images/avatar.png' },
+                    { image: '../assets/images/avatar.png' },
+                    { image: '../assets/images/avatar.png' },
+                    { image: '../assets/images/avatar.png' },
+                ],
             };
         },
 
@@ -244,6 +424,41 @@
     align-items: center;
   }
 
+
+  .summary-content .tasks-stats {
+    display: flex;
+    /* align-items: center; */
+    justify-content: space-between;
+    padding: 1px 20px;
+    /* border: solid red; */
+  }
+
+  .summary-content .tasks-stats .contents {
+    display: flex;
+    align-items: center;
+
+  }
+
+  .summary-content .tasks-stats .contents p {
+    font-size: 10px;
+
+  }
+
+  .summary-content .tasks-stats .contents .stats-dot{
+    background-color: rgba(129, 190, 65, 0.6);
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    margin-right: 10px;
+    
+  }
+
+  .summary-content .tasks-stats .content {
+    display: flex;
+    align-items: center;
+  }
+
+
   .summary-content .my-tasks, .summary-content .team-tasks {
     border: 1px solid #d9d9d966;
     background-color: white;
@@ -288,7 +503,7 @@
 
 
   .to-do-list .to-do-btn button:hover {
-    background-color: rgba(130, 190, 65, 0.082);
+    background-color: rgba(21, 39, 2, 0.473);
     font-weight: 700;
     color: white;
 
@@ -305,6 +520,11 @@
 
 
   .dash-top-right .team-members .team-profiles {
+    display: flex;
+  }
+
+
+  .dash-top-right .team-members .team-profiles .profile {
     display: flex;
   }
 
@@ -328,6 +548,7 @@
     height: 120px;
     padding: 10px;
     width: 200px;
+    border-radius: 10px;
   }
 
 
@@ -335,6 +556,118 @@
     margin-top: 20px;
     margin-bottom: -20px;
   }
+
+  .dashboard-bottom {
+    margin-top: 20px;
+    margin-bottom: -70px;
+    display: flex;
+    /* align-items: center; */
+  }
+
+
+  .dashboard-bottom .top-priority-card {
+    margin-top: 10px;
+  }
+
+
+  .dashboard-bottom .tasks-card {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    justify-content: space-between;
+    width: 760px;
+    margin-bottom: 10px;
+    margin-right: 40px;
+    
+  }
+
+  .dashboard-bottom .tasks-card-title {
+    display: flex;
+    width: 760px;
+    justify-content: space-between;
+    align-items: center;
+
+  }
+
+  .dashboard-bottom .assigned .assigned-time {
+    display: flex;
+    align-items: center;
+  }
+
+
+  .dashboard-bottom .tasks-card .play {
+    font-size: 30px;
+    color: #2F5508;
+  }
+
+  .dashboard-bottom .tasks-card #date {
+    font-size: 10px;
+  }
+
+
+  .dashboard-bottom button {
+    background-color: rgba(46, 85, 8, 0.178);
+    padding: 5px 8px;
+    border-radius: 5px;
+    font-weight: bold;
+  }
+
+  .dashboard-bottom .top-priority-dot {
+    height: 5px;
+    width: 5px;
+    border-radius: 50%;
+    background-color: orangered;
+  }
+
+  .dashboard-bottom .top-priority {
+    padding: 10px;
+    background-color: white;
+    border-radius: 20px;
+    width: 350px;
+  }
+
+
+  .dashboard-bottom .top-priority-dets {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .dashboard-bottom .top-priority {
+
+    padding: 20px 15px;
+    min-height: 250px;
+  }
+
+
+  .dashboard-bottom .top-priority-dets .priority-title {
+    background-color: rgba(255, 0, 0, 0.1);
+    padding: 2px 10px;
+    border-radius: 5px;
+    color: black;
+  }
+
+  .dashboard-bottom .top-priority-dets .priority-due {
+    color: rgba(255, 0, 0, 0.63);
+  }
+
+
+  .top-priority-card .red-dot {
+    display: flex;
+    margin-bottom: 6px;
+  }
+
+
+
+
+
+
+
+
+
+
 
 
 </style>

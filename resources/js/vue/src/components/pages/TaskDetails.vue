@@ -166,7 +166,7 @@
                                                     <li @click="editSubTask(subTask)" data-bs-toggle="modal" data-bs-target="#subTaskForm"><i class="bi bi-pencil-square mr-2"></i>Edit Subtask</li>
                                                     <li><i class="bi bi-download mr-2"></i>Archive</li>
                                                     <li><hr class="dropdown-divider"/></li>
-                                                    <li style="color: darkOrange; padding-top: 10px;" @click="subTaskStore.deleteSubTask(subTask.id)"><i class="bi bi-trash3 mr-2"></i> Delete</li>
+                                                    <li style="color: orangered; padding-top: 10px;" @click="subTaskStore.deleteSubTask(subTask.id)"><i class="bi bi-trash3 mr-2"></i> Delete</li>
                                                 </ul>
                                             </div>
                                         </div>
