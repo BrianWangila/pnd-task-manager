@@ -13,7 +13,7 @@ class SubtaskController extends Controller
      */
     public function index()
     {
-        $subtasks = Subtask::orderBy('status', 'DESC')->get();
+        $subtasks = Subtask::orderBy('status', 'ASC')->get();
         return $subtasks;
     }
 

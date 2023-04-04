@@ -116,9 +116,9 @@
                                             <img src="../assets/images/avatar.png" alt="team">
                                             <img src="../assets/images/avatar.png" alt="team">
                                         </div>
-                                        <!-- <div class="toggle-profiles" @click="showAll = !showAll">
+                                        <div class="toggle-profiles" @click="showAll = !showAll">
                                             <i :class="showAll ? 'bi bi-dash' : 'bi bi-plus'"></i>
-                                        </div> -->
+                                        </div>
                                     </div>
                                 </div>
 
@@ -541,6 +541,22 @@
     width: 50px;
   }
 
+  .dash-top-right .team-members .team-profiles .toggle-profiles {
+    /* border: 1px solid red; */
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    background-color: rgb(37, 37, 37);
+    position: relative;
+  }
+
+  .dash-top-right .team-members .team-profiles .toggle-profiles i {
+    color: white;
+    font-weight: 700;
+    font-size: 30px;
+
+  }
+
 
   .dash-top-right .team-members .completion-rate {
     border: 1px solid #d9d9d966;
@@ -622,7 +638,8 @@
   }
 
   .dashboard-bottom .top-priority {
-    padding: 10px;
+    min-height: 200px;
+    padding: 10px 15px;
     background-color: white;
     border-radius: 20px;
     width: 350px;
@@ -632,25 +649,21 @@
   .dashboard-bottom .top-priority-dets {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
-  }
-
-  .dashboard-bottom .top-priority {
-
-    padding: 20px 15px;
-    min-height: 250px;
+    margin-bottom: 15px;
   }
 
 
   .dashboard-bottom .top-priority-dets .priority-title {
     background-color: rgba(255, 0, 0, 0.1);
-    padding: 2px 10px;
+    padding: 3px 10px;
     border-radius: 5px;
     color: black;
   }
 
   .dashboard-bottom .top-priority-dets .priority-due {
     color: rgba(255, 0, 0, 0.63);
+    padding: 3px ;
+
   }
 
 

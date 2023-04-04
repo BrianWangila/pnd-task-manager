@@ -1,7 +1,7 @@
 <h1 align="center">PND TASK MANAGEMENT SYSTEM</h1>
 
 
-PND Task Manager is a web-based application designed to help individuals and teams keep track of their tasks and projects. With Task Manager, you can create, assign, and prioritize tasks, set due dates and reminders, and track progress in real-time.
+PND Task Manager is a web-based application designed to help individuals and teams keep track of their tasks and projects. With Task Manager, you can create, assign, and prioritize tasks, set due dates and reminders, and track progress of active projects in real-time.
 
 
 <p align="center">
@@ -21,7 +21,7 @@ PND Task Manager is a web-based application designed to help individuals and tea
 
 <h1> Features 🧐 :</h1>
 
-- 
+- Coming soon
 
 <h1>Installation Steps 🛠️ :</h1>
 
@@ -106,7 +106,15 @@ Create a branch add commits and open a pull request.
 <h1>Built with 💻 :</h1>
 Technologies used in the project:
 
-* 
+- HTML / CSS / JS
+- VueJS Framework - frontend
+- Laravel 10 Framework - backend
+- CSS
+- Bootstrap
+- Pinia for state management
+- MySQL - database
+- 
+
 
 <h1>License 🛡️ :</h1>
 

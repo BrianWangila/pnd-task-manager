@@ -55,6 +55,11 @@ const routes = [
     component:  () => import('../components/pages/Teams.vue')
   },
   {
+    name: 'EmployeeInfo',
+    path: '/employees/:id',
+    component:  () => import('../components/pages/EmployeeInfo.vue')
+  },
+  {
     name: 'Calendar',
     path: '/calendar',
     component:  () => import('../components/pages/Calendar.vue')

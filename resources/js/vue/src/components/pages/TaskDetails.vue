@@ -6,7 +6,7 @@
               
               <P style="font-weight: 500;">Home / <span style="font-weight: 400;">Project / Tasks / {{ taskItem.task_title }}</span></P>
           </div>
-          <div>
+          <!-- <div>
               <div className="btn-group">
                   <button style="border: 1px solid lightgray;" type="button" className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                       <i class="bi bi-calendar"></i> Today
@@ -26,7 +26,7 @@
                       <li><a class="dropdown-item" href="#">Ongoing</a></li>
                   </ul>
               </div>
-          </div>
+          </div> -->
       </div>
 
       <div class="content">
@@ -75,10 +75,6 @@
 
               <div class="task-detail-content">
                 <div class="pl-5 pt-3 h-300">
-                    <div class="priority mb-2">
-                        <p class="mr-10" style="font-weight: 600;">Department:</p> 
-                        <p class="fw-bold" style=" color: black;">{{  }}</p>
-                    </div>
 
                     <div class="priority mb-2">
                         <p class="mr-10" style="font-weight: 600;">Project Title:</p> 
@@ -262,10 +258,11 @@
         mounted(){
 
             var id = this.$route.params.id;
-            this.singleTask(id)
-            this.departmentStore.getDepartments()
-            this.subTaskStore.getSubTasks()
-            this.taskStore.getTasks()
+            this.singleTask(id);
+            this.departmentStore.getDepartments();
+            this.subTaskStore.getSubTasks();
+            this.taskStore.getTasks();
+
         },
 
         methods: {
@@ -300,8 +297,10 @@
                     description: "",
                 }
 
-                this.subTaskStore.getTasks()
+                this.subTaskStore.getSubTasks()
                 this.singleTask(this.id)
+
+                window.location.reload()
 
                 // this.isEditing ? this.toast.success("Task Updated", {timeout: 2000}) : null
 
@@ -328,6 +327,8 @@
                 this.dataInput.id = id
                 console.log(this.dataInput.id)
                 this.status = 'Complete'
+
+                window.location.reload()
                 
             }
 

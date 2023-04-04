@@ -6,7 +6,7 @@
               
               <P style="font-weight: 500;">Home / <span style="font-weight: 400;">Projects / {{ projectItem.project_title }}</span></P>
           </div>
-          <div>
+          <!-- <div>
               <div className="btn-group">
                   <button style="border: 1px solid lightgray;" type="button" className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                       <i class="bi bi-calendar"></i> Today
@@ -26,7 +26,7 @@
                       <li><a class="dropdown-item" href="#">Ongoing</a></li>
                   </ul>
               </div>
-          </div>
+          </div> -->
       </div>
 
       <div class="content">
@@ -101,7 +101,7 @@
                   <div class="assigned mb-2">
                       <p style="margin-right: 30px; font-weight: 600;">Members:</p>
                       <ul v-if="assignees.length > 0" v-for="employee in assignees" :key="employee.id">
-                          <li>{{ employee.name }}</li>
+                          <li>{{ employee.user.name }}</li>
                           
                       </ul>
                       <ul v-else >

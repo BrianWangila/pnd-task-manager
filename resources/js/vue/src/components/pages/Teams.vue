@@ -6,7 +6,7 @@
         
         <P style="font-weight: 500;">Home / <span style="font-weight: 400;">The Team</span></P>
       </div>
-      <div>
+      <!-- <div>
         <div className="btn-group">
           <button style="border: 1px solid lightgray;" type="button" className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-calendar mr-3"></i> Today
@@ -26,7 +26,7 @@
             <li><a class="dropdown-item" href="#">Ongoing</a></li>
           </ul>
         </div>
-      </div>
+      </div> -->
     </div>
 
     <div class="content">
@@ -94,18 +94,20 @@
                           <tr>
                               <th class="fw-bold">Name and Email</th>
                               <th class="fw-bold">Job Title</th>
-                              <th class="fw-bold">Department</th>
+                              <th v-if="user.role == 'admin'" class="fw-bold">Department</th>
                               <th class="fw-bold">Ongoing Tasks</th>
                               <th v-if="user.role == 'admin'" class="fw-bold">Actions</th>
                           </tr>
                       </thead>
                       <tbody class="t-body"  v-if="employeeData.length > 0">
-                          <tr v-for="employee in employeeData" :key="employee.id">
+                          <tr v-for="employee in employeeData" :key="employee.id" style="cursor: pointer" @click="routerLink(employee.id)">
+                            
                               <td>
                                   <div class="assignee">
-                                      <img class="rounded-circle" src="https://mdbootstrap.com/img/new/avatars/8.jpg" alt="" style="width: 45px; height: 45px" >
+                                      <!-- <img class="rounded-circle" src="https://mdbootstrap.com/img/new/avatars/8.jpg" alt="" style="width: 45px; height: 45px" > -->
+                                      <img class="rounded-circle" :src="employee.image_url" alt="employee.user.name" style="width: 45px; height: 45px" >
                                       <div class="ms-3" style="display: flex; flex-direction: column;">
-                                          <span class="fw-bold mb-1">{{ employee.user.name }}</span>
+                                          <span class="fw-bold mb-1">{{ employee.user.name }}<span v-if="employee.user.email == user.user.email" style="font-weight: 400;"> (Me)</span></span>
                                           <span class="text-muted mb-0">{{ employee.user.email }}</span>
                                       </div>
                                   </div>
@@ -113,7 +115,7 @@
                               <td>
                                   <span class="fw-normal">{{ employee.job_title }}</span>
                               </td>
-                              <td>
+                              <td  v-if="user.role == 'admin'">
                                   <MDBBadge badge="success" pill class="d-inline">{{ employee.department.department_name }}</MDBBadge>
                               </td>
                               <td>
@@ -122,13 +124,13 @@
                                   </div>
                                   
                                   <div v-else>
-                                      <p>No Tasks</p>
+                                      <p>No Task</p>
                                   </div>
                                   
 
                                    <!-- Tasks pop up form -->
                                 <div class="modal fade" :id="'tasksList'+employee.id" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog  modal-dialog-centered modal-lg">
+                                    <div class="modal-dialog  modal-dialog-centered modal-xl">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title text-dark" id="ModalLabel">Active Tasks</h5>
@@ -153,7 +155,7 @@
                                                                     </div>
                                                                 </div>
                                                             </td>
-                                                            <td>
+                                                            <td style="width: 700px;">
                                                                 <span class="fw-normal">{{ task.description }}</span>
                                                             </td>
                                                             <td>
@@ -169,9 +171,6 @@
                                 </div>
                               </td>
                               <td v-if="user.role == 'admin'" >
-                                  <MDBBtn color="link" size="sm" rounded>
-                                      Edit
-                                  </MDBBtn>
                                   <MDBBtn color="link" size="sm" rounded @click="employeeStore.deleteEmployee(employee.id)">
                                       Delete
                                   </MDBBtn>
@@ -245,9 +244,8 @@
             this.departmentStore.getDepartments()
             this.employeeStore.getEmployeesByDpt(this.user.department_id)
             this.getTeamMembers()
-            // console.log(this.employeeStore.employees)
 
-    
+            // console.log(this.employeeStore.employees)
 
         },
 
@@ -280,8 +278,10 @@
                         console.log(this.employeeData)
                     }
                 }
+            },
 
-                
+            routerLink(id){
+                this.user.role == 'admin' ? this.$router.push('/employees/'+id) : null; 
             },
 
         },

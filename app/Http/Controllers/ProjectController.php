@@ -54,7 +54,7 @@ class ProjectController extends Controller
         foreach ($project->tasks as $task){
 
             $employee = Employee::with('user')->find($task->employee_id);
-            $task['assignee'] = $employee->user;
+            $task['assignee'] = $employee;
 
             if(!in_array($task->assignee, $projectAssignees)){
                 $projectAssignees[] = $task->assignee;

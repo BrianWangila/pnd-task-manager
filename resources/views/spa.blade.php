@@ -85,7 +85,7 @@
         {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap5-toggle@5.0.4/js/bootstrap5-toggle.jquery.min.js"></script> --}}
 
         {{-- circleCounter --}}
-        <script src="unpkg.com/vue-circle-counter@latest/dist/circleCounter.umd.min.js"></script>
+        {{-- <script src="unpkg.com/vue-circle-counter@latest/dist/circleCounter.umd.min.js"></script> --}}
 
 
     </body>

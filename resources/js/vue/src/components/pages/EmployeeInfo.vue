@@ -2,26 +2,26 @@
   <section class="section profile">
     <div class="heading">
       <div>
-        <h2 style="font-size: 30px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;">{{ time_title }} </span> {{ firstName[0] }}</h2>
+        <h2 style="font-size: 30px; font-weight: 600;">Team Member </h2>
 
-        <P style="font-weight: 500;">Home / <span style="font-weight: 400;">Profile</span></P>
+        <P style="font-weight: 500;">Home / <span style="font-weight: 400;">Profile / {{ user.name }}</span></P>
       </div>
     </div>
 
+
     <div class="row content">
 
-      <div class="col-xl-4">
 
+      <div class="back">
+        <router-link to="/teams"><button>Back</button></router-link>
+      </div>
+      <div class="col-xl-4">
         <div class="card">
           <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-
-            <img v-if="!user.image_url" src="./images/profile-img.jpg" alt="Profile" class="rounded-circle" >
-            <img v-else :src="user.image_url" alt="Profile" class="rounded-circle" >
-            
-            <h2 style="font-weight: 400;">{{ title }}</h2>
-            
-            <h2>{{ user.user.name }}</h2>
-            <h3 class="mt-2">{{ user.job_title }}</h3>
+            <img v-if="!singleEmployee.image_url" src="./images/profile-img.jpg" alt="Profile" class="rounded-image" >
+            <img v-else :src="singleEmployee.image_url" alt="Profile" class="rounded-image" >
+            <h2>{{ user.name }}</h2>
+            <h3 class="mt-2">{{ singleEmployee.job_title }}</h3>
             <div class="social-links mt-2">
               <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
               <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
@@ -34,7 +34,6 @@
       </div>
 
       <div class="col-xl-8">
-
         <div class="card">
           <div class="card-body pt-3">
             <!-- Bordered Tabs -->
@@ -48,54 +47,55 @@
                 <button style="color: #2F5508;" class="nav-link" id="active2" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
               </li>
 
-              <li class="nav-item">
-                <button style="color: #2F5508;" class="nav-link" id="active2" data-bs-toggle="tab" data-bs-target="#profile-change-password">Account Settings</button>
-              </li>
-
             </ul>
             <div class="tab-content pt-2">
 
               <div class="tab-pane fade show active profile-overview" id="profile-overview">
                 <h5 class="card-title">About</h5>
                 <div style="width: 30vw;">
-                  <p class="small ">{{ user.about }}</p>
+                  <p class="small ">{{ singleEmployee.about }}</p>
                 </div>
 
                 <h5 class="card-title">Profile Details</h5>
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label ">Full Name</div>
-                  <div class="col-lg-9 col-md-8"> {{ user.user.name }}</div>
-                </div>
-
-                <div class="row">
-                  <div class="col-lg-3 col-md-4 label">Company</div>
-                  <div class="col-lg-9 col-md-8">{{ user.organization }}</div>
-                </div>
-
-                <div class="row">
-                  <div class="col-lg-3 col-md-4 label">Job</div>
-                  <div class="col-lg-9 col-md-8">{{ user.job_title }}</div>
-                </div>
-
-                <div class="row">
-                  <div class="col-lg-3 col-md-4 label">Country</div>
-                  <div class="col-lg-9 col-md-8">{{ user.country }}</div>
-                </div>
-
-                <div class="row">
-                  <div class="col-lg-3 col-md-4 label">Address</div>
-                  <div class="col-lg-9 col-md-8">{{ user.address }}</div>
-                </div>
-
-                <div class="row">
-                  <div class="col-lg-3 col-md-4 label">Phone</div>
-                  <div class="col-lg-9 col-md-8">{{ user.phone }}</div>
+                  <div class="col-lg-9 col-md-8"> {{ user.name }}</div>
                 </div>
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Email</div>
-                  <div class="col-lg-9 col-md-8">{{ user.user.email }}</div>
+                  <div class="col-lg-9 col-md-8">{{ user.email }}</div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Job</div>
+                  <div class="col-lg-9 col-md-8">{{ singleEmployee.job_title }}</div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Phone</div>
+                  <div class="col-lg-9 col-md-8">{{ singleEmployee.phone }}</div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Department</div>
+                  <div class="col-lg-9 col-md-8">{{ department.department_name }}</div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Company</div>
+                  <div class="col-lg-9 col-md-8">{{ singleEmployee.organization }}</div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Address</div>
+                  <div class="col-lg-9 col-md-8">{{ singleEmployee.address }}</div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Country</div>
+                  <div class="col-lg-9 col-md-8">{{ singleEmployee.country }}</div>
                 </div>
               </div>
 
@@ -105,10 +105,10 @@
                 <form @submit.prevent="updateEmployee" enctype="multipart/form-data">
                   <div class="row mb-3">
                     <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
-                    <div class="col-md-8 col-lg-9">
-                      <img ref="profileImg" :src="user.image_url" alt="Profile">
+                    <div class="col-md-8 col-lg-9 profile-sq">
+                      <img ref="profileImg" :src="singleEmployee.image_url" alt="Profile">
                       <div class="pt-2">
-                        <p @click="uploadImage" class="btn btn-color btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></p>
+                        <!-- <p @click="uploadImage" class="btn btn-color btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></p> -->
                         <p @click="removeImage" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></p>
                       </div>
                       <input type="file" ref="imageInput" @change="onSelectFile" style="display: none">
@@ -118,35 +118,42 @@
                   <div class="row mb-3">
                     <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="fullName" type="text" class="form-control" id="fullName" :value="user.user.name" disabled>
+                      <input name="fullName" type="text" class="form-control" id="fullName" :value="user.name">
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <label for="about" class="col-md-4 col-lg-3 col-form-label">About</label>
                     <div class="col-md-8 col-lg-9">
-                      <textarea name="about" class="form-control" id="about" rows="5" v-model="inputData.about" >{{ user.about }}</textarea>
+                      <textarea name="about" class="form-control" id="about" rows="5" v-model="inputData.about" >{{ singleEmployee.about }}</textarea>
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="company" class="col-md-4 col-lg-3 col-form-label">Department</label>
+                    <div class="col-md-8 col-lg-9">
+                      <input name="company" type="text" class="form-control" id="company" :value="department.department_name">
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <label for="company" class="col-md-4 col-lg-3 col-form-label">Company</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="company" type="text" class="form-control" id="company" :value="user.organization" disabled>
+                      <input name="company" type="text" class="form-control" id="company" :value="singleEmployee.organization">
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <label for="Job" class="col-md-4 col-lg-3 col-form-label">Job</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="job" type="text" class="form-control" id="Job" :value="user.job_title" disabled>
+                      <input name="job" type="text" class="form-control" id="Job" :value="singleEmployee.job_title">
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <label for="Country" class="col-md-4 col-lg-3 col-form-label">Country</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="country" type="text" class="form-control" id="Country" :value="user.country">
+                      <input name="country" type="text" class="form-control" id="Country" :value="singleEmployee.country">
                     </div>
                   </div>
 
@@ -167,7 +174,7 @@
                   <div class="row mb-3">
                     <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="email" type="email" class="form-control" id="Email" :value="user.user.email" disabled>
+                      <input name="email" type="email" class="form-control" id="Email" :value="user.email">
                     </div>
                   </div>
 
@@ -206,39 +213,6 @@
 
               </div>
 
-
-              <div class="tab-pane fade pt-3" id="profile-change-password">
-                <!-- Change Password Form -->
-                <form>
-
-                  <div class="row mb-3">
-                    <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="password" type="password" class="form-control" id="currentPassword">
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="newpassword" type="password" class="form-control" id="newPassword">
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Confirm Password</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="renewpassword" type="password" class="form-control" id="renewPassword">
-                    </div>
-                  </div>
-
-                  <div class="text-center">
-                    <button type="submit" class="btn btn-color btn-primary">Change Password</button>
-                  </div>
-                </form><!-- End Change Password Form -->
-
-              </div>
-
             </div><!-- End Bordered Tabs -->
 
           </div>
@@ -257,44 +231,69 @@
 
 
 <script>
-  import Footer from '../Footer.vue';
-  import axiosClient from '../../axios';
-  import { useAuthStore } from '../../stores/authStore';
-  import { useToast } from 'vue-toastification'
+    import Footer from '../Footer.vue';
+    import axiosClient from '../../axios';
+    import { useAuthStore } from '../../stores/authStore';
+    import { useToast } from 'vue-toastification'
+    import { useEmployeeStore } from '../../stores/employeeStore';
+    import { useDepartmentStore } from '../../stores/departmentStore';
 
 
 
   export default {
     components: {
-      Footer,
+        Footer,
     },
     data(){
         var userData = JSON.parse(localStorage.getItem('user'))
         return {
             user: userData,
             authStore: useAuthStore(),
+            departmentStore: useDepartmentStore(),
+            employeeStore: useEmployeeStore(),
             toast: useToast(),
-            time_title: "",
-            title: "",
-            firstName: "",
+            singleEmployee: "",
             inputData: {
-                about: userData.about,
+                about: "",
                 address: userData.address,
                 phone: userData.phone,
                 country: userData.country,
                 image_file: ""
             },
+            user: "",
+            department: ""
           
         }
     },
     mounted(){
+        var id = this.$route.params.id;
 
+        const today = new Date()
+        this.time = today.getHours()
+        this.employeeStore.getEmployees()
+        this.employees = this.employeeStore.employees
+        this.departmentStore.getDepartments()
+        this.employeeStore.getEmployeesByDpt(this.user.department_id)
+        this.showEmployeeDets(id)
         this.greeting();
-        this.displayName();
-        this.splitName();
 
     }, 
     methods: {
+
+
+    async showEmployeeDets(id){
+        await axiosClient.get('/employees/'+id)
+        .then((res) => {
+            this.singleEmployee = res.data;
+            this.user = res.data.user;
+            this.department = res.data.department;
+            this.inputData = this.singleEmployee;
+
+            console.log(this.singleEmployee);
+        });
+    },
+
+
       greeting(){
 
         const today = new Date()
@@ -313,19 +312,7 @@
           this.time_title = "Good evening,";
         }
       },
-      displayName(){
 
-        if(this.user.role == "admin"){
-
-          this.title = this.user.role;
-        }
-      },
-      splitName(){
-
-        const name = this.user.user.name;
-        this.firstName = name.split(" ");
-        
-      },
       
       async updateEmployee(){
 
@@ -391,6 +378,31 @@
     width: 68.4vw;
   }
 
+  .back {
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    right: 25px;
+  }
+
+  .back a {
+    border: 1px solid #2F5508;
+    background-color: #2F5508;
+    color: white;
+    font-weight: 600;
+    padding: 3px 15px;
+    margin: -10px 0 10px;
+    border-radius: 5px;
+
+  }
+
+  .back a:hover {
+    border: 1px solid #2e5508bb;
+    background-color: #2e5508a4;
+    color: white;
+
+  }
+
   .heading {
     padding-left: 2vw;
     padding-right: 3vw;
@@ -453,6 +465,18 @@
   .btn-color {
     background-color: #2e5508e9;
     color: white;
+  }
+
+  .rounded-image {
+    height: 120px;
+    width: 150px;
+    border-radius: 50%;
+  }
+
+  .profile-sq img {
+    
+    height: 120px;
+    width: 150px;
   }
 
 </style>

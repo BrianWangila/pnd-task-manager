@@ -6,7 +6,7 @@
           
           <P style="font-weight: 500;">Home / <span style="font-weight: 400;">Files</span></P>
         </div>
-        <div>
+        <!-- <div>
           <div className="btn-group">
             <button style="border: 1px solid lightgray;" type="button" className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="bi bi-calendar mr-3"></i> Today
@@ -26,7 +26,7 @@
               <li><a class="dropdown-item" href="#">Ongoing</a></li>
             </ul>
           </div>
-        </div>
+        </div> -->
       </div>
   
       <div class="content">
@@ -39,7 +39,7 @@
                   <div class="projects project-files">
                       <div class="ml-2">
                         <div class="row col-12" v-if="fileStore.files.length > 0">
-                          <div class="card files" v-for="file in fileStore.files" :key="file.id" :title="file.project.project_title">
+                          <div class="card files" v-if="user.role == 'admin'" v-for="file in fileStore.files" :key="file.id" :title="file.project.project_title">
                               <div class="list-btn" type="button" data-bs-toggle="modal" data-bs-target="#file-actions"><i class="bi bi-three-dots-vertical"></i></div>
                               <div class="title">
                                   <img src="../../assets/images/files.png" :alt="file.file_name" />
@@ -47,13 +47,25 @@
                               </div>
                               <button @click="openFile(file.file)">Open</button>
                           </div>
+                          
+                          <div class="card files" v-else v-for="file1 in projectStore.projectsByDpt" :key="file1.id" :title="file1.project_title">
+                              <div class="list-btn" type="button" data-bs-toggle="modal" data-bs-target="#file-actions"><i class="bi bi-three-dots-vertical"></i></div>
+                              <div style="display: flex; flex-direction: column; justify-content: center;" v-for="file in file1.files" :key="file.id">
+                                <div class="title">
+                                    <img src="../../assets/images/files.png" :alt="file.file_name" />
+                                    <span>{{ file.file_name }}</span>
+                                </div>
+                                <button @click="openFile(file.file)">Open</button> 
+                              </div>
+                          </div>
                         </div>
+
                         <div v-else>
-                            <h4>YOU DON'T HAVE ANY FILES!</h4>
+                            <h4>ThERE ARE NO FILES ADDED!</h4>
                             <div class="empty-file">
                                 <div class="empty-file-image1">
                                     <center><img src="../../assets/images/empty-file.png" alt="empty files" /></center>
-                                    <p> All your files and documents for your projects <br/> and tasks will appear here. </p>
+                                    <p> All the files and documents for the projects <br/> and tasks will appear here. </p>
                                 </div>
                             </div> 
                         </div>
@@ -95,8 +107,11 @@
         },
       
         data() {
+          var userData = JSON.parse(localStorage.getItem('user'))
+
           return {
               date: new Date(),
+              user: userData,
               time: null,
               projectStore: useProjectStore(),
               departmentStore: useDepartmentStore(),
@@ -119,6 +134,8 @@
             this.projectStore.getProjects();
             this.departmentStore.getDepartments();
             this.fileStore.getFiles();
+
+
             console.log(this.fileStore.files)
       
         },

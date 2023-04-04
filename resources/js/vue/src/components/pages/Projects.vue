@@ -104,11 +104,11 @@
 
                     <!-- All projects -->
                       <div>
-                        <div v-if="filter === 'all' && user.role == 'admin'" class="row">
+                        <div v-if="filter === 'all' && user.role == 'admin' || user.role == 'hod' " class="row">
                             <div class="card mb-3" style="width: 25rem;" v-for="project in projectStore.projects" :key="project.id">
                                 <div class="card-body">
                                     <!-- <i @click="togglePriority(project.id)" :class="{active: project.priority}" class="bi bi-flag-fill priority" title="{ priority }"  type="button"></i> -->
-                                    <i v-if="project.priority" class="bi bi-flag-fill priority" title="Urgent"  type="button"></i>
+                                    <i v-if="project.priority == 'urgent'" class="bi bi-flag-fill priority" title="Urgent"  type="button"></i>
                                     <div class="title">
                                         <router-link class="card-title" :to="`/projects/${project.id}`">{{ project.project_title }}</router-link>
                                         
@@ -147,12 +147,12 @@
                             <div class="card mb-3" style="width: 25rem;" v-for="project in projectStore.projectsByDpt" :key="project.id">
                                 <div class="card-body">
                                     <!-- <i @click="togglePriority(project.id)" :class="{active: project.priority}" class="bi bi-flag-fill priority" title="{ priority }"  type="button"></i> -->
-                                    <i v-if="project.priority" class="bi bi-flag-fill priority" title="Urgent"  type="button"></i>
+                                    <i v-if="project.priority == 'urgent'" class="bi bi-flag-fill priority" title="Urgent"  type="button"></i>
                                     <div class="title">
                                         <router-link class="card-title" :to="`/projects/${project.id}`">{{ project.project_title }}</router-link>
                                         
                                         <div  
-                                            v-if="user.role !== 'admin'" style="pointer-events: none;"
+                                            v-if="user.role !== 'admin'" style="pointer-events: none;" 
                                             @mouseenter="toggle('display-action'+project.id)" 
                                             @mouseleave="toggleOff('display-action'+project.id)" 
                                             >
@@ -363,6 +363,8 @@
         this.projectStore.inProgress;
         this.projectStore.projectsByDpt;
         this.getDepartment(id);
+
+        console.log(this.projectStore.projectsByDpt)
 
         // console.log(this.departmentStore.dptByEmployee)
 

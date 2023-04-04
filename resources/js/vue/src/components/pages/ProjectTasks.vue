@@ -43,7 +43,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>
+                                        <td style="width: 600px;">
                                             <span class="fw-normal">{{ task.description }}</span>
                                         </td>
                                         <td>
@@ -52,10 +52,10 @@
                                         <td>{{ new Date(task.deadline).toDateString() }}</td>
                                         <td>
                                             <div class="assignee">
-                                                <img class="rounded-circle" src="https://mdbootstrap.com/img/new/avatars/8.jpg" alt="" style="width: 45px; height: 45px" >
+                                                <img class="rounded-circle" :src="task.assignee.image_url" alt="" style="width: 45px; height: 45px" >
                                                 <div class="ms-3" style="display: flex; flex-direction: column;">
-                                                    <span class="fw-bold mb-1">{{ task.assignee.name }}</span>
-                                                    <span class="text-muted mb-0">{{ task.assignee.email }}</span>
+                                                    <span class="fw-bold mb-1">{{ task.assignee.user.name }}<span v-if="task.assignee.user.email == user.user.email" style="font-weight: 400;"> (Me)</span></span>
+                                                    <span class="text-muted mb-0">{{ task.assignee.user.email }}</span>
                                                 </div>
                                             </div>
                                             
