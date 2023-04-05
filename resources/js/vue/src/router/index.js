@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useAuthStore } from '../stores/authStore';
 
 // path and routes
 const routes = [
@@ -71,9 +72,28 @@ const routes = [
   },
 ]
 
+
+
 const router = createRouter({
   history: createWebHistory(),
   routes
 })
 
+
+router.beforeEach((to) => {
+
+  //redirect to login page if not logged in or invalid route/url
+  const publicPages = ['/'];
+  const authRequired = !publicPages.includes(to.path);
+  const auth = useAuthStore();
+
+  // load user 
+  // auth.loadUser();
+
+  if(authRequired && !auth.authUser) {
+      auth.returnUrl = to.fullPath;
+      return '/';
+  }
+
+});
 export default router;

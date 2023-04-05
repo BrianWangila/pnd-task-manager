@@ -131,13 +131,15 @@
                                         <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(project.deadline).toDateString() }}</span>
                                     </div>
                                     <div class="assignee-image">
-                                      <div v-for="assignee in project.assignees" :key="assignee.id">
-                                        <img :src="assignee.image_url" alt="..." :title="assignee.user.name"/>
+                                      <div v-for="(assignee, index) in project.assignees" :key="assignee.id" class="assignee-wrapper">
+                                        <img :src="assignee.image_url" :alt="assignee.user.name" :title="assignee.user.name" class="assignee-image" :style="{ top: 0, left: index * -15 + 'px' }"/>
                                       </div>
                                     </div>
                                     
                                     <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                                        <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
+                                      <div v-if="project.progress > 80" class="progress-bar"  :style="{backgroundColor:'#81BE41', borderRadius: 5+'px', width: project.progress+'%'}"></div>
+                                      <div v-else-if="project.progress >= 50" class="progress-bar"  :style="{backgroundColor:'orange', borderRadius: 5+'px', width: project.progress+'%'}"></div>
+                                      <div v-else-if="project.progress > 5" class="progress-bar"  :style="{backgroundColor:'darkgray', borderRadius: 5+'px', width: project.progress+'%'}"></div>
                                     </div>
                                 </div>
                             </div>  
@@ -170,12 +172,14 @@
                                         <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(project.deadline).toDateString() }}</span>
                                     </div>
                                     <div class="assignee-image">
-                                      <div v-for="assignee in project.assignees" :key="assignee.id">
-                                        <img :src="assignee.image_url" alt="..." :title="assignee.user.name"/>
+                                      <div v-for="(assignee, index) in project.assignees" :key="assignee.id" class="assignee-wrapper">
+                                        <img :src="assignee.image_url" :alt="assignee.user.name" :title="assignee.user.name" class="assignee-image" :style="{ top: 0, left: index * -15 + 'px' }"/>
                                       </div>
                                     </div>
                                     <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                                        <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
+                                      <div v-if="project.progress > 80" class="progress-bar"  :style="{backgroundColor:'#81BE41', borderRadius: 5+'px', width: project.progress+'%'}"></div>
+                                      <div v-else-if="project.progress >= 50" class="progress-bar"  :style="{backgroundColor:'orange', borderRadius: 5+'px', width: project.progress+'%'}"></div>
+                                      <div v-else-if="project.progress > 5" class="progress-bar"  :style="{backgroundColor:'darkgray', borderRadius: 5+'px', width: project.progress+'%'}"></div>
                                     </div>
                                 </div>
                             </div>  
@@ -476,6 +480,7 @@
       font-size: 25px;
     }
 
+
     .heading {
       padding-left: 2vw;
       padding-right: 3vw;
@@ -546,16 +551,19 @@
 }
 
 .assignee-image img {
-  /* position: absolute;  */
   z-index: 1;
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   margin-top: 10px;
   margin-bottom: -30px;
-  /* top: 0;
-  left: 0;
-  margin-left: -50px;  */
+  /* border: 4px solid white; */
+  box-shadow: 0 0 0 5px white;
+}
+
+.assignee-wrapper {
+  position: relative;
+  display: inline-block;
 }
 
 

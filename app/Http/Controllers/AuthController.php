@@ -166,5 +166,29 @@ class AuthController extends Controller
         }
     }
 
+
+    //delete user
+    public function delete($id) {
+        
+        
+        try {
+            $user = User::find($id);
+            $user->delete();
+
+            return response([
+                "message" => "User deleted"
+            ], 204);
+
+        } catch (\Throwable $th) {
+            $response = [
+                "status" => 500,
+                "message" => "Something went wrong",
+                "error" => $th->getMessage()
+            ];
+
+            return response()->json($response, 500);
+        }
+
+    }
     
 }

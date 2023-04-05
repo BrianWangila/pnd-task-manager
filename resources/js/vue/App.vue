@@ -1,10 +1,11 @@
 <template>
     <div>
         <router-view />
-        <Header v-if="!$route.meta.hideNavigation" :toggleSideMenu="toggleSideMenu"/>
-        <SideMenu v-if="!$route.meta.hideNavigation && isMenuOpen" />
-        <SideMenuSmall v-else-if="!$route.meta.hideNavigation && isMenu2Open"/>
-        <SideCalendar v-if="!$route.meta.hideNavigation"/>
+        <!-- <Header  v-if="!$route.meta.hideNavigation" :toggleSideMenu="toggleSideMenu"/> -->
+        <Header  v-if="!isLogin" :toggleSideMenu="toggleSideMenu"/>
+        <SideMenu v-if="!isLogin  && isMenuOpen" />
+        <SideMenuSmall v-if="!isLogin  && isMenu2Open"/>
+        <SideCalendar v-if="!isLogin" />
     </div>
 </template>
 
@@ -29,16 +30,25 @@
       data(){
           return{
               isMenuOpen: true,
-              isMenu2Open: false
+              isMenu2Open: false,
+
+
           }        
       },
 
       methods: {
-          toggleSideMenu() {
-              this.isMenuOpen = !this.isMenuOpen
-              this.isMenu2Open = !this.isMenu2Open
-          },
-      }
+            toggleSideMenu() {
+                this.isMenuOpen = !this.isMenuOpen
+                this.isMenu2Open = !this.isMenu2Open
+            },
+      },
+
+      computed: {
+        isLogin() {
+
+            return this.$route.name === "Login";
+        }
+    },
     
     }
 </script>

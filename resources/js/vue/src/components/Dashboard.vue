@@ -1,5 +1,5 @@
 <template>
-    <main>
+    <main class="content">
         <div v-if="user.role == 'employee'">
             <EmployeeDashboard />
         </div>
@@ -38,3 +38,4 @@
         },
     };
 </script>
+

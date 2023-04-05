@@ -25,6 +25,25 @@ class TaskController extends Controller
                 
                 $task->employee->name = $employee[0]->name;
                 $task->employee->email = $employee[0]->email;
+
+                $subTasks = $task->subtasks;
+                $completeSubtasks = [];
+
+                foreach($subTasks as $subtask) {
+
+                    if($subtask->status == "complete") {
+
+                        $completeSubtasks[] = $subtask;
+                    }
+                }
+
+                if($completeSubtasks){
+                    $task['progress'] = (count($completeSubtasks) / count($subTasks)) * 100;
+
+                } else {
+                    $task['progress'] = 0;
+                }
+
             // }
         };
         
@@ -33,13 +52,8 @@ class TaskController extends Controller
         
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+
+    
 
     /**
      * Store a newly created resource in storage.
@@ -72,6 +86,8 @@ class TaskController extends Controller
         }
     }
 
+
+
     /**
      * Display the specified resource.
      */
@@ -92,13 +108,7 @@ class TaskController extends Controller
         return $task;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+    
 
     /**
      * Update the specified resource in storage.
@@ -112,7 +122,7 @@ class TaskController extends Controller
             $task->update([
                 "description" => $request -> description, 
                 "deadline" => date('Y-m-d', strtotime($request->deadline)),
-                "priority" => $request -> priority ? 1 : 0,
+                // "priority" => $request -> priority ? 1 : 0,
                 "status" => $request -> status,
                 "employee_id" => $request -> employee_id,
                 "task_title" => $request -> task_title,

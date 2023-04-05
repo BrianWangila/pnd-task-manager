@@ -92,6 +92,7 @@ export const useEmployeeStore = defineStore("employeeStore", {
           return item.id !== id
         })
 
+
         toast.success("Employee removed", {timeout: 2000})
 
       } catch (error) {

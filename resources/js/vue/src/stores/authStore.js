@@ -13,7 +13,8 @@ export const useAuthStore = defineStore("auth", {
             authUser: JSON.parse(localStorage.getItem('user')),
             message: null,
             errorMsg: null,
-            userToken: JSON.parse(localStorage.getItem('TOKEN'))
+            userToken: JSON.parse(localStorage.getItem('TOKEN')),
+            returnUrl: null,
       
         }
     },
@@ -26,16 +27,17 @@ export const useAuthStore = defineStore("auth", {
 
     actions: {
         async signIn(data){
-            console.log(this.userToken)
+            // console.log(this.userToken)
             try {
                 await axiosClient.post("/login", data,  {headers: {"Content-Type": "application/json"}})
                 .then((res) => {
+                    console.log(res.data)
                     if(res.data.status == 201){
 
-                        localStorage.setItem("TOKEN", JSON.stringify(res.data.token))
-                        localStorage.setItem("user", JSON.stringify(res.data.user))
+                        localStorage.setItem("TOKEN", JSON.stringify(res.data.token));
+                        localStorage.setItem("user", JSON.stringify(res.data.user));
                         
-                        this.router.push({name: "Dashboard"})  
+                        this.router.push({name: "Dashboard"});
                     }   
                 })
 
@@ -47,8 +49,8 @@ export const useAuthStore = defineStore("auth", {
             }
       },
 
-      async signOut(){
-          try {
+        async signOut(){
+            try {
               await axiosClient.post("/logout")
               .then((res) => {
                   // if(res.data.status == 200){
@@ -58,29 +60,29 @@ export const useAuthStore = defineStore("auth", {
         
                     this.router.push({name: "Login"})
                   // }
-              })
+                })
 
-              toast.success("You're logged out", {timeout: 2000})
+                toast.success("You're logged out", {timeout: 2000})
 
           } catch (error) {
               console.log(error)
           }
-      },
+        },
 
-          // add new team member
-          async register(data){
+        // add new team member
+        async register(data){
 
-              try {
-                await axiosClient.post("/register", data, {headers: {"Content-Type": "application/json"}})
-                .then((res) => {
-                    console.log(res)
-                    toast.success(res.data.message, {timeout: 2000})
-                })
+            try {
+            await axiosClient.post("/register", data, {headers: {"Content-Type": "application/json"}})
+            .then((res) => {
+                console.log(res)
+                toast.success(res.data.message, {timeout: 2000})
+            })
 
-              } catch (error) {
-                  console.log(error)
-              }
-          },
+            } catch (error) {
+                console.log(error)
+            }
+        },
     }
 });
 

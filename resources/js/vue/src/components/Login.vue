@@ -8,7 +8,7 @@
         timeout: 3000
       })}} -->
       <div class="login">
-        <h4>TASK MANAGER</h4>
+        <h4>PROJECT MANAGER</h4>
         <div>
           <div class="details">
             <h4>Login to your account</h4>

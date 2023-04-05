@@ -15,8 +15,34 @@ class DepartmentController extends Controller
     public function index()
     {
         $departments = Department::with("employees", "projects")->get();
+
+        foreach($departments as $department){
+            
+            $projects = $department->projects;
+            $completedProjects = [];
+
+            foreach($department->projects as $project){
+
+                if($project->status == "Completed") {
+
+                    $completedProjects[] = $project;
+                };
+            };
+
+            if($completedProjects){
+                $department['progress'] = (count($completedProjects) / count($projects)) * 100;
+                $department['completed_projects'] = $completedProjects;
+
+            } else {
+
+                $department['progress'] = 0;
+            };
+        };
+
         return $departments;
     }
+
+
 
 
     /**
@@ -26,6 +52,8 @@ class DepartmentController extends Controller
     {
         //
     }
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -41,6 +69,26 @@ class DepartmentController extends Controller
     public function show($department)
     {
         $department = Department::with("employees", "projects")->find($department);
+
+        $projects = $department->projects;
+            $completedProjects = [];
+
+            foreach($department->projects as $project){
+
+                if($project->status == "Completed") {
+
+                    $completedProjects[] = $project;
+                };
+            };
+
+            if($completedProjects){
+                $department['progress'] = (count($completedProjects) / count($projects)) * 100;
+                $department['completed_projects'] = $completedProjects;
+
+            } else {
+
+                $department['progress'] = 0;
+            };
 
         return $department;        
     }

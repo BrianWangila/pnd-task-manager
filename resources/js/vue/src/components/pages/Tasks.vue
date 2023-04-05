@@ -60,15 +60,16 @@
                 </div>
                 <div class="mt-3">
                     <div class="task-employee-container">
-                        <img class="task-employee-image" src="../../assets/images/avatar.png" alt="{{ task.employee.name }}" >
+                        <img class="task-employee-image" :src="task.employee.image_url" alt="{{ task.employee.name }}" >
                         <div class="task-employee-name">
                             <p>{{ task.employee.name }}</p>
-                            <!-- <p>{{ task.employee.email }}</p> -->
                         </div>
                     </div>
                 </div>
-                <div class="progress mt-3" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                    <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
+                <div class="progress mt-3" style="height: 10px; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                    <div v-if="task.progress > 80" class="progress-bar"  :style="{backgroundColor:'#81BE41', borderRadius: 5+'px', width: task.progress+'%'}"></div>
+                    <div v-else-if="task.progress >= 50" class="progress-bar"  :style="{backgroundColor:'orange', borderRadius: 5+'px', width: task.progress+'%'}"></div>
+                    <div v-else-if="task.progress > 5" class="progress-bar"  :style="{backgroundColor:'darkgray', borderRadius: 5+'px', width: task.progress+'%'}"></div>
                 </div>
             </div>
           </div>
@@ -95,18 +96,10 @@
                 <div>
                     <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(task.deadline ).toDateString() }}</span>
                 </div>
-                <!-- <div class="mt-3">
-                    <div class="task-employee-container">
-                        <img class="task-employee-image" src="../../assets/images/avatar.png" alt="{{  }}" >
-                        <div class="task-employee-name">
-                            <p>Name</p>
-                            <p>{{ task.employee.name }}</p>
-                            <p>{{ task.employee.email }}</p>
-                        </div>
-                    </div>
-                </div> -->
                 <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                  <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
+                  <div v-if="task.progress > 80" class="progress-bar"  :style="{backgroundColor:'#81BE41', borderRadius: 5+'px', width: task.progress+'%'}"></div>
+                    <div v-else-if="task.progress >= 50" class="progress-bar"  :style="{backgroundColor:'orange', borderRadius: 5+'px', width: task.progress+'%'}"></div>
+                    <div v-else-if="task.progress > 5" class="progress-bar"  :style="{backgroundColor:'darkgray', borderRadius: 5+'px', width: task.progress+'%'}"></div>
                 </div>
             </div>
           </div>
@@ -125,6 +118,11 @@
     </main>
   </template>
   
+
+
+
+
+
   <script>
     import { Calendar, DatePicker } from 'v-calendar';
     import { useTaskStore } from '../../stores/taskStore';
@@ -147,7 +145,8 @@
             time: null,
             taskStore: useTaskStore(),
             isOpen: false,
-            tasks: []
+            tasks: [],
+            // count: ""
         };
     },
   
@@ -200,6 +199,10 @@
   </script>
   
   
+
+
+
+
   
   <style scoped>
   

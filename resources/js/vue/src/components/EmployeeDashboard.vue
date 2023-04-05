@@ -111,14 +111,15 @@
                                     <p class="fw-bold"> <i class="bi bi-microsoft-teams mr-2 "></i>My team</p>
                                     <p>Team Members</p>
                                     <div class="team-profiles">
-                                        <div class="profile" >
-                                            <img src="../assets/images/avatar.png" alt="team">
-                                            <img src="../assets/images/avatar.png" alt="team">
-                                            <img src="../assets/images/avatar.png" alt="team">
+                                        <div class="profile">
+                                            <img src="../assets/images/avatar.png" alt="team" style="position: relative; top: 0; left: 0">
+                                            <img src="../assets/images/avatar.png" alt="team" style="position: relative; top: 0; left: -20px; ">
+                                            <img src="../assets/images/avatar.png" alt="team" style="position: relative; top: 0; left: -40px; ">
+                                            <div class="toggle-profiles" @click="showAll = !showAll" style="position: relative; top: 0; left: -60px; ">
+                                                <i :class="showAll ? 'bi bi-dash' : 'bi bi-plus'"></i>
+                                            </div>
                                         </div>
-                                        <div class="toggle-profiles" @click="showAll = !showAll">
-                                            <i :class="showAll ? 'bi bi-dash' : 'bi bi-plus'"></i>
-                                        </div>
+                                        
                                     </div>
                                 </div>
 
@@ -240,10 +241,6 @@
                             <div class="top-priority-dot"></div>
                         </div>
                         <div class="top-priority">
-                            <div class="top-priority-dets">
-                                <div class="priority-title">Organize KCA Meeting</div>
-                                <div class="priority-due">Thur March 2023</div>
-                            </div>
                             <div class="top-priority-dets">
                                 <div class="priority-title">Organize KCA Meeting</div>
                                 <div class="priority-due">Thur March 2023</div>
@@ -526,6 +523,8 @@
 
   .dash-top-right .team-members .team-profiles .profile {
     display: flex;
+    justify-content: center;
+    margin-left: 20px;
   }
 
   .dash-top-right .team-members .team {
@@ -638,11 +637,12 @@
   }
 
   .dashboard-bottom .top-priority {
-    min-height: 200px;
-    padding: 10px 15px;
+    height: 250px;
+    padding: 30px 20px 10px;
     background-color: white;
     border-radius: 20px;
-    width: 350px;
+    width: 360px;
+    overflow-y: auto;
   }
 
 

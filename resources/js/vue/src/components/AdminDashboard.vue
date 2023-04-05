@@ -32,12 +32,19 @@
       </div>
     </div>
 
+    <!-- <div class="progress">
+            <div class="inprogress"></div>
+          </div> -->
+
     <div class="content">
       <div style="display: flex; margin-right: 2vw;">
         <div class="departs">
-          <div class="progress">
-            <div class="inprogress"></div>
+          <div class="progress mt-3" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar"  :style="{backgroundColor:'#81BE41', borderRadius: 5+'px', width: 30+'%'}"></div>
+            <!-- <div v-else-if="project.progress >= 50" class="progress-bar"  :style="{backgroundColor:'orange', borderRadius: 5+'px', width: project.progress+'%'}"></div>
+            <div v-else-if="project.progress > 5" class="progress-bar"  :style="{backgroundColor:'darkgray', borderRadius: 5+'px', width: project.progress+'%'}"></div> -->
           </div>
+          
           <div class="donut">
             <div class="donut-n">
               <p>Soft Dev</p>
@@ -318,10 +325,7 @@
   .progress {
     height: 10px;
     width: 52vw;
-    background-color: rgba(217, 217, 217, 0.4);
     margin: auto;
-    margin-top: 10px;
-    border-radius: 25px;
   }
 
   .donut {

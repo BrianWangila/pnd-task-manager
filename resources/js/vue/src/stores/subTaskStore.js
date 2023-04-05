@@ -9,16 +9,16 @@ const toast = useToast()
 
 export const useSubTaskStore = defineStore("subTaskStore", {
 
-  state: () => {
-    return {
-        subTasks: [],
-        taskItem: ""
-    }
-  },
+    state: () => {
+        return {
+            subTasks: [],
+            taskItem: ""
+        }
+    },
 
-  getters: {
+    getters: {
 
-  },
+    },
 
   actions: {
 
@@ -113,6 +113,9 @@ export const useSubTaskStore = defineStore("subTaskStore", {
             console.log(error);
             toast.error(error.response.data.message, {timeout: 3000})
         }
-      }
+      },
+
+
+      
   }
 })

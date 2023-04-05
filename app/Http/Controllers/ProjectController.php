@@ -4,19 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Project;
-use PhpParser\Node\Stmt\TryCatch;
-use App\Http\Controllers\AuthController;
 use App\Models\Employee;
 use App\Models\File;
 use App\Models\Task;
-use App\Models\User;
 
 class ProjectController extends Controller
 {
     public function index(){
 
         $projects = Project::with("department", "tasks", "files")->get();
-
         $tasks = Task::with('employee')->get();
 
         
@@ -24,20 +20,40 @@ class ProjectController extends Controller
         foreach($projects as $project) {
 
             $projectAssignees = [];
+            $completeTasks = [];
+            $tasks = $project->tasks;
 
             foreach($tasks as $task) {
+
                 $employee = Employee::with('user')->find($task->employee_id);
 
                 if(!in_array($employee, $projectAssignees)){
+
                     if($project->id == $task->project_id){
 
                         $projectAssignees[] = $employee;
                     }
                 }
+
+                if($task->status == "Completed") {
+    
+                    $completeTasks[] = $task;
+                }
+            }
+
+            if($completeTasks){
+
+                $project['progress'] = (count($completeTasks) / count($tasks)) * 100;
+                $project['completed_tasks'] = $completeTasks;
+                
+            } else {
+
+                $project['progress'] = 0;
             }
 
             $project['assignees'] = $projectAssignees;
         }
+
         return $projects;
     }
 
@@ -59,7 +75,10 @@ class ProjectController extends Controller
             if(!in_array($task->assignee, $projectAssignees)){
                 $projectAssignees[] = $task->assignee;
             }
+
         };
+
+        
         $project['assignees'] = $projectAssignees;
 
         return $project;

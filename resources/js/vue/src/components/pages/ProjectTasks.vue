@@ -47,7 +47,7 @@
                                             <span class="fw-normal">{{ task.description }}</span>
                                         </td>
                                         <td>
-                                            <MDBBadge badge="success" pill class="d-inline">In Progress</MDBBadge>
+                                            <MDBBadge :badge="task.status == 'Completed' ? 'success' : 'warning'" pill class="d-inline">{{ task.status }}</MDBBadge>
                                         </td>
                                         <td>{{ new Date(task.deadline).toDateString() }}</td>
                                         <td>
@@ -279,7 +279,7 @@
 
                 this.isEditing ? this.toast.success("Task Updated", {timeout: 2000}) : null
 
-                // window.location.reload()
+                window.location.reload()
 
             },
 
