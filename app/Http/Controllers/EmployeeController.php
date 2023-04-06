@@ -45,6 +45,33 @@ class EmployeeController extends Controller
 
     {
         $employees = Employee::with("department", "user", "tasks")->where('department_id', $departmentId)->get();
+        
+        
+        foreach($employees as $employee) {
+
+            foreach($employee->tasks as $task){
+
+                $subTasks = $task->subtasks;
+                $completeSubtasks = [];
+    
+                foreach($subTasks as $subtask) {
+    
+                    if($subtask->status == "complete") {
+    
+                        $completeSubtasks[] = $subtask;
+                    }
+                }
+    
+                if($completeSubtasks){
+                    $task['progress'] = (count($completeSubtasks) / count($subTasks)) * 100;
+        
+                } else {
+                    $task['progress'] = 0;
+                }
+    
+            };
+        }
+        
 
         return $employees;
     }
@@ -99,6 +126,28 @@ class EmployeeController extends Controller
     public function show(string $id)
     {
         $employee = Employee::with("department", "user", "tasks")->find($id);
+
+        foreach($employee->tasks as $task){
+
+            $subTasks = $task->subtasks;
+            $completeSubtasks = [];
+
+            foreach($subTasks as $subtask) {
+
+                if($subtask->status == "complete") {
+
+                    $completeSubtasks[] = $subtask;
+                }
+            }
+
+            if($completeSubtasks){
+                $task['progress'] = (count($completeSubtasks) / count($subTasks)) * 100;
+    
+            } else {
+                $task['progress'] = 0;
+            }
+
+        };
 
         return $employee;
     }
