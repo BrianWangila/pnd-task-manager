@@ -1,11 +1,12 @@
 <template>
     <div>
-        <router-view />
         <!-- <Header  v-if="!$route.meta.hideNavigation" :toggleSideMenu="toggleSideMenu"/> -->
         <Header  v-if="!isLogin" :toggleSideMenu="toggleSideMenu"/>
         <SideMenu v-if="!isLogin  && isMenuOpen" />
         <SideMenuSmall v-if="!isLogin  && isMenu2Open"/>
         <SideCalendar v-if="!isLogin" />
+
+        <router-view />
     </div>
 </template>
 
