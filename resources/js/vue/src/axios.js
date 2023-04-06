@@ -1,21 +1,28 @@
 import axios from "axios";
-import {useAuthStore} from "./stores/authStore";
+import { useAuthStore } from "./stores/authStore";
 
 
 
 const axiosClient = axios.create({
-    baseURL: 'http://192.168.1.76:8000/api'
+    baseURL: 'http://192.168.1.95:8000/api'
     // baseURL: 'http://127.0.0.1:8000/api'
     // baseURL: 'https://taskmgmt-development.up.railway.app/api'
 
 })
 
+
+
 axiosClient.interceptors.request.use(config => {
-    const userStore = useAuthStore()
-    config.headers.Authorization = `Bearer ${userStore.token}`
-    console.log(config.headers.Authorization)
+
+    const userStore = useAuthStore();
+    const token = userStore.token;
+
+    if (token) {
+       config.headers.Authorization = `Bearer ${token}` 
+       console.log(config.headers.Authorization);
+    };
+
     return config;
 })
 
-export default axiosClient ; 
-
+export default axiosClient; 

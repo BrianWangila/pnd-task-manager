@@ -79,17 +79,16 @@
           <div class="card"  style="width: 25rem;" v-for="task in tasks" :key="task.id" >
             <div class="card-body">
                 <div class="title">
-                    <router-link class="card-title" :to="`/tasks/${task.id}`">Task Title goes here</router-link>
-                    <div
-                    @mouseenter="toggle('display-action'+task.id)" 
-                    @mouseleave="toggleOff('display-action'+task.id)" >
+                    <router-link class="card-title" :to="`/tasks/${task.id}`">Project Title goes here</router-link>
+                        <div
+                        @mouseenter="toggle('display-action'+task.id)" 
+                        @mouseleave="toggleOff('display-action'+task.id)" >
 
-                    <i type="button" class="bi bi-three-dots"></i>
-                    <div class="delete-edit" :id="'display-action'+task.id" style="display:none">
-                        <i class="fas fa-edit mb-2" style="color: skyblue;" type="button"></i>
-                        <i @click="taskStore.deleteTask(task.id)" class="fas fa-trash" style="color: darkorange;" type="button"></i>
-                    </div>
-
+                        <i type="button" class="bi bi-three-dots"></i>
+                        <div class="delete-edit" :id="'display-action'+task.id" style="display:none">
+                            <i class="fas fa-edit mb-2" style="color: skyblue;" type="button"></i>
+                            <i @click="taskStore.deleteTask(task.id)" class="fas fa-trash" style="color: darkorange;" type="button"></i>
+                        </div>
                     </div>
                 </div>
                 <p class="card-text mt-3 fw-bold">Task: <span style="font-weight: 500;">{{ task.task_title }}</span></p>

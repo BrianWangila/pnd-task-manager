@@ -3,24 +3,24 @@ import axiosClient from "../axios";
 import { useToast } from 'vue-toastification';
 
 
-const toast = useToast()
+const toast = useToast();
 
 
 
 export const useAuthStore = defineStore("auth", {
-    state: () => {
-        return {
-            authUser: JSON.parse(localStorage.getItem('user')),
-            message: null,
-            errorMsg: null,
-            userToken: JSON.parse(localStorage.getItem('TOKEN')),
-            returnUrl: null,
+    state: () => ({
+        
+        authUser: JSON.parse(localStorage.getItem('user')),
+        message: null,
+        errorMsg: null,
+        userToken: JSON.parse(localStorage.getItem('TOKEN')),
+        returnUrl: null,
       
-        }
-    },
+    }),
 
     getters: {
         // user: (state) => state.authUser,
+        isLoggedIn: state => !!state.token,
         error: (state) => state.errorMsg,
         token: (state) => state.userToken
     },
@@ -37,7 +37,7 @@ export const useAuthStore = defineStore("auth", {
                         localStorage.setItem("TOKEN", JSON.stringify(res.data.token));
                         localStorage.setItem("user", JSON.stringify(res.data.user));
                         
-                        this.router.push({name: "Dashboard"});
+                        this.router.push({path: "/dashboard"});
                     }   
                 })
 
@@ -85,4 +85,3 @@ export const useAuthStore = defineStore("auth", {
         },
     }
 });
-

@@ -131,7 +131,7 @@
                                         <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(project.deadline).toDateString() }}</span>
                                     </div>
                                     <div class="assignee-image">
-                                      <div v-for="(assignee, index) in project.assignees" :key="assignee.id" class="assignee-wrapper">
+                                      <div v-for="(assignee, index) in project.assignees" :key="index" class="assignee-wrapper">
                                         <img :src="assignee.image_url" :alt="assignee.user.name" :title="assignee.user.name" class="assignee-image" :style="{ top: 0, left: index * -15 + 'px' }"/>
                                       </div>
                                     </div>
@@ -144,6 +144,8 @@
                                 </div>
                             </div>  
                         </div>
+
+                        <!-- <div id="task-progress"  style="min-height: 400px;" class="echart"></div> -->
 
                         <div v-if="filter === 'all' && user.role != 'admin'" class="row">
                             <div class="card mb-3" style="width: 25rem;" v-for="project in projectStore.projectsByDpt" :key="project.id">
@@ -316,6 +318,7 @@
     import { useDepartmentStore } from '../../stores/departmentStore';
     import { MDBTable, MDBBtn, MDBBadge } from 'mdb-vue-ui-kit';
     import {useFileStore} from '../../stores/fileStore'
+    // import donut from '../charts/adminDonut'
 
 
     export default {
@@ -324,7 +327,8 @@
         DatePicker,
         MDBTable,
         MDBBtn,
-        MDBBadge
+        MDBBadge,
+        // donut,
 
     },
 
@@ -351,6 +355,7 @@
             isEditing: false,
             fileName: "",
             department: "",
+
 
         };
     },
