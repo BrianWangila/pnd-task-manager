@@ -203,27 +203,27 @@
                 try {
                     await axiosClient.get("/projects/"+id)
                     .then((res) => {
-                        this.projectItem = res.data
-                        this.dptName = this.projectItem.department.department_name
-                        this.assignees = this.projectItem.assignees
+                        this.projectItem = res.data;
+                        this.dptName = this.projectItem.department.department_name;
+                        this.assignees = this.projectItem.assignees;
 
-                        console.log(this.assignees )
+                        console.log(this.assignees );
 
-                        const taskCount = this.projectItem.tasks.length
+                        const taskCount = this.projectItem.tasks.length;
                         if(taskCount == 1){
-                            return this.countTask = `${ taskCount } task`
+                            return this.countTask = `${ taskCount } task`;
                             } else if  (taskCount > 1){
-                                return this.countTask = `${ taskCount } tasks`
+                                return this.countTask = `${ taskCount } tasks`;
                             } else {
-                                return this.countTask = "No tasks"
+                                return this.countTask = "No tasks";
                             }
                         
                         })
                         
                         axiosClient.get("/employees/department/"+this.projectItem.department_id)
                         .then((res) => {
-                            this.dptEmployee = res.data
-                            console.log(this.dptEmployee)
+                            this.dptEmployee = res.data;
+                            console.log(this.dptEmployee);
                         })
                     
                 } catch (error) {

@@ -102,7 +102,7 @@
               <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                 <!-- Profile Edit Form -->
-                <form @submit.prevent="updateEmployee" enctype="multipart/form-data">
+                <form @submit.prevent="updateProfile" enctype="multipart/form-data">
                   <div class="row mb-3">
                     <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                     <div class="col-md-8 col-lg-9">
@@ -209,26 +209,26 @@
 
               <div class="tab-pane fade pt-3" id="profile-change-password">
                 <!-- Change Password Form -->
-                <form>
+                <form @submit.prevent="changePasswordForm">
 
                   <div class="row mb-3">
                     <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="password" type="password" class="form-control" id="currentPassword">
+                      <input name="password" type="password" class="form-control" id="currentPassword" v-model="password.currentPassword">
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="newpassword" type="password" class="form-control" id="newPassword">
+                      <input name="newPassword" type="password" class="form-control" id="newPassword" v-model="password.newPassword">
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Confirm Password</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="renewpassword" type="password" class="form-control" id="renewPassword">
+                      <input name="confirmPassword" type="password" class="form-control" id="confirmPassword" v-model="password.confirmPassword">
                     </div>
                   </div>
 
@@ -284,6 +284,11 @@
                 country: userData.country,
                 image_file: ""
             },
+            password: {
+                currentPassword: "",
+                newPassword: "",
+                confirmPassword: ""
+            }
           
         }
     },
@@ -295,82 +300,105 @@
 
     }, 
     methods: {
-      greeting(){
+        greeting(){
 
-        const today = new Date()
-        let time = today.getHours()
+            const today = new Date()
+            let time = today.getHours()
 
-        if(time > 1 && time < 12) {
+            if(time > 1 && time < 12) {
 
-          this.time_title = "Good morning,";  
+            this.time_title = "Good morning,";  
 
-        } else if (time >= 12 && time < 16) {
-          
-          this.time_title = "Good afternoon,";
+            } else if (time >= 12 && time < 16) {
+            
+            this.time_title = "Good afternoon,";
 
-        } else {
+            } else {
 
-          this.time_title = "Good evening,";
-        }
-      },
-      displayName(){
+            this.time_title = "Good evening,";
+            }
+        },
 
-        if(this.user.role == "admin"){
 
-          this.title = this.user.role;
-        }
-      },
-      splitName(){
+        displayName(){
 
-        const name = this.user.user.name;
-        this.firstName = name.split(" ");
+            if(this.user.role == "admin"){
+
+            this.title = this.user.role;
+            }
+        },
+
+
+        splitName(){
+
+            const name = this.user.user.name;
+            this.firstName = name.split(" ");
+            
+        },
+
         
-      },
-      
-      async updateEmployee(){
+        async updateProfile(){
 
-        try {
-            await axiosClient.post("/employees/"+this.user.id, this.inputData, {headers: {"Content-Type": "multipart/form-data"}})  //update
-            .then((res) => {
-                console.log(res)
-                var employee = res.data[0];
-                localStorage.removeItem("user")
-                localStorage.setItem("user", JSON.stringify(employee))
+            try {
+                await axiosClient.post("/employees/"+this.user.id, this.inputData, {headers: {"Content-Type": "multipart/form-data"}})  //update
+                .then((res) => {
+                    console.log(res)
+                    var employee = res.data[0];
+                    localStorage.removeItem("user")
+                    localStorage.setItem("user", JSON.stringify(employee))
 
-                this.toast.success(res.data.message, {timeout: 2000})
-            })
-            window.location.reload()
-          
-        } catch (error) {
-              console.log(error)
-              this.toast.error(error.response.data.message, {timeout: 5000})
-          }
-      },
+                    this.toast.success(res.data.message, {timeout: 2000})
+                })
+                window.location.reload()
+            
+            } catch (error) {
+                console.log(error)
+                this.toast.error(error.response.data.message, {timeout: 5000})
+            }
+        },
 
-      uploadImage() {
-          this.$refs.imageInput.click();
-      },
 
-      onSelectFile(event){
-          const file = event.target.files[0];
-          const reader = new FileReader();
+        changePasswordForm() {
+            axiosClient.post('/change-password', {
+                currentPassword: this.currentPassword,
+                newPassword: this.newPassword,
+                confirmPassword: this.confirmPassword
+            }).then(res => {
+                alert('Password changed successfully!');
+                this.current_password = '';
+                this.new_password = '';
+                this.confirm_password = '';
+            }).catch(error => {
+                alert('Error: ' + error.response.data.message);
+            });
+        },
 
-          reader.onload = () => {
-              this.$refs.profileImg.src = reader.result;
-              this.imageUrl = reader.result;
-          };
-          reader.readAsDataURL(file);
 
-          // update image file
-          this.inputData.image_file = file;
-          
-      },
 
-      removeImage() {
-          this.$refs.profileImg.src = "./images/profile-img.jpg";
-          this.user.profileImage = null;
-          this.imageUrl = "./images/profile-img.jpg";
-      },
+        uploadImage() {
+            this.$refs.imageInput.click();
+        },
+
+        onSelectFile(event){
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = () => {
+                this.$refs.profileImg.src = reader.result;
+                this.imageUrl = reader.result;
+            };
+            reader.readAsDataURL(file);
+
+            // update image file
+            this.inputData.image_file = file;
+            
+        },
+
+        removeImage() {
+            this.$refs.profileImg.src = "./images/profile-img.jpg";
+            this.user.profileImage = null;
+            this.imageUrl = "./images/profile-img.jpg";
+        },
 
 
       

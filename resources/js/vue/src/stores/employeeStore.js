@@ -41,6 +41,8 @@ export const useEmployeeStore = defineStore("employeeStore", {
 
       // this.loading = false
     },
+
+
     async getEmployeesByDpt(id){
 
       try {
@@ -82,7 +84,9 @@ export const useEmployeeStore = defineStore("employeeStore", {
     //   }
     // },
 
-    // // Delete an Employee
+
+
+    // Delete an Employee
     async deleteEmployee(id){
       
       try {

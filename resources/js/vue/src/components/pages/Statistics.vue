@@ -2,7 +2,7 @@
     <main>
       <div class="heading">
         <div style="min-height: 8.5vh;">
-          <h2 style="font-size:25px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;"></span>General Statistics</h2>
+          <h2 style="font-size:25px; font-weight: 600;"><span style="font-size: 25px; font-weight: 500;"></span>{{ user.role == 'admin' ? 'General Statistics' : 'My Statistics' }}</h2>
           
           <P style="font-weight: 500;">Home / <span style="font-weight: 400;">statistics</span></P>
         </div>
@@ -33,7 +33,7 @@
           <div class="main-content">
               <div class="">
                   <div class="card add-project ml-6 mt-3 mb-3">
-                      <h4 class=" fw-bolder fs-5 mt-2">General Statistics</h4>
+                      <h4 class=" fw-bolder fs-5 mt-2">{{ user.role == 'admin' ? 'General Statistics' : 'Tasks Statistics' }}</h4>
                   </div>
  
                   <div class="projects ">
@@ -94,7 +94,9 @@
     },
     
     data() {
+      var userData = JSON.parse(localStorage.getItem('user'));
       return {
+        user: userData,
         date: new Date(),
         time: null,
         projectStore: useProjectStore(),

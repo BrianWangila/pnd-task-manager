@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Models\User;   //user Model
+use App\Rules\MatchOldPassword;
 use Illuminate\Http\Response;  //response for custom responses
 use Illuminate\Support\Facades\Hash;   //BCrypt to hash password
 use PhpParser\Node\Stmt\TryCatch;
@@ -189,6 +190,37 @@ class AuthController extends Controller
             return response()->json($response, 500);
         }
 
+    }
+
+
+    //update user
+    public function update(Request $request, $id) {
+
+        $user = User::find($id);
+
+        $user->update([
+            "name" => $request->name,
+            "email" => $request->email,
+            "password" => $request->password ? Hash::make($request->password) : $user->password
+        ]);
+    }
+    
+
+
+    //change password
+    public function changePassword (Request $request, $id){
+
+        $request->validate([
+            'currentPassword' => ['required', new MatchOldPassword],
+            'newPassword' => ['required', 'min:8', 'confirmed'],
+        ]);
+    
+        // $user = User::find($id);
+        $user = Auth::user();
+        $user->password = Hash::make($request->newPassword);
+        $user->save();
+    
+        return response()->json(['message' => 'Password changed successfully!']);
     }
     
 }

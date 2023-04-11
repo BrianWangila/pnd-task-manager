@@ -102,7 +102,8 @@
               <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                 <!-- Profile Edit Form -->
-                <form @submit.prevent="updateEmployee" enctype="multipart/form-data">
+                <form @submit.prevent="updateEmployee(singleEmployee.id, singleEmployee.user_id)" enctype="multipart/form-data">
+
                   <div class="row mb-3">
                     <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                     <div class="col-md-8 col-lg-9 profile-sq">
@@ -111,14 +112,14 @@
                         <!-- <p @click="uploadImage" class="btn btn-color btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></p> -->
                         <p @click="removeImage" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></p>
                       </div>
-                      <input type="file" ref="imageInput" @change="onSelectFile" style="display: none">
+                      <!-- <input type="file" ref="imageInput" @change="onSelectFile" style="display: none"> -->
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="fullName" type="text" class="form-control" id="fullName" :value="user.name">
+                      <input name="fullName" type="text" class="form-control" id="fullName" v-model="inputData.name">
                     </div>
                   </div>
 
@@ -132,7 +133,10 @@
                   <div class="row mb-3">
                     <label for="company" class="col-md-4 col-lg-3 col-form-label">Department</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="company" type="text" class="form-control" id="company" :value="department.department_name">
+                        <select class="form-select" v-model="inputData.department_id">
+                            <option v-for="dpt in departmentStore.departments" :key="dpt.id" :value="dpt.id">{{ dpt.department_name }}</option>
+                        </select>
+                        <!-- <input name="company" type="text" class="form-control" id="company" :value="department.department_name"> -->
                     </div>
                   </div>
 
@@ -146,7 +150,7 @@
                   <div class="row mb-3">
                     <label for="Job" class="col-md-4 col-lg-3 col-form-label">Job</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="job" type="text" class="form-control" id="Job" :value="singleEmployee.job_title">
+                      <input name="job" type="text" class="form-control" id="Job" v-model="inputData.job_title">
                     </div>
                   </div>
 
@@ -160,7 +164,7 @@
                   <div class="row mb-3">
                     <label for="Address" class="col-md-4 col-lg-3 col-form-label">Address</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="address" type="text" class="form-control" id="Address" v-model="inputData.address">
+                      <input name="address" type="text" class="form-control" id="Address" v-model="inputData.address" >
                     </div>
                   </div>
 
@@ -174,7 +178,7 @@
                   <div class="row mb-3">
                     <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="email" type="email" class="form-control" id="Email" :value="user.email">
+                      <input name="email" type="email" class="form-control" id="Email" v-model="inputData.email">
                     </div>
                   </div>
 
@@ -240,131 +244,140 @@
 
 
 
-  export default {
-    components: {
-        Footer,
-    },
-    data(){
-        var userData = JSON.parse(localStorage.getItem('user'))
-        return {
-            user: userData,
-            authStore: useAuthStore(),
-            departmentStore: useDepartmentStore(),
-            employeeStore: useEmployeeStore(),
-            toast: useToast(),
-            singleEmployee: "",
-            inputData: {
-                about: "",
-                address: userData.address,
-                phone: userData.phone,
-                country: userData.country,
-                image_file: ""
+    export default {
+        components: {
+            Footer,
+        },
+        data(){
+            var userData = JSON.parse(localStorage.getItem('user'))
+            return {
+                user: userData,
+                authStore: useAuthStore(),
+                departmentStore: useDepartmentStore(),
+                employeeStore: useEmployeeStore(),
+                toast: useToast(),
+                singleEmployee: "",
+                inputData: {
+                    name: "",
+                    email: "",
+                    department_id: "",
+                    job_title: "",
+
+                },
+                user: "",
+                department: ""
+            
+            }
+        },
+        mounted(){
+            var id = this.$route.params.id;
+
+            const today = new Date()
+            this.time = today.getHours()
+            this.employeeStore.getEmployees()
+            this.employees = this.employeeStore.employees
+            this.departmentStore.getDepartments()
+            this.employeeStore.getEmployeesByDpt(this.user.department_id)
+            this.showEmployeeDets(id)
+            this.greeting();
+
+        }, 
+        methods: {
+
+
+            async showEmployeeDets(id){
+                await axiosClient.get('/employees/'+id)
+                .then((res) => {
+                    this.singleEmployee = res.data;
+                    this.user = res.data.user;
+                    this.department = res.data.department;
+                    this.inputData = this.singleEmployee;
+                    this.inputData.name = this.singleEmployee.user.name
+                    this.inputData.email = this.singleEmployee.user.email
+
+                    console.log(this.singleEmployee);
+                });
             },
-            user: "",
-            department: ""
-          
-        }
-    },
-    mounted(){
-        var id = this.$route.params.id;
-
-        const today = new Date()
-        this.time = today.getHours()
-        this.employeeStore.getEmployees()
-        this.employees = this.employeeStore.employees
-        this.departmentStore.getDepartments()
-        this.employeeStore.getEmployeesByDpt(this.user.department_id)
-        this.showEmployeeDets(id)
-        this.greeting();
-
-    }, 
-    methods: {
 
 
-    async showEmployeeDets(id){
-        await axiosClient.get('/employees/'+id)
-        .then((res) => {
-            this.singleEmployee = res.data;
-            this.user = res.data.user;
-            this.department = res.data.department;
-            this.inputData = this.singleEmployee;
+            greeting(){
 
-            console.log(this.singleEmployee);
-        });
-    },
+                const today = new Date()
+                let time = today.getHours()
 
+                if(time > 1 && time < 12) {
 
-      greeting(){
+                this.time_title = "Good morning,";  
 
-        const today = new Date()
-        let time = today.getHours()
+                } else if (time >= 12 && time < 16) {
+                
+                this.time_title = "Good afternoon,";
 
-        if(time > 1 && time < 12) {
+                } else {
 
-          this.time_title = "Good morning,";  
+                this.time_title = "Good evening,";
+                }
+            },
 
-        } else if (time >= 12 && time < 16) {
-          
-          this.time_title = "Good afternoon,";
+        
+            async updateEmployee(id, user){
 
-        } else {
+                try {
+                    await axiosClient.patch("/employees/"+id, this.inputData, {headers: {"Content-Type": "application/json"}})  //update
 
-          this.time_title = "Good evening,";
-        }
-      },
+                    .then((res) => {
+                        this.toast.success(res.data.message, {timeout: 2000})
+                    })
+                    
+                    await axiosClient.patch("/users/"+user, this.inputData, {headers: {"Content-Type": "application/json"}})  //update
 
-      
-      async updateEmployee(){
+                    
+                    window.location.reload()
+                
+                } catch (error) {
 
-        try {
-            await axiosClient.post("/employees/"+this.user.id, this.inputData, {headers: {"Content-Type": "multipart/form-data"}})  //update
-            .then((res) => {
-                console.log(res)
-                var employee = res.data[0];
-                localStorage.removeItem("user")
-                localStorage.setItem("user", JSON.stringify(employee))
-
-                this.toast.success(res.data.message, {timeout: 2000})
-            })
-            window.location.reload()
-          
-        } catch (error) {
-              console.log(error)
-              this.toast.error(error.response.data.message, {timeout: 5000})
-          }
-      },
-
-      uploadImage() {
-          this.$refs.imageInput.click();
-      },
-
-      onSelectFile(event){
-          const file = event.target.files[0];
-          const reader = new FileReader();
-
-          reader.onload = () => {
-              this.$refs.profileImg.src = reader.result;
-              this.imageUrl = reader.result;
-          };
-          reader.readAsDataURL(file);
-
-          // update image file
-          this.inputData.image_file = file;
-          
-      },
-
-      removeImage() {
-          this.$refs.profileImg.src = "./images/profile-img.jpg";
-          this.user.profileImage = null;
-          this.imageUrl = "./images/profile-img.jpg";
-      },
+                    console.log(error)
+                    this.toast.error(error.response.data.message, {timeout: 5000})
+                }
+            },
 
 
-      
+
+            uploadImage() {
+                this.$refs.imageInput.click();
+            },
 
 
-    },
-  }
+
+            onSelectFile(event){
+                const file = event.target.files[0];
+                const reader = new FileReader();
+
+                reader.onload = () => {
+                    this.$refs.profileImg.src = reader.result;
+                    this.imageUrl = reader.result;
+                };
+                reader.readAsDataURL(file);
+
+                // update image file
+                this.inputData.image_file = file;
+                
+            },
+
+
+
+            removeImage() {
+                this.$refs.profileImg.src = "./images/profile-img.jpg";
+                this.user.profileImage = null;
+                this.imageUrl = "./images/profile-img.jpg";
+            },
+
+
+        
+
+
+        },
+    }
 
 </script>
 

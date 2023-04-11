@@ -80,7 +80,7 @@ class EmployeeController extends Controller
 
 
     /**
-     * Store a newly created resource in storage.
+     * Update resource in storage.
      */
     public function update(Request $request, $id)
     {
@@ -115,10 +115,27 @@ class EmployeeController extends Controller
 
         return [
             Employee::with('user', 'department')->find($id), 
-            "message" => "Employee has been updated",
+            "message" => "Your detail(s) have been updated",
         ];
 
     }
+
+
+    //update a single employee
+    public function updateEmployee (Request $request, $id){
+        $employee = Employee::find($id);
+
+        $employee->update([
+            "department_id" => $request->department_id,
+            "job_title" => $request->job_title,
+        ]);
+
+        return [
+            "message" => "Employee details has been updated",
+        ];
+    }
+
+
 
     /**
      * Display the specified resource.
@@ -155,7 +172,7 @@ class EmployeeController extends Controller
   
 
     /**
-     * Update the specified resource in storage.
+     * store the specified resource in storage.
      */
     // public function store (Request $request)
     // {

@@ -240,10 +240,7 @@
             this.employees = this.employeeStore.employees
             this.departmentStore.getDepartments()
             this.employeeStore.getEmployeesByDpt(this.user.department_id)
-            // this.getTeamMembers()
             this.getEmployees(this.user.department_id)
-
-            // console.log(this.employeeStore.employees)
 
         },
 
@@ -262,26 +259,26 @@
                     role: ""
                 };
 
-                this.getEmployees()
+                this.getEmployees();
             },
 
             
             async getEmployees(id){
-                this.loading = true
+                this.loading = true;
 
                 try {
                     if(this.user.role == 'admin'){
                         await axiosClient.get("/employees")
                         .then((res) => {
-                            this.employeeData = res.data
-                            console.log(this.employeeData)
+                            this.employeeData = res.data;
+                            console.log(this.employeeData);
                         })
 
                     } else {
                         await axiosClient.get("/employees/department/"+id)
                         .then((res) => {
-                            this.employeeData = res.data
-                            console.log(this.employeeData)
+                            this.employeeData = res.data;
+                            console.log(this.employeeData);
                         })
                     };
                     

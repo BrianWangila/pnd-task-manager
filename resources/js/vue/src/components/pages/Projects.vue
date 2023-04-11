@@ -47,7 +47,7 @@
                   <button  data-bs-toggle="modal" data-bs-target="#addProjectForm" @click="isEditing = false" class="card-btn" v-if="user.role == 'admin'"><span class="mr-1">New Project</span>  <i class="bi bi-folder-plus"></i></button>
                 </div>
 
-                <!-- pop-up form -->
+                <!-- Add project pop-up form -->
                 <div class="modal fade" id="addProjectForm" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
                     <div class="modal-dialog  modal-dialog-centered">
                     <div class="modal-content">
@@ -98,6 +98,7 @@
                     </div>
                     </div>
                 </div>
+                
                 <div class=" tab-content">
                   <center class="loader" v-if="projectStore.loading"><img src="../../assets/loaders/159.svg" alt="loader" /> </center>
                   <div class="projects" v-else>
@@ -154,20 +155,6 @@
                                     <i v-if="project.priority == 'urgent'" class="bi bi-flag-fill priority" title="Urgent"  type="button"></i>
                                     <div class="title">
                                         <router-link class="card-title" :to="`/projects/${project.id}`">{{ project.project_title }}</router-link>
-                                        
-                                        <div  
-                                            v-if="user.role !== 'admin'" style="pointer-events: none;" 
-                                            @mouseenter="toggle('display-action'+project.id)" 
-                                            @mouseleave="toggleOff('display-action'+project.id)" 
-                                            >
-
-                                        <i type="button" class="bi bi-three-dots dots-btn"></i>
-                                        <div class="delete-edit" :id="'display-action'+project.id" style="display:none">
-                                            <!-- <i @click="editProject(project)" data-bs-toggle="modal" data-bs-target="#addProjectForm" class="fas fa-edit mb-2" title="Update" style="color: skyblue;" type="button"></i> -->
-                                            <i @click="projectStore.deleteProject(project.id)" class="fas fa-trash" title="Delete" style="color: darkorange;" type="button"></i>
-                                        </div>
-
-                                        </div>
                                     </div>
                                     <p class="card-text mt-3">{{ project.description.slice(0, 50) }}...</p>
                                     <div>
@@ -175,7 +162,7 @@
                                     </div>
                                     <div class="assignee-image">
                                       <div v-for="(assignee, index) in project.assignees" :key="assignee.id" class="assignee-wrapper">
-                                        <img :src="assignee.image_url" :alt="assignee.user.name" :title="assignee.user.name" class="assignee-image" :style="{ top: 0, left: index * -15 + 'px' }"/>
+                                        <img :src="assignee.image_url" :alt="assignee.user.name" :title="assignee.user.name == user.user.name ? 'Me' : assignee.user.name" class="assignee-image" :style="{ top: 0, left: index * -15 + 'px' }"/>
                                       </div>
                                     </div>
                                     <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">

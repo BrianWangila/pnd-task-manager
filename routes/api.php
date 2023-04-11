@@ -27,6 +27,9 @@ Route::group(["middleware" => ["auth:sanctum"]], function(){
     Route::post("logout", [AuthController::class, 'logout']);
     Route::post("register", [AuthController::class, 'register']);
     Route::post("users/{user}", [AuthController::class, 'delete']);
+    Route::patch("users/{user}", [AuthController::class, 'update']);
+    Route::post("change-password", [AuthController::class, 'changePassword']);
+
 
     Route::get("projects", [ProjectController::class, 'index']);
     Route::get('projects/{project}', [ProjectController::class, 'show']);
@@ -40,6 +43,7 @@ Route::group(["middleware" => ["auth:sanctum"]], function(){
     Route::post('employees', [EmployeeController::class, 'store']);
     Route::delete('employees/{employee}', [EmployeeController::class, 'delete']);
     Route::post('employees/{employee}', [EmployeeController::class, 'update']);  //update
+    Route::patch('employees/{employee}', [EmployeeController::class, 'updateEmployee']);  //admin can update single employee
 
     Route::get('departments', [DepartmentController::class, 'index']);
     Route::get('departments/{department}', [DepartmentController::class, 'show']);
