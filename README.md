@@ -113,7 +113,10 @@ Technologies used in the project:
 - Bootstrap
 - Pinia for state management
 - MySQL - database
-- 
+<!-- - [![Laravel][Laravel.com]][Laravel-url]
+- [![Vue][Vue.js]][Vue-url]
+- [![Bootstrap][Bootstrap.com]][Bootstrap-url]
+- [![JQuery][JQuery.com]][JQuery-url] -->
 
 
 <h1>License 🛡️ :</h1>

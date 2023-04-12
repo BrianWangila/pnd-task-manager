@@ -20,12 +20,12 @@
           </router-link>
         </li> <!-- End projects Nav -->
 
-        <li class="nav-item" v-if="role == 'admin'">
+        <!-- <li class="nav-item" v-if="role == 'admin'">
           <router-link class="nav-link " to="/calendar">
             <i class="bi bi-calendar-check"></i>
             <span>Calendar</span>
           </router-link>
-        </li> <!-- End calendar Nav -->
+        </li> End calendar Nav -->
 
         <div class="h-line"></div>
         Projects Info

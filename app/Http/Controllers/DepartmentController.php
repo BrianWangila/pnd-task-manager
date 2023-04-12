@@ -30,6 +30,7 @@ class DepartmentController extends Controller
             };
 
             if($completedProjects){
+
                 $department['progress'] = (count($completedProjects) / count($projects)) * 100;
                 $department['completed_projects'] = $completedProjects;
 

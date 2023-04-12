@@ -13,66 +13,81 @@
                     </div>
                     <hr/>
                 </nav>
+
                 <div class="tab-content ml-5 project-details" id="nav-tabContent">
+                    
+                    <!-- Project Description -->
                     <div class="tab-pane fade show active" id="nav-details" role="tabpanel" aria-labelledby="nav-details-tab" tabindex="0">
                         <div>
                             <h4>Project Description</h4>
                             <p>{{ projectItem.description }}</p>
                         </div>
                     </div>
+                    
+                    <!-- Project Tasks -->
                     <div class="tab-pane fade" id="nav-tasks" role="tabpanel" aria-labelledby="nav-tasks-tab" tabindex="0">
                         <div class="project-tasks">
                             <h4 class="mb-1">Tasks Related to this Project</h4>
-                            <MDBTable hover class="align-middle bg-white task-table">
-                                <thead class="bg-light bg-red">
-                                    <tr>
-                                        <th class="fw-bold">Task</th>
-                                        <th class="fw-bold">Description</th>
-                                        <th class="fw-bold">Status</th>
-                                        <th class="fw-bold">Date Assigned</th>
-                                        <th class="fw-bold">Assignee</th>
-                                        <th  v-if="user.role == 'admin'" class="fw-bold">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="t-body">
-                                    <tr  v-for="task in projectTasks" :key="task.id">
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div>
-                                                    <span class="mb-1" style="font-weight: 500;">{{ task.task_title }}</span>
+
+                            <div v-if="projectTasks.length == 0">
+                                <center class="mt-5"><h4>No Tasks Created</h4></center>
+                            </div>
+                            <div v-else>
+                                <MDBTable hover class="align-middle bg-white task-table">
+                                    <thead class="bg-light bg-red">
+                                        <tr>
+                                            <th class="fw-bold">Task</th>
+                                            <th class="fw-bold">Description</th>
+                                            <th class="fw-bold">Status</th>
+                                            <th class="fw-bold">Date Assigned</th>
+                                            <th class="fw-bold">Assignee</th>
+                                            <th  v-if="user.role == 'admin'" class="fw-bold">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="t-body">
+                                        <tr  v-for="task in projectTasks" :key="task.id">
+                                            <td style="width: 15vw;">
+                                                <div class="d-flex align-items-center">
+                                                    <div>
+                                                        <span class="mb-1" style="font-weight: 500;">{{ task.task_title }}</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td style="width: 600px;">
-                                            <span class="fw-normal">{{ task.description }}</span>
-                                        </td>
-                                        <td>
-                                            <MDBBadge :badge="task.status == 'Completed' ? 'success' : 'warning'" pill class="d-inline">{{ task.status }}</MDBBadge>
-                                        </td>
-                                        <td>{{ new Date(task.deadline).toDateString() }}</td>
-                                        <td>
-                                            <div class="assignee">
-                                                <img class="rounded-circle" :src="task.assignee.image_url" alt="" style="width: 45px; height: 45px" >
-                                                <div class="ms-3" style="display: flex; flex-direction: column;">
-                                                    <span class="fw-bold mb-1">{{ task.assignee.user.name }}<span v-if="task.assignee.user.email == user.user.email" style="font-weight: 400;"> (Me)</span></span>
-                                                    <span class="text-muted mb-0">{{ task.assignee.user.email }}</span>
+                                            </td>
+                                            <td style="width: 35vw;">
+                                                <span class="fw-normal">{{ task.description }}</span>
+                                            </td>
+                                            <td>
+                                                <MDBBadge :badge="task.status == 'Completed' ? 'success' : 'warning'" pill class="d-inline">{{ task.status }}</MDBBadge>
+                                            </td>
+                                            <td>{{ new Date(task.deadline).toDateString() }}</td>
+                                            <td>
+                                                <div class="assignee">
+                                                    <img v-if="!task.assignee.image_url" class="rounded-circle" src="../../assets/images/defaultprofile.webp" alt="" style="width: 45px; height: 45px" >
+                                                    <img v-else class="rounded-circle" :src="task.assignee.image_url" alt="" style="width: 45px; height: 45px" >
+                                                    <div class="ms-3" style="display: flex; flex-direction: column;">
+                                                        <span class="fw-bold mb-1">{{ task.assignee.user.name }}<span v-if="task.assignee.user.email == user.user.email" style="font-weight: 400;"> (Me)</span></span>
+                                                        <span class="text-muted mb-0">{{ task.assignee.user.email }}</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            
-                                        </td>
-                                        <td v-if="user.role == 'admin'">
-                                            <MDBBtn @click="editTask(task)" data-bs-toggle="modal" data-bs-target="#addTaskForm" color="link" size="sm" rounded>
-                                                Edit
-                                            </MDBBtn>
-                                            <MDBBtn color="link" size="sm" rounded>
-                                                Delete
-                                            </MDBBtn>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </MDBTable>
+                                                
+                                            </td>
+                                            <td v-if="user.role == 'admin'">
+                                                <MDBBtn @click="editTask(task)" data-bs-toggle="modal" data-bs-target="#addTaskForm" color="link" size="sm" rounded>
+                                                    Edit
+                                                </MDBBtn>
+                                                <MDBBtn color="link" size="sm" rounded>
+                                                    Delete
+                                                </MDBBtn>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </MDBTable>
+                            </div>
+                            
                         </div>
                     </div>
+
+
                     <div class="tab-pane fade" id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab" tabindex="0">
                         <div>
                             <h4>Project Files</h4>

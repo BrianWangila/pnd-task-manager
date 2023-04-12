@@ -15,16 +15,14 @@ class EmployeeSeeder extends Seeder
     {
         $faker = \Faker\Factory::create('en_US');
 
-        for ($i=0; $i < 5; $i++) { 
             Employee::create([
-                "department_id" => random_int(1, 5), 
-                "user_id" =>random_int(1, 5),
-                "job_title" =>$faker -> jobTitle(),
+                "department_id" => 1,
+                "user_id" => 1,
+                "job_title" => "admin",
                 "address" =>$faker->address(),
                 "phone"=>$faker->phoneNumber(),
                 "about"=>$faker->sentence($nbWords = 20, $variableNbWords = true)
 
             ]);
-        }
     }
 }

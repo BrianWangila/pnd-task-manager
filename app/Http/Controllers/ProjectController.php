@@ -15,8 +15,7 @@ class ProjectController extends Controller
         $projects = Project::with("department", "tasks", "files")->get();
         $tasks = Task::with('employee')->get();
 
-        
-    
+            
         foreach($projects as $project) {
 
             $projectAssignees = [];
@@ -41,7 +40,7 @@ class ProjectController extends Controller
                 }
             }
 
-            if($completeTasks){
+            if($completeTasks ){
 
                 $project['progress'] = (count($completeTasks) / count($tasks)) * 100;
                 $project['completed_tasks'] = $completeTasks;
@@ -52,6 +51,8 @@ class ProjectController extends Controller
             }
 
             $project['assignees'] = $projectAssignees;
+            
+            
         }
 
         return $projects;

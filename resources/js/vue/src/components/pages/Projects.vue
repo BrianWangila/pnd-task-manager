@@ -108,8 +108,7 @@
                         <div v-if="filter === 'all' && user.role == 'admin' || user.role == 'hod' " class="row">
                             <div class="card mb-3" style="width: 25rem;" v-for="project in projectStore.projects" :key="project.id">
                                 <div class="card-body">
-                                    <!-- <i @click="togglePriority(project.id)" :class="{active: project.priority}" class="bi bi-flag-fill priority" title="{ priority }"  type="button"></i> -->
-                                    <i v-if="project.priority == 'urgent'" class="bi bi-flag-fill priority" title="Urgent"  type="button"></i>
+                                    <i v-if="project.priority == 'Urgent'" class="bi bi-flag-fill priority" title="Urgent"  type="button"></i>
                                     <div class="title">
                                         <router-link class="card-title" :to="`/projects/${project.id}`">{{ project.project_title }}</router-link>
                                         
@@ -121,7 +120,6 @@
 
                                         <i type="button" class="bi bi-three-dots dots-btn"></i>
                                         <div class="delete-edit" :id="'display-action'+project.id" style="display:none">
-                                            <!-- <i @click="editProject(project)" data-bs-toggle="modal" data-bs-target="#addProjectForm" class="fas fa-edit mb-2" title="Update" style="color: skyblue;" type="button"></i> -->
                                             <i @click="projectStore.deleteProject(project.id)" class="fas fa-trash" title="Delete" style="color: darkorange;" type="button"></i>
                                         </div>
 
@@ -133,12 +131,13 @@
                                     </div>
                                     <div class="assignee-image">
                                       <div v-for="(assignee, index) in project.assignees" :key="index" class="assignee-wrapper">
-                                        <img :src="assignee.image_url" :alt="assignee.user.name" :title="assignee.user.name" class="assignee-image" :style="{ top: 0, left: index * -15 + 'px' }"/>
+                                        <img v-if="!assignee.image_url" src="../../assets/images/defaultprofile.webp" :alt="assignee.user.name" :title="assignee.user.name == user.user.name ? 'Me' : assignee.user.name" class="assignee-image" :style="{ top: 0, left: index * -15 + 'px' }"/>
+                                        <img v-else :src="assignee.image_url" :alt="assignee.user.name" :title="assignee.user.name == user.user.name ? 'Me' : assignee.user.name" class="assignee-image" :style="{ top: 0, left: index * -15 + 'px' }"/>
                                       </div>
                                     </div>
                                     
-                                    <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                                      <div v-if="project.progress > 80" class="progress-bar"  :style="{backgroundColor:'#81BE41', borderRadius: 5+'px', width: project.progress+'%'}"></div>
+                                    <div class="progress mt-5" :title="project.progress + '% Complete'" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                      <div v-if="project.progress > 80" class="progress-bar"  :style="{backgroundColor:'#81BE41', borderRadius: 5+'px', width: project.progress+'%'}"></div> 
                                       <div v-else-if="project.progress >= 50" class="progress-bar"  :style="{backgroundColor:'orange', borderRadius: 5+'px', width: project.progress+'%'}"></div>
                                       <div v-else-if="project.progress > 5" class="progress-bar"  :style="{backgroundColor:'darkgray', borderRadius: 5+'px', width: project.progress+'%'}"></div>
                                     </div>
@@ -146,7 +145,6 @@
                             </div>  
                         </div>
 
-                        <!-- <div id="task-progress"  style="min-height: 400px;" class="echart"></div> -->
 
                         <div v-if="filter === 'all' && user.role != 'admin'" class="row">
                             <div class="card mb-3" style="width: 25rem;" v-for="project in projectStore.projectsByDpt" :key="project.id">
@@ -162,10 +160,11 @@
                                     </div>
                                     <div class="assignee-image">
                                       <div v-for="(assignee, index) in project.assignees" :key="assignee.id" class="assignee-wrapper">
-                                        <img :src="assignee.image_url" :alt="assignee.user.name" :title="assignee.user.name == user.user.name ? 'Me' : assignee.user.name" class="assignee-image" :style="{ top: 0, left: index * -15 + 'px' }"/>
+                                        <img v-if="!assignee.image_url" src="../../assets/images/defaultprofile.webp" :alt="assignee.user.name" :title="assignee.user.name == user.user.name ? 'Me' : assignee.user.name" class="assignee-image" :style="{ top: 0, left: index * -15 + 'px' }"/>
+                                        <img v-else :src="assignee.image_url" :alt="assignee.user.name" :title="assignee.user.name == user.user.name ? 'Me' : assignee.user.name" class="assignee-image" :style="{ top: 0, left: index * -15 + 'px' }"/>
                                       </div>
                                     </div>
-                                    <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                    <div class="progress mt-5"  :title="project.progress + '% Complete'" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
                                       <div v-if="project.progress > 80" class="progress-bar"  :style="{backgroundColor:'#81BE41', borderRadius: 5+'px', width: project.progress+'%'}"></div>
                                       <div v-else-if="project.progress >= 50" class="progress-bar"  :style="{backgroundColor:'orange', borderRadius: 5+'px', width: project.progress+'%'}"></div>
                                       <div v-else-if="project.progress > 5" class="progress-bar"  :style="{backgroundColor:'darkgray', borderRadius: 5+'px', width: project.progress+'%'}"></div>
@@ -182,30 +181,31 @@
                           <div v-else class="card mb-3" style="width: 25rem;" v-for="(project, index) in projectStore.inProgress" :key="index">
                               <div class="card-body">
                                   <div class="title">
-                                    <router-link class="card-title" style="background-color: #ffa60078; color: white;" :to="`/projects/${project.id}`">Front-end Development</router-link>
+                                    <router-link class="card-title" style="background-color: #ffa60078; color: white;" :to="`/projects/${project.id}`">{{ project.project_title }}</router-link>
                                     <div
                                         @mouseenter="toggle('display-action'+project.id)" 
                                         @mouseleave="toggleOff('display-action'+project.id)" >
 
-                                      <i type="button" class="bi bi-three-dots"></i>
+                                      <i type="button" class="bi bi-three-dots dots-btn"></i>
                                       <div class="delete-edit" :id="'display-action'+project.id" style="display:none">
-                                        <i @click="editProject(project)" data-bs-toggle="modal" data-bs-target="#addProjectForm" class="fas fa-edit mb-2" title="Update" style="color: skyblue;" type="button"></i>
                                         <i @click="projectStore.deleteProject(project.id)" class="fas fa-trash" title="Delete" style="color: darkorange;" type="button"></i>
                                       </div>
 
                                     </div>
                                   </div>
-                                  <p class="card-text mt-3 fw-bold">{{ project.project_title }}</p>
+                                  <p class="card-text mt-3">{{ project.description.slice(0, 50) }}...</p>
                                   <div>
                                     <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(project.deadline).toDateString() }}</span>
                                   </div>
                                   <div class="assignee-image">
-                                      <div v-for="assignee in project.assignees" :key="assignee.id">
-                                        <img :src="assignee.image_url" alt="..." :title="assignee.user.name"/>
-                                      </div>
+                                    <div v-for="(assignee, index) in project.assignees" :key="index" class="assignee-wrapper">
+                                        <img :src="assignee.image_url" :alt="assignee.user.name" :title="assignee.user.name" class="assignee-image" :style="{ top: 0, left: index * -15 + 'px' }"/>
                                     </div>
-                                  <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                                      <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
+                                  </div>
+                                  <div class="progress mt-5" :title="project.progress + '% Complete'" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                    <div v-if="project.progress > 80" class="progress-bar"  :style="{backgroundColor:'#81BE41', borderRadius: 5+'px', width: project.progress+'%'}"></div>
+                                    <div v-else-if="project.progress >= 50" class="progress-bar"  :style="{backgroundColor:'orange', borderRadius: 5+'px', width: project.progress+'%'}"></div>
+                                    <div v-else-if="project.progress > 5" class="progress-bar"  :style="{backgroundColor:'darkgray', borderRadius: 5+'px', width: project.progress+'%'}"></div>
                                   </div>
                               </div>
                           </div>  
@@ -217,30 +217,31 @@
                           <div v-else class="card mb-3" style="width: 25rem;" v-for="(project, index) in projectStore.overdue" :key="index">
                               <div class="card-body">
                                   <div class="title">
-                                    <router-link class="card-title" style="background-color: darkorange; color: white;" :to="`/projects/${project.id}`">Front-end Development</router-link>
+                                    <router-link class="card-title" style="background-color: darkorange; color: white;" :to="`/projects/${project.id}`">{{ project.project_title }}</router-link>
                                     <div
                                         @mouseenter="toggle('display-action'+project.id)" 
                                         @mouseleave="toggleOff('display-action'+project.id)" >
 
-                                      <i type="button" class="bi bi-three-dots"></i>
+                                      <i type="button" class="bi bi-three-dots dots-btn"></i>
                                       <div class="delete-edit" :id="'display-action'+project.id" style="display:none">
-                                        <i @click="editProject(project)" data-bs-toggle="modal" data-bs-target="#addProjectForm" class="fas fa-edit mb-2" title="Update" style="color: skyblue;" type="button"></i>
                                         <i @click="projectStore.deleteProject(project.id)" class="fas fa-trash" title="Delete" style="color: darkorange;" type="button"></i>
                                       </div>
 
                                     </div>
                                   </div>
-                                  <p class="card-text mt-3 fw-bold">{{ project.project_title }}</p>
+                                  <p class="card-text mt-3">{{ project.description.slice(0, 50) }}...</p>
                                   <div>
                                     <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(project.deadline).toDateString() }}</span>
                                   </div>
                                   <div class="assignee-image">
-                                      <div v-for="assignee in project.assignees" :key="assignee.id">
-                                        <img :src="assignee.image_url" alt="..." :title="assignee.user.name"/>
-                                      </div>
+                                    <div v-for="(assignee, index) in project.assignees" :key="index" class="assignee-wrapper">
+                                        <img :src="assignee.image_url" :alt="assignee.user.name" :title="assignee.user.name" class="assignee-image" :style="{ top: 0, left: index * -15 + 'px' }"/>
                                     </div>
-                                  <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                                      <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
+                                  </div>
+                                  <div class="progress mt-5" :title="project.progress + '% Complete'" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                    <div v-if="project.progress > 80" class="progress-bar"  :style="{backgroundColor:'#81BE41', borderRadius: 5+'px', width: project.progress+'%'}"></div>
+                                    <div v-else-if="project.progress >= 50" class="progress-bar"  :style="{backgroundColor:'orange', borderRadius: 5+'px', width: project.progress+'%'}"></div>
+                                    <div v-else-if="project.progress > 5" class="progress-bar"  :style="{backgroundColor:'darkgray', borderRadius: 5+'px', width: project.progress+'%'}"></div>                                  
                                   </div>
                               </div>
                           </div>  
@@ -252,20 +253,19 @@
                           <div v-else class="card mb-3" style="width: 25rem;" v-for="(project, index) in projectStore.finished" :key="index">
                               <div class="card-body">
                                   <div class="title">
-                                    <router-link class="card-title" style="background-color: #81BE41; color: white;"  :to="`/projects/${project.id}`">Front-end Development</router-link>
+                                    <router-link class="card-title" style="background-color: #81BE41; color: white;"  :to="`/projects/${project.id}`">{{ project.project_title }}</router-link>
                                     <div
                                         @mouseenter="toggle('display-action'+project.id)" 
                                         @mouseleave="toggleOff('display-action'+project.id)" >
 
-                                      <i type="button" class="bi bi-three-dots"></i>
+                                      <i type="button" class="bi bi-three-dots dots-btn"></i>
                                       <div class="delete-edit" :id="'display-action'+project.id" style="display:none">
-                                        <i @click="editProject(project)" data-bs-toggle="modal" data-bs-target="#addProjectForm" class="fas fa-edit mb-2" title="Update" style="color: skyblue;" type="button"></i>
                                         <i @click="projectStore.deleteProject(project.id)" class="fas fa-trash" title="Delete" style="color: darkorange;" type="button"></i>
                                       </div>
 
                                     </div>
                                   </div>
-                                  <p class="card-text mt-3 fw-bold">{{ project.project_title }}</p>
+                                  <p class="card-text mt-3">{{ project.description.slice(0, 50) }}...</p>
                                   <div>
                                     <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(project.deadline).toDateString() }}</span>
                                   </div>
@@ -274,8 +274,10 @@
                                         <img :src="assignee.image_url" alt="..." :title="assignee.user.name"/>
                                       </div>
                                     </div>
-                                  <div class="progress mt-5" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                                      <div class="progress-bar"  style="background-color:#81BE41; border-radius: 5px; width: 50%;"></div>
+                                  <div class="progress mt-5" :title="project.progress + '% Complete'" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                    <div v-if="project.progress > 80" class="progress-bar"  :style="{backgroundColor:'#81BE41', borderRadius: 5+'px', width: project.progress+'%'}"></div>
+                                    <div v-else-if="project.progress >= 50" class="progress-bar"  :style="{backgroundColor:'orange', borderRadius: 5+'px', width: project.progress+'%'}"></div>
+                                    <div v-else-if="project.progress > 5" class="progress-bar"  :style="{backgroundColor:'darkgray', borderRadius: 5+'px', width: project.progress+'%'}"></div>                                           
                                   </div>
                               </div>
                           </div>  
@@ -487,6 +489,7 @@
       margin-top: 0.5vh;
       height: 80.3vh;
       overflow-y: auto;
+
     }
 
 
@@ -496,7 +499,7 @@
     margin: auto;
     margin-left: 35px;
     width: 65.5vw;
-    min-height: 50vh;
+    height: 56vh;
   } 
 
   .footer-divider {

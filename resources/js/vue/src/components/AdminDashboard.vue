@@ -1,192 +1,228 @@
 <template>
-  <main>
+    <main>
     <div class="heading">
-      <div style="min-height: 8.5vh;">
+        <div style="min-height: 8.5vh;">
         
         <h2 style="font-size: 30px; font-weight: 600;" v-if="user.role == 'admin'"><span style="font-size: 25px; font-weight: 500;">{{ dashboard_title }} </span> {{ user.role }}</h2>
         <h2 style="font-size: 30px; font-weight: 600;" v-else><span style="font-size: 25px; font-weight: 500;">{{ dashboard_title }} </span> {{ firstName[0] }}</h2>
         
         <P style="font-weight: 500;">Home / <span style="font-weight: 400;">Dashboard</span></P>
-      </div>
+        </div>
 
-      <div>
+        <div>
         <div className="btn-group">
-          <button type="button" className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <button type="button" className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-calendar"></i> Today
-          </button>
-          <ul className="dropdown-menu" >
+            </button>
+            <ul className="dropdown-menu" >
             <li><DatePicker v-model="date" /></li>
-          </ul>
+            </ul>
         </div>
 
         <div className="btn-group" style="margin-left: 20px;">
-          <button type="button" className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <button type="button" className="btn btn-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-funnel"></i> Filter
-          </button>
-          <ul className="dropdown-menu" >
+            </button>
+            <ul className="dropdown-menu" >
             <li><a class="dropdown-item" href="#">Upcoming</a></li>
             <li><a class="dropdown-item" href="#">Overdue</a></li>
             <li><a class="dropdown-item" href="#">Ongoing</a></li>
-          </ul>
+            </ul>
         </div>
-      </div>
+        </div>
     </div>
 
-    <!-- <div class="progress">
-            <div class="inprogress"></div>
-          </div> -->
-
     <div class="content">
-      <div style="display: flex; margin-right: 2vw;">
-        <div class="departs">
-          <div class="progress mt-3" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-            <div class="progress-bar"  :style="{backgroundColor:'#81BE41', borderRadius: 5+'px', width: 30+'%'}"></div>
-            <!-- <div v-else-if="project.progress >= 50" class="progress-bar"  :style="{backgroundColor:'orange', borderRadius: 5+'px', width: project.progress+'%'}"></div>
-            <div v-else-if="project.progress > 5" class="progress-bar"  :style="{backgroundColor:'darkgray', borderRadius: 5+'px', width: project.progress+'%'}"></div> -->
-          </div>
-          
-          <div class="donut">
-            <div class="donut-n">
-              <p>Soft Dev</p>
-              <AdminDonut class="d-1"/>
+        <div style="display: flex; margin-right: 2vw;">
+            <div class="departs">
+                <div class="progress mt-3" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar"  :style="{backgroundColor:'#81BE41', borderRadius: 5+'px', width: 30+'%'}"></div>
+                    <!-- <div v-else-if="project.progress >= 50" class="progress-bar"  :style="{backgroundColor:'orange', borderRadius: 5+'px', width: project.progress+'%'}"></div>
+                    <div v-else-if="project.progress > 5" class="progress-bar"  :style="{backgroundColor:'darkgray', borderRadius: 5+'px', width: project.progress+'%'}"></div> -->
+                </div>
+                
+                <div class="donut">
+                <div class="donut-n">
+                    <p>Soft Dev</p>
+                    <AdminDonut class="d-1"/>
+                </div>
+                <div class="donut-n">
+                    <p>Web Design</p>
+                    <AdminDonut4 class="d-1" />
+                </div>
+                <div class="donut-n">
+                    <p>Creatives & Digital</p>
+                    <AdminDonut2 class="d-1"/>
+                </div>
+                <div class="donut-n">
+                    <p>BD & Strategy</p>
+                    <AdminDonut1 class="d-1"/>
+                </div>
+                
+                
+                </div>
             </div>
-            <div class="donut-n">
-              <p>Web Design</p>
-              <AdminDonut4 class="d-1" />
+            <div class="head">
+                <p style="text-align: left;">Project</p>
+                <p>Stats</p>
+                <div style="display: flex; justify-content: center;"><i style="transform: rotate(-30deg);" class="bi bi-flag-fill"></i><p style="margin-left: 10px;">Per</p></div>
+                <p>DEPARTMENT</p>
             </div>
-            <div class="donut-n">
-              <p>Creatives & Digital</p>
-              <AdminDonut2 class="d-1"/>
-            </div>
-            <div class="donut-n">
-              <p>BD & Strategy</p>
-              <AdminDonut1 class="d-1"/>
-            </div>
-            
-            
-          </div>
-        </div>
-        <div class="head">
-          <p style="text-align: left;">Project</p>
-          <p>Stats</p>
-          <div style="display: flex; justify-content: center;"><i style="transform: rotate(-30deg);" class="bi bi-flag-fill"></i><p style="margin-left: 10px;">Per</p></div>
-          <p>DEPARTMENT</p>
-        </div>
-      </div>
-
-      <div class="projects">
-        <div class="ongoing">
-          <div>
-            <h4 style="text-align: center; font-size: 20px;">Ongoing Projects</h4>
-            <div class="area-chart">
-              <Ongoing />
-            </div>
-          </div>
         </div>
 
-        <div class="overdue">
-          <h4 style="text-align: center; font-size: 20px;">Overdue Tasks</h4>
-          <div class="overdue-content">
-            <ul class="title-list">
-              <li style="margin-right: 5px; margin-left: 5px;">Overdue</li>
-              <li style="padding-left: 5vw; padding-right: 5vw; margin-right: 5px;">Task</li>
-              <li style="padding-right: 2.5vw; margin-right: 5px;">Deadline</li>
-              <li>Employee</li>
-            </ul>
-            <div>
-              <ul class="content-list">
-                <li style="font-weight: 500;color: #FFA500;">1 Day</li>
-                <li>Update admin dashboard</li>
-                <li>15/02/2023</li>
-                <li>Kelvin</li>
-              </ul>
-
-              <ul class="content-list">
-                <li style="font-weight: 500;color: #FFA500;">2 Days</li>
-                <li>Update admin dashboard</li>
-                <li>15/02/2023</li>
-                <li>Amani</li>
-              </ul>
-
-              <ul class="content-list">
-                <!-- <li class="red-dot" style="background-color: #bb8282;"></li> -->
-                <li style="font-weight: 500;color: #E11111;">5 Days</li>
-                <li>Update admin dashboard</li>
-                <li>15/02/2023</li>
-                <li>Joline</li>
-              </ul>
-
-              <ul class="content-list">
-                <li class="red-dot"></li>
-                <li style="font-weight: 500;color: #E11111;">10 Days</li>
-                <li>Unga Shop admin</li>
-                <li>15/02/2023</li>
-                <li>Risper</li>
-              </ul>
+        <div class="projects">
+            <div class="ongoing">
+                <div>
+                    <h4 style="text-align: center; font-size: 20px;">Ongoing Projects</h4>
+                    <div class="area-chart">
+                        <Ongoing />
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="projects" style="margin-top: 20px;">
+            <div class="overdue">
+                <h4 style="text-align: center; font-size: 20px;">Overdue Tasks</h4>
+                <div class="table-editor" id="table_1" data-entries="5" data-entries-options="[5, 10, 15]">
+                    <MDBTable class="table" hover borderless>
+                        <thead>
+                            <tr style="font-weight: bolder;">
+                                <th style="background: #d9d9d9b3;"><center>Overdue</center></th>
+                                <th style="background: #d9d9d9b3;"><center>Task</center></th>
+                                <th style="background: #d9d9d9b3;"><center>Deadline</center></th>
+                                <th style="background: #d9d9d9b3;"><center>Employee</center></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="color: #FFA500;">1 Day</td>
+                                <td>Update admin dashboard</td>
+                                <td>Feb 15, 2023</td>
+                                <td>Kelvin</td>
+                            </tr>
+                            <tr>
+                                <td style="color: #FFA500;">2 Days</td>
+                                <td>Update admin dashboard</td>
+                                <td>Feb 15, 2023</td>
+                                <td>Amani</td>
+                            </tr>
+                            <tr>
+                                <td style="color: #E11111;">5 Days</td>
+                                <td>Update admin dashboard</td>
+                                <td>Feb 15, 2023</td>
+                                <td>Joline</td>
+                            </tr>
+                            <!-- <tr>
+                                <td>10 Days</td>
+                                <td>Update admin dashboard</td>
+                                <td>Feb 15, 2023</td>
+                                <td>Kelvin</td>
+                            </tr> -->
+                        </tbody>
+                    </MDBTable>
+                </div>
+            </div>
+        </div>
+
+        <div class="projects" style="margin-top: 20px;">
         <div class="workload ">
-          <h4 style="text-align: center; font-size: 20px;">Workload</h4>
-          <WorkLoad class="area-chart"/>
+            <h4 style="text-align: center; font-size: 20px;">Workload</h4>
+            <WorkLoad class="area-chart"/>
         </div>
 
         <div class="deadlines">
-          <h4 style="text-align: center; font-size: 20px;">Upcoming Tasks</h4>
-          <div style="margin-top: 20px;">
-            <ul class="title-list">
-              <li style="margin-right: 5px; margin-left: 5px;">Employee</li>
-              <li style="padding-left: 5vw; padding-right: 5vw; margin-right: 5px;">Task</li>
-              <li style="padding-right: 2.5vw; margin-right: 5px;">Deadline</li>
-              <li>Workload</li>
-            </ul>
-            <div>
-              <ul class="content-list">
-                <li style="font-weight: 500;">Victor</li>
-                <li>Update admin dashboard</li>
-                <li>15/02/2023</li>
-                <li class="load"><li class="load2" style="width: 30px;"></li></li>
-              </ul>
+            <h4 style="text-align: center; font-size: 20px;">Upcoming Tasks</h4>
+            <div style="margin-top: 20px;">
+                <MDBTable class="table" hover borderless>
+                    <thead>
+                        <tr style="font-weight: bolder;">
+                            <th style="background: #d9d9d9b3;"><center>Employee</center></th>
+                            <th style="background: #d9d9d9b3;"><center>Task</center></th>
+                            <th style="background: #d9d9d9b3;"><center>Deadline</center></th>
+                            <th style="background: #d9d9d9b3;"><center>Progress</center></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Victor</td>
+                            <td>Update admin dashboard</td>
+                            <td>Feb 15, 2023</td>
+                            <td>
+                                <div class="progress" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                    <div class="progress-bar"  style="backgroundColor: #81BE41; borderRadius: 5px; 50%"></div> 
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Nancy</td>
+                            <td>Update admin dashboard</td>
+                            <td>Feb 15, 2023</td>
+                            <td>Amani</td>
+                        </tr>
+                        <tr>
+                            <td>Maingi</td>
+                            <td>Update admin dashboard</td>
+                            <td>Feb 15, 2023</td>
+                            <td>Joline</td>
+                        </tr>
+                        <!-- <tr>
+                            <td>10 Days</td>
+                            <td>Update admin dashboard</td>
+                            <td>Feb 15, 2023</td>
+                            <td>Kelvin</td>
+                        </tr> -->
+                    </tbody>
+                </MDBTable>
 
-              <ul class="content-list">
-                <li style="font-weight: 500;">Maingi</li>
-                <li>Update admin dashboard</li>
-                <li>15/02/2023</li>
-                <li class="load"><li class="load2" style="width: 20px;"></li></li>
-              </ul>
+                <!-- <ul class="title-list">
+                    <li style="margin-right: 5px; margin-left: 5px;">Employee</li>
+                    <li style="padding-left: 5vw; padding-right: 5vw; margin-right: 5px;">Task</li>
+                    <li style="padding-right: 2.5vw; margin-right: 5px;">Deadline</li>
+                    <li>Workload</li>
+                </ul>
+                <div>
+                    <ul class="content-list">
+                    <li style="font-weight: 500;">Victor</li>
+                    <li>Update admin dashboard</li>
+                    <li>15/02/2023</li>
+                    <li class="load"><li class="load2" style="width: 30px;"></li></li>
+                    </ul>
 
-              <ul class="content-list">
-                <li style="font-weight: 500;">Nancy</li>
-                <li>Update admin dashboard</li>
-                <li>15/02/2023</li>
-                <li class="load"><li class="load2" style="width: 35px;"></li></li>
-              </ul>
+                    <ul class="content-list">
+                    <li style="font-weight: 500;">Maingi</li>
+                    <li>Update admin dashboard</li>
+                    <li>15/02/2023</li>
+                    <li class="load"><li class="load2" style="width: 20px;"></li></li>
+                    </ul>
 
-              <ul class="content-list">
-                <li style="font-weight: 500;">Brian</li>
-                <li>Unga Shop admin</li>
-                <li>15/02/2023</li>
-                <li class="load">
-                  <li class="load2" style="width: 20px;"></li>
-                </li>
-              </ul>
+                    <ul class="content-list">
+                    <li style="font-weight: 500;">Nancy</li>
+                    <li>Update admin dashboard</li>
+                    <li>15/02/2023</li>
+                    <li class="load"><li class="load2" style="width: 35px;"></li></li>
+                    </ul>
+
+                    <ul class="content-list">
+                    <li style="font-weight: 500;">Brian</li>
+                    <li>Unga Shop admin</li>
+                    <li>15/02/2023</li>
+                    <li class="load">
+                        <li class="load2" style="width: 20px;"></li>
+                    </li>
+                    </ul>
+                </div> -->
             </div>
-          </div>
         </div>
-      </div>
+        </div>
 
-      
-      <hr class="footer-divider">
+        
+        <hr class="footer-divider">
 
-      <footer>
+        <footer>
         <p> &copy; Copyright <span style="color:#2F5508; font-weight: 600;">Peak&Dale</span>. All Rights Reserved <br/>
             Designed by <span style="color: #81BE41">Peak&Dale</span></p>
-      </footer>
+        </footer>
     </div>
-  </main>
+    </main>
 </template>
 
 
@@ -198,6 +234,7 @@
     import AdminDonut3 from './charts/donuts/AdminDonut3.vue';
     import AdminDonut4 from './charts/donuts/AdminDonut4.vue';
     import Ongoing from './charts/Ongoing.vue';
+    import { MDBTable, MDBBtn, MDBBadge } from 'mdb-vue-ui-kit';
     import WorkLoad from './charts/WorkLoad.vue';
 
   
@@ -209,6 +246,7 @@
             AdminDonut, AdminDonut1, AdminDonut2, AdminDonut3, AdminDonut4,
             Ongoing,
             WorkLoad,
+            MDBTable, MDBBtn, MDBBadge,
         },
         
         data() {
@@ -275,7 +313,7 @@
   }
 
   .title-list li {
-    background-color: rgba(217, 217, 217, 0.7);
+    background-color: #d9d9d9b3;
     padding: 3px 5px;
   }
 
@@ -323,8 +361,8 @@
   }
 
   .progress {
-    height: 10px;
-    width: 52vw;
+    height: 5px;
+    /* width: 52vw; */
     margin: auto;
   }
 
@@ -371,10 +409,7 @@
     padding: 2vh;
   }
 
-  .overdue > .overdue-content {
-    margin-top: 2vh;
 
-  }
 
   .projects .workload {
     background-color: #ffff;
@@ -415,7 +450,7 @@
     background-color: white;
     width: 55vw;
     top: 20px;
-    left: 2vw;
+    left: 1.8vw;
     margin-right: 20px;
   }
 
@@ -425,7 +460,7 @@
     color: #2F5508;
     width: 8vw;
     top: 20px;
-    left: 2vw;
+    left: 1.8vw;
     padding: 10px;
     text-align: center;
     font-weight: 500;

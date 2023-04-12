@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
     
     public function run(): void
     {
-        $faker = \Faker\Factory::create();
+        // $faker = \Faker\Factory::create();
         $password = Hash::make('password');
 
         User::create([
@@ -25,13 +25,13 @@ class UserSeeder extends Seeder
             "password" => $password
         ]);
 
-        for ($i=0; $i < 5; $i++) { 
-            User::create([
-                "name" => $faker->name(),
-                "email" => $faker->unique()->email(),
-                "password" => $password
-            ]);
-        }
+        // for ($i=0; $i < 5; $i++) { 
+        //     User::create([
+        //         "name" => $faker->name(),
+        //         "email" => $faker->unique()->email(),
+        //         "password" => $password
+        //     ]);
+        // }
 
     }
 }

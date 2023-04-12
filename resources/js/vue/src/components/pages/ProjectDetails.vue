@@ -181,7 +181,6 @@
                     deadline: "",
                     description: "",
                     priority: "",
-                    priority: ""
                 },
                 dptName: "",
                 countTask: "",
@@ -242,8 +241,10 @@
                     deadline: "",
                     description: "",
                     priority: "",
-                    priority: ""
                 }
+
+                window.location.reload()
+
             },
 
             editProject(projectItem){

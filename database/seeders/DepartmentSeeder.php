@@ -13,15 +13,16 @@ class DepartmentSeeder extends Seeder
      */
     public function run(): void
     {
-        $faker = \Faker\Factory::create('en_US');
+        // $faker = \Faker\Factory::create('en_US');
 
         
 
-        for ($i=0; $i < 5; $i++) { 
-            Department::create([
-                "department_name" => $faker->word()
-
-            ]);
-        }
+        // for ($i=0; $i < 5; $i++) { 
+            Department::create(["department_name" => "Admin"]);
+            Department::create(["department_name" => "Software"]);
+            Department::create(["department_name" => "Web Design"]);
+            Department::create(["department_name" => "Design & Creatives"]);
+            Department::create(["department_name" => "BD & Strategy"]);
+        // }
     }
 }

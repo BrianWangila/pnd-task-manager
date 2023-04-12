@@ -85,7 +85,7 @@
                 </div>
 
                 <div class="projects ">
-                    <MDBTable hover class="align-middle bg-white task-table">
+                    <MDBTable  hover class="table align-middle bg-white task-table ">
                       <thead class="bg-light bg-red">
                           <tr>
                               <th class="fw-bold">Name and Email</th>
@@ -100,7 +100,8 @@
                                 <td  style="cursor: pointer" @click="routerLink(employee.id)">
                                     <div class="assignee">
                                         <!-- <img class="rounded-circle" src="https://mdbootstrap.com/img/new/avatars/8.jpg" alt="" style="width: 45px; height: 45px" > -->
-                                        <img class="rounded-circle" :src="employee.image_url" alt="employee.user.name" style="width: 45px; height: 45px" >
+                                        <img v-if="!employee.image_url" class="rounded-circle" src="../../assets/images/defaultprofile.webp" alt="employee.user.name" style="width: 45px; height: 45px" >
+                                        <img v-else class="rounded-circle" :src="employee.image_url" alt="employee.user.name" style="width: 45px; height: 45px" >
                                         <div class="ms-3" style="display: flex; flex-direction: column;">
                                             <span class="fw-bold mb-1">{{ employee.user.name }}<span v-if="employee.user.email == user.user.email" style="font-weight: 400;"> (Me)</span></span>
                                             <span class="text-muted mb-0">{{ employee.user.email }}</span>
@@ -198,6 +199,15 @@
     import { MDBTable, MDBBtn, MDBBadge } from 'mdb-vue-ui-kit';
     import { useDepartmentStore } from '../../stores/departmentStore';
     import axiosClient from '../../axios';
+    import DataTable from 'datatables.net-vue3';
+    import DataTablesCore from 'datatables.net';
+    import DataTablesLib from 'datatables.net-bs5';
+    import 'datatables.net-select-bs5';
+
+    DataTable.use(DataTablesCore);
+    DataTable.use(DataTablesLib);
+
+    
 
     export default {
         components: {
@@ -205,7 +215,8 @@
             DatePicker,
             MDBTable,
             MDBBtn,
-            MDBBadge
+            MDBBadge,
+            DataTable,
 
         },
         
@@ -219,7 +230,7 @@
                 userStore: useAuthStore(),
                 departmentStore: useDepartmentStore(),
                 employees: [],
-                employeeData: "",
+                employeeData: [],
                 dataInput: {
                     name: "",
                     email: "",

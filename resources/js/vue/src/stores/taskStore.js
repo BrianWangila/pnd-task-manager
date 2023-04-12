@@ -5,6 +5,7 @@ import { useToast } from 'vue-toastification'
 
 const toast = useToast()
 
+var userData = JSON.parse(localStorage.getItem('user'))
 
 
 export const useTaskStore = defineStore("taskStore", {
@@ -17,7 +18,12 @@ export const useTaskStore = defineStore("taskStore", {
     },
 
     getters: {
-        
+        tasksByEmployeeId: (state) => {
+            return state.tasks.filter((task) => {
+              return task.employee_id == userData.id;
+            });
+  
+        },
     },
 
     actions: {

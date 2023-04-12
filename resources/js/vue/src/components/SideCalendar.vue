@@ -9,7 +9,7 @@
       
       <div>
         <!-- <Calendar /> -->
-        <DatePicker v-model="date" />
+        <DatePicker @click="calendarData" v-model="date" />
 
       </div>
     </div>
@@ -33,6 +33,15 @@
         date: new Date(),
         
       };
+    },
+
+
+    methods: {
+      calendarData(){
+        console.log(this.date)
+
+        
+      },
     },
 
     
