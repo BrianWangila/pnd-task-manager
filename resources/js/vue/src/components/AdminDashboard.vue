@@ -35,7 +35,7 @@
     <div class="content">
         <div style="display: flex; margin-right: 2vw;">
             <div class="departs">
-                <div class="progress mt-3" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress progress1 mt-3" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
                     <div class="progress-bar"  :style="{backgroundColor:'#81BE41', borderRadius: 5+'px', width: 30+'%'}"></div>
                     <!-- <div v-else-if="project.progress >= 50" class="progress-bar"  :style="{backgroundColor:'orange', borderRadius: 5+'px', width: project.progress+'%'}"></div>
                     <div v-else-if="project.progress > 5" class="progress-bar"  :style="{backgroundColor:'darkgray', borderRadius: 5+'px', width: project.progress+'%'}"></div> -->
@@ -131,8 +131,8 @@
 
         <div class="deadlines">
             <h4 style="text-align: center; font-size: 20px;">Upcoming Tasks</h4>
-            <div style="margin-top: 20px;">
-                <MDBTable class="table" hover borderless>
+            <div>
+                <MDBTable class="table" hover borderless responsive="true">
                     <thead>
                         <tr style="font-weight: bolder;">
                             <th style="background: #d9d9d9b3;"><center>Employee</center></th>
@@ -148,7 +148,7 @@
                             <td>Feb 15, 2023</td>
                             <td>
                                 <div class="progress" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                                    <div class="progress-bar"  style="backgroundColor: #81BE41; borderRadius: 5px; 50%"></div> 
+                                    <div class="progress-bar"  style="background-color: orange; border-radius: 5px; width: 50%"></div> 
                                 </div>
                             </td>
                         </tr>
@@ -156,60 +156,24 @@
                             <td>Nancy</td>
                             <td>Update admin dashboard</td>
                             <td>Feb 15, 2023</td>
-                            <td>Amani</td>
+                            <td>
+                                <div class="progress" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                    <div class="progress-bar"  style="background-color: #81BE41; border-radius: 5px; width: 80%"></div> 
+                                </div>
+                            </td>
                         </tr>
                         <tr>
                             <td>Maingi</td>
                             <td>Update admin dashboard</td>
                             <td>Feb 15, 2023</td>
-                            <td>Joline</td>
+                            <td>
+                                <div class="progress" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                    <div class="progress-bar"  style="background-color: lightgray; border-radius: 5px; width: 40%"></div> 
+                                </div>
+                            </td>
                         </tr>
-                        <!-- <tr>
-                            <td>10 Days</td>
-                            <td>Update admin dashboard</td>
-                            <td>Feb 15, 2023</td>
-                            <td>Kelvin</td>
-                        </tr> -->
                     </tbody>
                 </MDBTable>
-
-                <!-- <ul class="title-list">
-                    <li style="margin-right: 5px; margin-left: 5px;">Employee</li>
-                    <li style="padding-left: 5vw; padding-right: 5vw; margin-right: 5px;">Task</li>
-                    <li style="padding-right: 2.5vw; margin-right: 5px;">Deadline</li>
-                    <li>Workload</li>
-                </ul>
-                <div>
-                    <ul class="content-list">
-                    <li style="font-weight: 500;">Victor</li>
-                    <li>Update admin dashboard</li>
-                    <li>15/02/2023</li>
-                    <li class="load"><li class="load2" style="width: 30px;"></li></li>
-                    </ul>
-
-                    <ul class="content-list">
-                    <li style="font-weight: 500;">Maingi</li>
-                    <li>Update admin dashboard</li>
-                    <li>15/02/2023</li>
-                    <li class="load"><li class="load2" style="width: 20px;"></li></li>
-                    </ul>
-
-                    <ul class="content-list">
-                    <li style="font-weight: 500;">Nancy</li>
-                    <li>Update admin dashboard</li>
-                    <li>15/02/2023</li>
-                    <li class="load"><li class="load2" style="width: 35px;"></li></li>
-                    </ul>
-
-                    <ul class="content-list">
-                    <li style="font-weight: 500;">Brian</li>
-                    <li>Unga Shop admin</li>
-                    <li>15/02/2023</li>
-                    <li class="load">
-                        <li class="load2" style="width: 20px;"></li>
-                    </li>
-                    </ul>
-                </div> -->
             </div>
         </div>
         </div>
@@ -360,11 +324,11 @@
     margin: 5px -45px;
   }
 
-  .progress {
-    height: 5px;
-    /* width: 52vw; */
+  .progress1 {
+    width: 52vw;
     margin: auto;
   }
+
 
   .donut {
     position: inherit;

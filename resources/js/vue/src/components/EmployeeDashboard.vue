@@ -50,7 +50,36 @@
                             </div>
 
                             <div class="to-do-btn">
-                                <button><i class="bi bi-plus-lg mr-2"></i>CREATE A TO-DO</button>
+                                <button data-bs-toggle="modal" data-bs-target="#addTodoForm"><i class="bi bi-plus-lg mr-2" ></i>CREATE A TO-DO</button>
+                            </div>
+
+                            <!-- popup todo form  -->
+                            <div class="modal fade" id="addTodoForm" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                                <div class="modal-dialog  modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title text-dark" id="ModalLabel">Add a ToDo</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form>
+                                                <div class="mb-3">
+                                                    <label class="form-label">To-do Task</label>
+                                                    <input type="text" class="form-control" />
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Date / Time</label>
+                                                    <VueDatePicker :min-date="new Date()" />
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Reminder</label>
+                                                    <input type="" class="form-control" />
+                                                </div>
+                                                <button type="submit" class="btn btn2" data-bs-dismiss="modal">Save</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
@@ -302,14 +331,6 @@
                 dashboard_title: "",
                 firstName: "",
                 showAll: false,
-                profiles: [
-                    { image: '../assets/images/avatar.png' },
-                    { image: '../assets/images/avatar.png' },
-                    { image: '../assets/images/avatar.png' },
-                    { image: '../assets/images/avatar.png' },
-                    { image: '../assets/images/avatar.png' },
-                    { image: '../assets/images/avatar.png' },
-                ],
             };
         },
 
@@ -327,15 +348,13 @@
 
                 if(time > 1 && time < 12) {
 
-                this.dashboard_title = "Good morning,";       
-                }
-                else if (time >= 12 && time < 16) {
+                    this.dashboard_title = "Good morning,";       
+                } else if (time >= 12 && time < 16) {
                 
-                this.dashboard_title = "Good afternoon,";
-                }
-                else {
+                    this.dashboard_title = "Good afternoon,";
+                } else {
 
-                this.dashboard_title = "Good evening,";
+                    this.dashboard_title = "Good evening,";
                 }
             },
 
@@ -487,7 +506,7 @@
   }
 
   .to-do-list .to-do-btn button {
-    border: 1px solid rgba(129, 190, 65, 0.43);
+    border: 1px solid rgba(130, 190, 65, 0.329);
     background-color: white;
     padding: 10px 15px;
     border-radius: 10px;
@@ -500,7 +519,7 @@
 
 
   .to-do-list .to-do-btn button:hover {
-    background-color: rgba(21, 39, 2, 0.473);
+    background-color: #81BE41;
     font-weight: 700;
     color: white;
 
@@ -623,10 +642,16 @@
 
 
   .dashboard-bottom button {
-    background-color: rgba(46, 85, 8, 0.178);
+    background-color: #5ca70b1a;
+    color: #81BE41;
     padding: 5px 8px;
     border-radius: 5px;
     font-weight: bold;
+  }
+
+  .dashboard-bottom button:hover {
+    background-color: #5ca70b9f;
+    color: white;
   }
 
   .dashboard-bottom .top-priority-dot {
@@ -654,14 +679,15 @@
 
 
   .dashboard-bottom .top-priority-dets .priority-title {
-    background-color: rgba(255, 0, 0, 0.1);
+    background-color: #ff00001c;
     padding: 3px 10px;
     border-radius: 5px;
-    color: black;
+    color: #920c0c83;
+    cursor: pointer;
   }
 
   .dashboard-bottom .top-priority-dets .priority-due {
-    color: rgba(255, 0, 0, 0.63);
+    color: #300d0d85;
     padding: 3px ;
 
   }

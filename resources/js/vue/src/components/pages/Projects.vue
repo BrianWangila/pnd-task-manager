@@ -199,7 +199,8 @@
                                   </div>
                                   <div class="assignee-image">
                                     <div v-for="(assignee, index) in project.assignees" :key="index" class="assignee-wrapper">
-                                        <img :src="assignee.image_url" :alt="assignee.user.name" :title="assignee.user.name" class="assignee-image" :style="{ top: 0, left: index * -15 + 'px' }"/>
+                                        <img v-if="!assignee.image_url" src="../../assets/images/defaultprofile.webp" :alt="assignee.user.name" :title="assignee.user.name == user.user.name ? 'Me' : assignee.user.name" class="assignee-image" :style="{ top: 0, left: index * -15 + 'px' }"/>
+                                        <img v-else :src="assignee.image_url" :alt="assignee.user.name" :title="assignee.user.name" class="assignee-image" :style="{ top: 0, left: index * -15 + 'px' }"/>
                                     </div>
                                   </div>
                                   <div class="progress mt-5" :title="project.progress + '% Complete'" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
@@ -235,7 +236,8 @@
                                   </div>
                                   <div class="assignee-image">
                                     <div v-for="(assignee, index) in project.assignees" :key="index" class="assignee-wrapper">
-                                        <img :src="assignee.image_url" :alt="assignee.user.name" :title="assignee.user.name" class="assignee-image" :style="{ top: 0, left: index * -15 + 'px' }"/>
+                                        <img v-if="!assignee.image_url" src="../../assets/images/defaultprofile.webp" :alt="assignee.user.name" :title="assignee.user.name == user.user.name ? 'Me' : assignee.user.name" class="assignee-image" :style="{ top: 0, left: index * -15 + 'px' }"/>
+                                        <img v-else :src="assignee.image_url" :alt="assignee.user.name" :title="assignee.user.name" class="assignee-image" :style="{ top: 0, left: index * -15 + 'px' }"/>
                                     </div>
                                   </div>
                                   <div class="progress mt-5" :title="project.progress + '% Complete'" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
@@ -271,7 +273,8 @@
                                   </div>
                                   <div class="assignee-image">
                                       <div v-for="assignee in project.assignees" :key="assignee.id">
-                                        <img :src="assignee.image_url" alt="..." :title="assignee.user.name"/>
+                                        <img v-if="!assignee.image_url" src="../../assets/images/defaultprofile.webp" :alt="assignee.user.name" :title="assignee.user.name == user.user.name ? 'Me' : assignee.user.name" class="assignee-image" :style="{ top: 0, left: index * -15 + 'px' }"/>
+                                        <img v-else :src="assignee.image_url" alt="..." :title="assignee.user.name"/>
                                       </div>
                                     </div>
                                   <div class="progress mt-5" :title="project.progress + '% Complete'" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">

@@ -28,7 +28,7 @@
                 <span class="badge bg-warning badge-number">4</span>
               </a><!-- End Notification Icon -->
 
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+              <!-- <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
                 <li class="dropdown-header">
                   You have 4 new notifications
                   <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
@@ -92,18 +92,18 @@
                   <a href="#">Show all notifications</a>
                 </li>
 
-              </ul><!-- End Notification Dropdown Items -->
+              </ul> -->
 
-            </li><!-- End Notification Nav -->
+            </li>
 
             <li class="nav-item notification dropdown">
 
               <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
                 <i class="bi bi-chat-left-text"></i>
                 <span class="badge bg-success badge-number">3</span>
-              </a><!-- End Messages Icon -->
+              </a>
 
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+              <!-- <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
                 <li class="dropdown-header">
                   You have 3 new messages
                   <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
@@ -117,7 +117,7 @@
                     <img src="../assets/images/messages-1.jpg" alt="" class="rounded-circle">
                     <div>
                       <h4>Ken Walibora</h4>
-                      <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                      <p>Message</p>
                       <p>4 hrs. ago</p>
                     </div>
                   </a>
@@ -131,7 +131,7 @@
                     <img src="../assets/images/messages-2.jpg" alt="" class="rounded-circle">
                     <div>
                       <h4>Mathew Ndegwa</h4>
-                      <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                      <p>Message</p>
                       <p>6 hrs. ago</p>
                     </div>
                   </a>
@@ -145,7 +145,7 @@
                     <img src="../assets/images/messages-3.jpg" alt="" class="rounded-circle">
                     <div>
                       <h4>Brian Wangila</h4>
-                      <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                      <p>Message</p>
                       <p>8 hrs. ago</p>
                     </div>
                   </a>
@@ -158,9 +158,9 @@
                   <a href="#">Show all messages</a>
                 </li>
 
-              </ul><!-- End Messages Dropdown Items -->
+              </ul> -->
 
-            </li><!-- End Messages Nav -->
+            </li>
 
             <li class="nav-item dropdown pe-3">
 

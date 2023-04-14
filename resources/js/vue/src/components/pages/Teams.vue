@@ -42,43 +42,43 @@
                     <!-- pop-up modal to add user -->
                 <div class="modal fade" id="addUserForm" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
                     <div class="modal-dialog  modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title text-dark" id="ModalLabel">Add a New Member</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-dark" id="ModalLabel">Add a New Member</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form @submit.prevent="addEmployeeForm">
+                                
+                                    <div class="mb-3">
+                                        <label class="form-label">Full Names</label>
+                                        <input type="text" class="form-control" v-model="dataInput.name"/>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Email Address</label>
+                                        <input type="email" class="form-control" v-model="dataInput.email"/>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Select Department</label>
+                                        <select class="form-select" v-model="dataInput.departmentId">
+                                            <option v-for="dpt in departmentStore.departments" :key="dpt.id" :value="dpt.id">{{ dpt.department_name }}</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Job Title</label>
+                                        <input type="text" class="form-control" v-model="dataInput.jobTitle"/>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Role</label>
+                                        <select class="form-select" v-model="dataInput.role">
+                                            <option value="hod">H.O.D</option>
+                                            <option value="employee">Employee</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn2" data-bs-dismiss="modal">Save</button>
+                                </form>
+                            </div>
                         </div>
-                        <div class="modal-body">
-                            <form @submit.prevent="addEmployeeForm">
-                            
-                              <div class="mb-3">
-                                  <label class="form-label">Full Names</label>
-                                  <input type="text" class="form-control" v-model="dataInput.name"/>
-                              </div>
-                              <div class="mb-3">
-                                  <label class="form-label">Email Address</label>
-                                  <input type="email" class="form-control" v-model="dataInput.email"/>
-                              </div>
-                              <div class="mb-3">
-                                  <label class="form-label">Select Department</label>
-                                  <select class="form-select" v-model="dataInput.departmentId">
-                                      <option v-for="dpt in departmentStore.departments" :key="dpt.id" :value="dpt.id">{{ dpt.department_name }}</option>
-                                  </select>
-                              </div>
-                              <div class="mb-3">
-                                  <label class="form-label">Job Title</label>
-                                  <input type="text" class="form-control" v-model="dataInput.jobTitle"/>
-                              </div>
-                              <div class="mb-3">
-                                  <label class="form-label">Role</label>
-                                  <select class="form-select" v-model="dataInput.role">
-                                      <option value="hod">H.O.D</option>
-                                      <option value="employee">Employee</option>
-                                  </select>
-                              </div>
-                              <button type="submit" class="btn btn2" data-bs-dismiss="modal">Save</button>
-                            </form>
-                        </div>
-                    </div>
                     </div>
                 </div>
 

@@ -19,7 +19,6 @@ class TaskController extends Controller
 
         foreach($tasks as $task){
 
-            // if($task->id == $id){
                 $userID = $task->employee->user_id;
                 $employee = User::where('id', $userID)->get();
                 
@@ -44,12 +43,38 @@ class TaskController extends Controller
                     $task['progress'] = 0;
                 }
 
-            // }
         };
         
         
-       return $tasks;
+        return $tasks;
         
+    }
+
+
+    /** 
+     * Display tasks depending on deadline
+    */
+    public function tasksByDate($date){
+        $tasks = Task::with('employee', 'subTasks')->get();
+
+        $newTasks = [];
+
+        foreach($tasks as $task){
+            $deadline = $task->deadline;
+            $userID = $task->employee->user_id;
+            $employee = User::where('id', $userID)->get();
+
+            $task->employee->name = $employee[0]->name;
+            $task->employee->email = $employee[0]->email;
+
+            if($deadline == $date){
+                $newTasks[] = $task;
+            };
+        };
+
+        
+
+        return $newTasks;
     }
 
 
