@@ -162,7 +162,8 @@
 
             </li>
 
-            <li class="nav-item dropdown pe-3">
+            <div v-if="user">
+              <li class="nav-item dropdown pe-3">
 
               <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
                 <img src="../assets/images/avatar.png" alt="Profile" class="rounded-circle">
@@ -220,6 +221,8 @@
               </ul><!-- End Profile Dropdown Items -->
             </li><!-- End Profile Nav -->
 
+            </div>
+
           </ul>
         </nav><!-- End Icons Navigation -->
 
@@ -254,11 +257,19 @@
 
         methods: {
             splitName(){
-                const name = this.user.user.name;
-                this.firstName = name.split(" ");
+                const name = this.user?.user.name;
+                this.firstName = name?.split(" ");
                 console.log(this.firstName)
             },
-        }
+        },
+
+        computed: {
+          isLogin() {
+
+              return this.$route.name == "Login";
+          }
+
+      }
     }
 
 </script>

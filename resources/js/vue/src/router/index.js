@@ -8,7 +8,7 @@ const routes = [
     name: 'Login',
     path: '/',
     component: () => import('../components/Login.vue'),
-    meta: { hideNavigation: true }
+    // meta: { hideNavigation: true }
   },
   {
     name: 'Dashboard',

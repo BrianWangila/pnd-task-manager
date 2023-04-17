@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import axiosClient from "../axios";
 import { useToast } from 'vue-toastification';
+import router from "../router/index";
 
 
 const toast = useToast();
@@ -26,6 +27,19 @@ export const useAuthStore = defineStore("auth", {
     },
 
     actions: {
+        loadUser() {
+
+            // if(!this.authUser || !this.userToken) {
+
+            //     if(router.currentRoute.name != "Login") {
+
+            //         return router.go('/');
+            //         // return router.push({ name: 'Login' });
+            //     }
+            // }
+        },
+
+
         async signIn(data){
             // console.log(this.userToken)
             try {

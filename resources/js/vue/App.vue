@@ -1,13 +1,18 @@
 <template>
-    <div>
+
         <!-- <Header  v-if="!$route.meta.hideNavigation" :toggleSideMenu="toggleSideMenu"/> -->
-        <Header  v-if="!isLogin" :toggleSideMenu="toggleSideMenu"/>
-        <SideMenu v-if="!isLogin  && isMenuOpen" />
-        <SideMenuSmall v-if="!isLogin  && isMenu2Open"/>
+        <!-- <Header  v-if="!isLogin" :toggleSideMenu="toggleSideMenu"/> -->
+
+        <Header  v-if="!isLogin" />
+        <SideMenu v-if="!isLogin  " />
+        <!-- <SideMenuSmall v-if="!isLogin  && isMenu2Open"/> -->
+        <SideMenuSmall v-if="!isLogin"/>
         <SideCalendar v-if="!isLogin" />
 
         <router-view />
-    </div>
+
+
+    
 </template>
 
 
@@ -16,6 +21,7 @@
     import Header from './src/components/Header.vue';
     import SideCalendar from './src/components/SideCalendar.vue';
     import SideMenuSmall from './src/components/SideMenuSmall.vue';
+    
 
 
     export default {
@@ -33,7 +39,6 @@
               isMenuOpen: true,
               isMenu2Open: false,
 
-
           }        
       },
 
@@ -46,8 +51,7 @@
 
       computed: {
         isLogin() {
-
-            return this.$route.name === "Login";
+            return this.$route.name == "Login";
         }
     },
     

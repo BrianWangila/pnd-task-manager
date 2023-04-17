@@ -1,7 +1,7 @@
 <template>
   <main class="side-menu"> 
     <aside id="sidebar" class="sidebar">
-      <ul class="sidebar-nav" id="sidebar-nav">
+      <ul class="sidebar-nav" id="sidebar-nav" v-if="userData">
         <img src="../assets/images/pnd-logo.png" alt="logo" />
 
         <div class="h-line"></div>
@@ -39,7 +39,7 @@
         <li class="nav-item">
           <router-link class="nav-link " to="/teams">
             <i class="bi bi-microsoft-teams"></i>
-            <span>{{ role=='admin' ? 'The Team' : 'My Team' }}</span>
+            <span>{{ userData.role=='admin' ? 'The Team' : 'My Team' }}</span>
           </router-link>
         </li> <!-- End teams Nav -->
 
@@ -52,7 +52,7 @@
 
         <div class="h-line"></div>
         Reporting
-        <li class="nav-item" v-if="role == 'admin'">
+        <li class="nav-item" v-if="userData.role == 'admin'">
           <router-link class="nav-link " to="/reports">
             <i class="bi bi-file-text"></i>
             <span>Reports</span>
@@ -62,7 +62,7 @@
         <li class="nav-item">
           <router-link class="nav-link" to="/stats">
             <i class="bi bi-bar-chart"></i>
-            <span>{{ role=='admin' ? 'Statistics' : 'My Stats' }}</span>
+            <span>{{ userData.role=='admin' ? 'Statistics' : 'My Stats' }}</span>
           </router-link>
         </li><!-- End stats Nav -->
 
@@ -99,7 +99,7 @@
 
       return{
         userStore: useAuthStore(),
-        role: userData.role
+        userData: userData
       }
     },
 

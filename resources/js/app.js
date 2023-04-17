@@ -10,7 +10,7 @@ import 'mdb-ui-kit/css/mdb.min.css';
 import router from './vue/src/router'
 import VueTailwindDatepicker from 'vue-tailwind-datepicker'
 import 'v-calendar/dist/style.css';
-import VCalendar, { SetupCalendar } from 'v-calendar';
+// import VCalendar, { SetupCalendar } from 'v-calendar';
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import VueDatePicker from '@vuepic/vue-datepicker';
@@ -42,8 +42,8 @@ const options = {
 spa.component('VueDatePicker', VueDatePicker);
 
 spa.use(router)
-   .use(VCalendar, {})
-   .use(SetupCalendar, {})
+   // .use(VCalendar, {})
+   // .use(SetupCalendar, {})
    .use(Toast)
    .use(VueSweetalert2, options)
    .use(VueTailwindDatepicker)
