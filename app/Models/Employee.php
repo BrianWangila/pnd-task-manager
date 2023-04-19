@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Department;
 use App\Models\Project;
 use App\Models\Task;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Employee extends Model
 {

@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Task;
 use App\Models\Department;
-// use dyrynda\Database\Support\CascadeSoftDeletes;
 
 
 class Project extends Model

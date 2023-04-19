@@ -45,7 +45,6 @@ class TaskController extends Controller
 
         };
         
-        
         return $tasks;
         
     }
@@ -71,8 +70,6 @@ class TaskController extends Controller
                 $newTasks[] = $task;
             };
         };
-
-        
 
         return $newTasks;
     }
