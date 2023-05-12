@@ -95,6 +95,7 @@
                               <th v-if="user.role == 'admin'" class="fw-bold">Actions</th>
                           </tr>
                       </thead>
+
                       <tbody class="t-body"  v-if="employeeData.length > 0">
                             <tr v-for="employee in employeeData" :key="employee.id">
                                 <td  style="cursor: pointer" @click="routerLink(employee.id)">

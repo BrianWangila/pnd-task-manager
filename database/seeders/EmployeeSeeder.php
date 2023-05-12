@@ -21,7 +21,8 @@ class EmployeeSeeder extends Seeder
                 "job_title" => "admin",
                 "address" =>$faker->address(),
                 "phone"=>$faker->phoneNumber(),
-                "about"=>$faker->sentence($nbWords = 20, $variableNbWords = true)
+                "about"=>$faker->sentence($nbWords = 20, $variableNbWords = true),
+                'role'=>"admin"
 
             ]);
     }
