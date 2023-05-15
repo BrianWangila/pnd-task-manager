@@ -54,6 +54,7 @@ Route::group(["middleware" => ["auth:sanctum"]], function(){
     Route::post('tasks', [TaskController::class, 'store']);
     Route::post('tasks/{task}', [TaskController::class, 'update']); //update
     Route::get('date-tasks/{date}', [TaskController::class, 'tasksByDate']); //display tasks by date
+    Route::get('overdue', [TaskController::class, 'overdueTasks']);
 
     Route::get('subtasks', [SubtaskController::class, 'index']);
     Route::get('subtasks/{subtask}', [SubtaskController::class, 'show']);

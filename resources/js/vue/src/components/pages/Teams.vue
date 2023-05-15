@@ -168,7 +168,7 @@
                                     </div>
                                 </td>
                                 <td v-if="user.role == 'admin'" >
-                                    <MDBBtn color="link" size="sm" rounded @click="deleteMember(employee.id)">
+                                    <MDBBtn color="link" size="sm" rounded v-if="employee.role != 'admin'" @click="deleteMember(employee.id)">
                                         Delete
                                     </MDBBtn>
                                 </td>

@@ -7,6 +7,8 @@ use App\Models\Employee;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+
 
 class TaskController extends Controller
 {
@@ -15,13 +17,13 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::with("project", "employee", 'subtasks')->get();
+        $tasks = Task::with("project", "employee", 'subtasks')->orderBy('deadline')->get();
 
         foreach($tasks as $task){
 
                 $userID = $task->employee->user_id;
                 $employee = User::where('id', $userID)->get();
-                
+
                 $task->employee->name = $employee[0]->name;
                 $task->employee->email = $employee[0]->email;
 
@@ -47,6 +49,32 @@ class TaskController extends Controller
         
         return $tasks;
         
+    }
+
+
+    // Overdue tasks
+    public function overdueTasks()
+    {
+        $tasks = Task::with("employee", "subtasks")->orderBy('deadline')->get();
+
+        $overdueTasks = [];
+
+        foreach($tasks as $task){
+
+            $date = Carbon::now()->format('Y-m-d');
+
+            if($task->deadline <= $date){
+                $userID = $task->employee->user_id;
+                $employee = User::where('id', $userID)->get();
+
+                $task["name"] = $employee[0]->name;
+
+                $overdueTasks[] = $task;
+            }
+            
+        }
+
+        return $overdueTasks;
     }
 
 

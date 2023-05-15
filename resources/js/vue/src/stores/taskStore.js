@@ -28,71 +28,71 @@ export const useTaskStore = defineStore("taskStore", {
 
     actions: {
 
-        // Read all projects
+        // Fetch all tasks
         async getTasks(){
 
-        try {
+            try {
 
-            await axiosClient.get("/tasks")
-            .then((res) => {
-            this.tasks = res.data
-            console.log(this.tasks)
-            })
+                await axiosClient.get("/tasks")
+                .then((res) => {
+                this.tasks = res.data
+                console.log(this.tasks)
+                })
 
-        } catch (error) {
-            console.log(error)
-        }
+            } catch (error) {
+                console.log(error)
+            }
         },
 
         // add new task
         async addTask(data){
 
-        try {
-            await axiosClient.post("/tasks", data, {headers: {"Content-Type": "application/json"}})
-            .then((res) => {
-            console.log(res)
-            toast.success(res.data.message, {timeout: 2000})
-            })
+            try {
+                await axiosClient.post("/tasks", data, {headers: {"Content-Type": "application/json"}})
+                .then((res) => {
+                console.log(res)
+                toast.success(res.data.message, {timeout: 2000})
+                })
 
-            
+                
 
-        } catch (error) {
-            console.log(error)
-            toast.error(error.response.data.message, {timeout: 3000})
-        }
+            } catch (error) {
+                console.log(error)
+                toast.error(error.response.data.message, {timeout: 3000})
+            }
         },
 
         // get one task
         async singleTask(id){
-        try {
-            await axiosClient.get("/tasks/"+id)
-            .then((res) => {
-            this.taskItem = res.data
-            console.log(this.taskItem)
+            try {
+                await axiosClient.get("/tasks/"+id)
+                .then((res) => {
+                this.taskItem = res.data
+                console.log(this.taskItem)
 
-            })
-        } catch (error) {
-            console.log(error)
-        }
+                })
+            } catch (error) {
+                console.log(error)
+            }
         },
 
         // Delete A task
         async deleteTask(id){
-        try {
-            await axiosClient.delete("/tasks/"+id);
-            
-            this.tasks = this.tasks.filter((item) => {
-            return item.id !== id;
-            
-            });
+            try {
+                await axiosClient.delete("/tasks/"+id);
+                
+                this.tasks = this.tasks.filter((item) => {
+                return item.id !== id;
+                
+                });
 
-            window.location.reload();
+                window.location.reload();
 
 
 
-        } catch (error) {
-            console.log(error);
-        };
+            } catch (error) {
+                console.log(error);
+            };
         },
     }
 })

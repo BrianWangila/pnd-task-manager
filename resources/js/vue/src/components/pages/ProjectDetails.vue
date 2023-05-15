@@ -99,13 +99,13 @@
 
                   </div>
                   <div class="assigned mb-2">
-                      <p style="margin-right: 30px; font-weight: 600;">Members:</p>
+                      <p style="margin-right: 30px; font-weight: 600;">Assignee:</p>
                       <ul v-if="assignees.length > 0" v-for="employee in assignees" :key="employee.id">
                           <li>{{ employee.user.name }}</li>
                           
                       </ul>
                       <ul v-else >
-                          <li class="fw-bold">No members added</li>
+                          <li class="fw-bold">No one is assigned to this project</li>
                       </ul>
 
                   </div>

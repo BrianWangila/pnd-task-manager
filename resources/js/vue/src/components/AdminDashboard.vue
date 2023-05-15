@@ -93,13 +93,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td style="color: #FFA500;">1 Day</td>
-                                <td>Update admin dashboard</td>
-                                <td>Feb 15, 2023</td>
-                                <td>Kelvin</td>
+                            <tr v-for="task in overdue">
+                                <td style="color: #FFA500;">1 day</td>
+                                <td>{{ task.task_title }}</td>
+                                <td>{{ task.deadline }}</td>
+                                <td>{{ (task.name).split(" ")[0] }}</td>
                             </tr>
-                            <tr>
+
+                            <!-- <tr>
                                 <td style="color: #FFA500;">2 Days</td>
                                 <td>Update admin dashboard</td>
                                 <td>Feb 15, 2023</td>
@@ -110,7 +111,7 @@
                                 <td>Update admin dashboard</td>
                                 <td>Feb 15, 2023</td>
                                 <td>Joline</td>
-                            </tr>
+                            </tr> -->
                             <!-- <tr>
                                 <td>10 Days</td>
                                 <td>Update admin dashboard</td>
@@ -200,6 +201,8 @@
     import Ongoing from './charts/Ongoing.vue';
     import { MDBTable, MDBBtn, MDBBadge } from 'mdb-vue-ui-kit';
     import WorkLoad from './charts/WorkLoad.vue';
+    import { useTaskStore } from '../stores/taskStore';
+    import axiosClient from '../axios';
 
   
     export default {
@@ -219,7 +222,9 @@
                 time: null,
                 user: JSON.parse(localStorage.getItem('user')),
                 dashboard_title: "",
-                firstName: ""
+                firstName: "",
+                taskStore: useTaskStore(),
+                overdue: []
             };
         },
 
@@ -228,7 +233,11 @@
             this.greeting();
             this.splitName();
             
+            this.taskStore.getTasks();
+            this.overdueTasks();
         }, 
+
+
         methods: {
             greeting(){
 
@@ -237,15 +246,15 @@
 
                 if(time > 1 && time < 12) {
 
-                this.dashboard_title = "Good morning,";       
+                    this.dashboard_title = "Good morning,";       
                 }
                 else if (time >= 12 && time < 16) {
                 
-                this.dashboard_title = "Good afternoon,";
+                    this.dashboard_title = "Good afternoon,";
                 }
                 else {
 
-                this.dashboard_title = "Good evening,";
+                    this.dashboard_title = "Good evening,";
                 }
             },
 
@@ -253,6 +262,19 @@
                 const name = this.user.user.name;
                 this.firstName = name.split(" ");
                 console.log(this.firstName)
+            },
+
+
+            async overdueTasks(){
+
+                await axiosClient.get('/overdue')
+
+                .then(res => {
+                    this.overdue = res.data;
+                    
+                    console.log(this.overdue);
+                })
+                
             },
 
         },
