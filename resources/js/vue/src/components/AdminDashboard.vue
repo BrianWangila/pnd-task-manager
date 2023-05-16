@@ -4,7 +4,7 @@
         <div style="min-height: 8.5vh;">
         
         <h2 style="font-size: 30px; font-weight: 600;" v-if="user.role == 'admin'"><span style="font-size: 25px; font-weight: 500;">{{ dashboard_title }} </span> {{ user.role }}</h2>
-        <h2 style="font-size: 30px; font-weight: 600;" v-else><span style="font-size: 25px; font-weight: 500;">{{ dashboard_title }} </span> {{ firstName[0] }}</h2>
+        <h2 style="font-size: 30px; font-weight: 600;" v-else><span style="font-size: 25px; font-weight: 500;">{{ dashboard_title }} </span> {{ firstName }}</h2>
         
         <P style="font-weight: 500;">Home / <span style="font-weight: 400;">Dashboard</span></P>
         </div>
@@ -81,43 +81,26 @@
             </div>
 
             <div class="overdue">
-                <h4 style="text-align: center; font-size: 20px;">Overdue Tasks</h4>
+                <h4 style="text-align: center; font-size: 20px;">Overdue Deadlines</h4>
                 <div class="table-editor" id="table_1" data-entries="5" data-entries-options="[5, 10, 15]">
                     <MDBTable class="table" hover borderless>
                         <thead>
                             <tr style="font-weight: bolder;">
-                                <th style="background: #d9d9d9b3;"><center>Overdue</center></th>
-                                <th style="background: #d9d9d9b3;"><center>Task</center></th>
-                                <th style="background: #d9d9d9b3;"><center>Deadline</center></th>
-                                <th style="background: #d9d9d9b3;"><center>Employee</center></th>
+                                <th>Overdue</th>
+                                <th>Task</th>
+                                <th>Deadline</th>
+                                <th>Employee</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="task in overdue">
-                                <td style="color: #FFA500;">1 day</td>
+                            <tr v-for="task in overdue" :key="task.id">
+                                <div>
+                                    <td style="color: #FFA500;">{{ this.date.getDate() - new Date(task.deadline).getDate() }} Days</td>
+                                </div>
                                 <td>{{ task.task_title }}</td>
-                                <td>{{ task.deadline }}</td>
+                                <td>{{ formatDate(task.deadline) }}</td>
                                 <td>{{ (task.name).split(" ")[0] }}</td>
                             </tr>
-
-                            <!-- <tr>
-                                <td style="color: #FFA500;">2 Days</td>
-                                <td>Update admin dashboard</td>
-                                <td>Feb 15, 2023</td>
-                                <td>Amani</td>
-                            </tr>
-                            <tr>
-                                <td style="color: #E11111;">5 Days</td>
-                                <td>Update admin dashboard</td>
-                                <td>Feb 15, 2023</td>
-                                <td>Joline</td>
-                            </tr> -->
-                            <!-- <tr>
-                                <td>10 Days</td>
-                                <td>Update admin dashboard</td>
-                                <td>Feb 15, 2023</td>
-                                <td>Kelvin</td>
-                            </tr> -->
                         </tbody>
                     </MDBTable>
                 </div>
@@ -136,40 +119,22 @@
                 <MDBTable class="table" hover borderless responsive="true">
                     <thead>
                         <tr style="font-weight: bolder;">
-                            <th style="background: #d9d9d9b3;"><center>Employee</center></th>
-                            <th style="background: #d9d9d9b3;"><center>Task</center></th>
-                            <th style="background: #d9d9d9b3;"><center>Deadline</center></th>
-                            <th style="background: #d9d9d9b3;"><center>Progress</center></th>
+                            <th>Employee</th>
+                            <th>Task</th>
+                            <th>Deadline</th>
+                            <th>Progress</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Victor</td>
-                            <td>Update admin dashboard</td>
-                            <td>Feb 15, 2023</td>
+                        <tr v-for="task in upcoming" :key="task.id">
+                            <td>{{ task.employee.name.split(" ")[0] }}</td>
+                            <td>{{ task.task_title }}</td>
+                            <td>{{ formatDate(task.deadline) }}</td>
                             <td>
-                                <div class="progress" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                                    <div class="progress-bar"  style="background-color: orange; border-radius: 5px; width: 50%"></div> 
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Nancy</td>
-                            <td>Update admin dashboard</td>
-                            <td>Feb 15, 2023</td>
-                            <td>
-                                <div class="progress" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                                    <div class="progress-bar"  style="background-color: #81BE41; border-radius: 5px; width: 80%"></div> 
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Maingi</td>
-                            <td>Update admin dashboard</td>
-                            <td>Feb 15, 2023</td>
-                            <td>
-                                <div class="progress" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                                    <div class="progress-bar"  style="background-color: lightgray; border-radius: 5px; width: 40%"></div> 
+                                <div class="progress mt-1" :title="task.progress + '% Complete'" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                    <div v-if="task.progress > 80" class="progress-bar"  :style="{backgroundColor:'#81BE41', borderRadius: 5+'px', width: task.progress+'%'}"></div> 
+                                    <div v-else-if="task.progress >= 50" class="progress-bar"  :style="{backgroundColor:'orange', borderRadius: 5+'px', width: task.progress+'%'}"></div>
+                                    <div v-else-if="task.progress > 5" class="progress-bar"  :style="{backgroundColor:'darkgray', borderRadius: 5+'px', width: task.progress+'%'}"></div>
                                 </div>
                             </td>
                         </tr>
@@ -201,7 +166,6 @@
     import Ongoing from './charts/Ongoing.vue';
     import { MDBTable, MDBBtn, MDBBadge } from 'mdb-vue-ui-kit';
     import WorkLoad from './charts/WorkLoad.vue';
-    import { useTaskStore } from '../stores/taskStore';
     import axiosClient from '../axios';
 
   
@@ -223,8 +187,9 @@
                 user: JSON.parse(localStorage.getItem('user')),
                 dashboard_title: "",
                 firstName: "",
-                taskStore: useTaskStore(),
-                overdue: []
+                // taskStore: useTaskStore(),
+                overdue: [],
+                upcoming: []
             };
         },
 
@@ -232,9 +197,8 @@
 
             this.greeting();
             this.splitName();
-            
-            this.taskStore.getTasks();
             this.overdueTasks();
+            this.upcomingTasks();
         }, 
 
 
@@ -260,8 +224,7 @@
 
             splitName(){
                 const name = this.user.user.name;
-                this.firstName = name.split(" ");
-                console.log(this.firstName)
+                this.firstName = name.split(" ")[0];
             },
 
 
@@ -270,12 +233,39 @@
                 await axiosClient.get('/overdue')
 
                 .then(res => {
-                    this.overdue = res.data;
+                    this.overdue = res.data.slice(0, 3).reverse();
                     
                     console.log(this.overdue);
                 })
                 
             },
+
+            async upcomingTasks(){
+                
+                await axiosClient.get('/tasks')
+                .then(res => {
+                    const tasks = res.data;
+
+                    this.upcoming = tasks.filter(task => task.deadline > this.formatDateOnly(this.date));
+
+                    console.log(this.upcoming);
+                })
+            },
+
+
+            formatDate(date) {
+                const options = { month: 'short', day: 'numeric', year: 'numeric' };
+                return new Date(date).toLocaleDateString('en-US', options);
+            },
+
+
+            formatDateOnly(date) {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+
+                return `${year}-${month}-${day}`;
+            }
 
         },
     }
@@ -408,6 +398,10 @@
     background-color: #ffff;
     width: 32vw;
     padding: 2vh;
+  }
+
+  .projects th {
+    background-color: #d9d9d9b3;
   }
 
   .inprogress {
