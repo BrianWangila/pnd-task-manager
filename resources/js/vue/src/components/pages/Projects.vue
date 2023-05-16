@@ -130,16 +130,16 @@
                                         <i class="bi bi-calendar-event fs-5 mr-2"></i> Due on <span class="fw-bold" style="color: #2F5508;">{{ new Date(project.deadline).toDateString() }}</span>
                                     </div>
                                     <div class="assignee-image">
-                                      <div v-for="(assignee, index) in project.assignees" :key="index" class="assignee-wrapper">
-                                        <img v-if="!assignee.image_url" src="../../assets/images/defaultprofile.webp" :alt="assignee.user.name" :title="assignee.user.name == user.user.name ? 'Me' : assignee.user.name" class="assignee-image" :style="{ top: 0, left: index * -15 + 'px' }"/>
-                                        <img v-else :src="assignee.image_url" :alt="assignee.user.name" :title="assignee.user.name == user.user.name ? 'Me' : assignee.user.name" class="assignee-image" :style="{ top: 0, left: index * -15 + 'px' }"/>
-                                      </div>
+                                        <div v-for="(assignee, index) in project.assignees" :key="index" class="assignee-wrapper">
+                                            <img v-if="!assignee.image_url" src="../../assets/images/defaultprofile.webp" :alt="assignee.user.name" :title="assignee.user.name == user.user.name ? 'Me' : assignee.user.name" class="assignee-image" :style="{ top: 0, left: index * -15 + 'px' }"/>
+                                            <img v-else :src="assignee.image_url" :alt="assignee.user.name" :title="assignee.user.name == user.user.name ? 'Me' : assignee.user.name" class="assignee-image" :style="{ top: 0, left: index * -15 + 'px' }"/>
+                                        </div>
                                     </div>
                                     
                                     <div class="progress mt-5" :title="project.progress + '% Complete'" style="height: 10px; color: green; border-radius: 5px;" role="progressbar" aria-label="Basic example" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                                      <div v-if="project.progress > 80" class="progress-bar"  :style="{backgroundColor:'#81BE41', borderRadius: 5+'px', width: project.progress+'%'}"></div> 
-                                      <div v-else-if="project.progress >= 50" class="progress-bar"  :style="{backgroundColor:'orange', borderRadius: 5+'px', width: project.progress+'%'}"></div>
-                                      <div v-else-if="project.progress > 5" class="progress-bar"  :style="{backgroundColor:'darkgray', borderRadius: 5+'px', width: project.progress+'%'}"></div>
+                                        <div v-if="project.progress > 80" class="progress-bar"  :style="{backgroundColor:'#81BE41', borderRadius: 5+'px', width: project.progress+'%'}"></div> 
+                                        <div v-else-if="project.progress >= 50" class="progress-bar"  :style="{backgroundColor:'orange', borderRadius: 5+'px', width: project.progress+'%'}"></div>
+                                        <div v-else-if="project.progress > 5" class="progress-bar"  :style="{backgroundColor:'darkgray', borderRadius: 5+'px', width: project.progress+'%'}"></div>
                                     </div>
                                 </div>
                             </div>  
